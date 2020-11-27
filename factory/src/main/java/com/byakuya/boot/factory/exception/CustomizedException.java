@@ -43,7 +43,7 @@ public class CustomizedException extends RuntimeException {
     }
 
     public String[] getArgs() {
-        return args.clone();
+        return args == null ? args : args.clone();
     }
 
     @Override
