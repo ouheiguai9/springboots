@@ -1,0 +1,27 @@
+server:
+  port: 80
+  servlet:
+    application-display-name: '设备管理'
+    context-path: '/factory'
+    session:
+      timeout: 30m
+
+spring:
+  profiles:
+    active: dev,database,system
+  messages:
+    basename: i18n/iengine_message
+    encoding: UTF-8
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
+  freemarker:
+    request-context-attribute: request
+  jackson:
+    time-zone: GMT+8
+    date-format: 'yyyy-MM-dd HH:mm:ss'
+logging:
+  config: classpath:logback-spring.xml
+
+

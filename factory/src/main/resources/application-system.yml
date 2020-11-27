@@ -1,0 +1,29 @@
+#系统专用配置
+system:
+  #安全相关配置
+  security:
+    admin:
+      username: 'admin'  #系统管理员用户名(默认值admin)
+      password: '$2a$10$5zxDSXre318myTohrygW7OhbsElm76a1shCZk4qmCAmj9LX7ZhuyW'  #系统管理员密码(默认值admin)
+      nickname: '超级管理员'  #系统管理员昵称(默认值系统管理员)
+      phone-number: '88888888888'  #系统管理员电话(默认值88888888888)
+    new-user-default-password: 'abc!123' #新建用户初始密码(默认值abc!123)
+    password-valid-period: 180          #密码有效期单位天(默认值180)
+    allow-registration: true   #是否允许新用户注册(默认值true)
+    login-page-url: '/login'   #登陆页面地址(默认/login)
+    login-processing-url: '/login'  #登陆验证地址(默认/login)
+    login-processing-request-method: 'POST'  #登陆验证请求方法(默认POST)
+  #验证码相关配置
+  captcha:
+    enable: true #是否启用验证码
+    image-width: 200 #图片宽度
+    image-height: 100 #图片高度
+    font-family: 'Arial, Courier, 宋体, 微软雅黑' #字体
+    font-size: 75 #字体大小
+    font-color: '20,33,73' #字体颜色
+    noise-color: '30,55,55' #干扰线颜色
+    candidate-char: '0123456789' #候选字符
+    length: 4 #验证码长度
+    valid-second: 180 #验证码有效期(单位秒)
+  netty:
+    port: 9527 #netty服务器端口(默认9527)
