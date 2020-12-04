@@ -30,6 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().mvcMatchers("/captcha");          //验证码
         web.ignoring().mvcMatchers("/error/**");         //错误页面
         web.ignoring().mvcMatchers("/register");         //注册
+        web.ignoring().mvcMatchers("/changePassword");   //修改密码
     }
 
     @Override

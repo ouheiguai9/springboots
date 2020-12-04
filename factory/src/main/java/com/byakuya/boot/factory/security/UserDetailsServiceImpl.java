@@ -1,8 +1,9 @@
 package com.byakuya.boot.factory.security;
 
 import com.byakuya.boot.factory.ConstantUtils;
+import com.byakuya.boot.factory.SystemVersion;
 import com.byakuya.boot.factory.component.user.SecurityUser;
-import com.byakuya.boot.factory.component.user.SecurityUserRepository;
+import com.byakuya.boot.factory.component.user.SecurityUserService;
 import com.byakuya.boot.factory.property.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.CredentialsContainer;
@@ -25,8 +26,8 @@ import java.util.Optional;
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    public UserDetailsServiceImpl(SecurityUserRepository securityUserRepository, SecurityProperties securityProperties) {
-        this.securityUserRepository = securityUserRepository;
+    public UserDetailsServiceImpl(SecurityUserService securityUserService, SecurityProperties securityProperties) {
+        this.securityUserService = securityUserService;
         this.securityProperties = securityProperties;
     }
 
@@ -37,7 +38,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (admin.getUsername().equals(username)) {
             rtnVal = new AuthenticationUser(securityProperties.getAdmin());
         } else {
-            Optional<SecurityUser> optionalUser = securityUserRepository.findUserByUsernameOrPhoneOrEmail(username, username, username);
+            Optional<SecurityUser> optionalUser = securityUserService.loadUser(username);
             if (!optionalUser.isPresent()) {
                 throw new UsernameNotFoundException(username);
             }
@@ -47,7 +48,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     private final SecurityProperties securityProperties;
-    private final SecurityUserRepository securityUserRepository;
+    private final SecurityUserService securityUserService;
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -55,6 +56,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public static class AuthenticationUser implements UserDetails, CredentialsContainer {
+
+        private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;
 
         AuthenticationUser(SecurityUser realUser, long passwordValidPeriod) {
             this.admin = null;

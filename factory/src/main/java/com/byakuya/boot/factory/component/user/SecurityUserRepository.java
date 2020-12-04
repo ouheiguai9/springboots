@@ -17,5 +17,5 @@ public interface SecurityUserRepository extends PagingAndSortingRepository<Secur
 
     Optional<SecurityUser> findByUsername(String username);
 
-    Optional<SecurityUser> findUserByUsernameOrPhoneOrEmail(String username, String phone, String email);
+    Optional<SecurityUser> findUserByIdOrUsernameOrPhoneOrEmail(String id, String username, String phone, String email);
 }

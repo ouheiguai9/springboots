@@ -31,16 +31,16 @@ public class CustomizedException extends RuntimeException {
         this.exceptionCode = exceptionCode;
     }
 
-    public CustomizedException(String exceptionCode, String exceptionMessage) {
-        this.exceptionCode = exceptionCode;
-        this.exceptionMessage = exceptionMessage;
-    }
-
-    public CustomizedException(Throwable cause, String exceptionCode, String exceptionMessage) {
-        super(cause);
-        this.exceptionCode = exceptionCode;
-        this.exceptionMessage = exceptionMessage;
-    }
+//    public CustomizedException(String exceptionCode, String exceptionMessage) {
+//        this.exceptionCode = exceptionCode;
+//        this.exceptionMessage = exceptionMessage;
+//    }
+//
+//    public CustomizedException(Throwable cause, String exceptionCode, String exceptionMessage) {
+//        super(cause);
+//        this.exceptionCode = exceptionCode;
+//        this.exceptionMessage = exceptionMessage;
+//    }
 
     public String[] getArgs() {
         return args == null ? args : args.clone();
