@@ -1,19 +1,26 @@
 package com.byakuya.boot.factory.page;
 
+import com.byakuya.boot.factory.component.user.SecurityUser;
 import com.byakuya.boot.factory.component.user.SecurityUserService;
+import com.byakuya.boot.factory.security.AuthenticationUser;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.web.WebAttributes;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 /**
  * Created by ganzl on 2020/11/27.
  */
 @Controller
+@Validated
 public class AuthenticationPageController {
 
     public AuthenticationPageController(SecurityUserService securityUserService) {
@@ -22,14 +29,26 @@ public class AuthenticationPageController {
 
     @PostMapping("/changePassword")
     @ResponseBody
-    public ResponseEntity<Boolean> changePassword(@NotBlank @RequestParam(name = "id") String id
-            , @NotBlank @RequestParam(name = "oldPassword") String oldPassword
-            , @NotBlank @RequestParam(name = "newPassword") String newPassword) {
-        return ResponseEntity.ok(securityUserService.changePassword(id, oldPassword, newPassword));
+    public ResponseEntity<Boolean> changePassword(@NotBlank String username
+            , @NotBlank String oldPassword
+            , @NotBlank String newPassword) {
+        return ResponseEntity.ok(securityUserService.changePassword(username, oldPassword, newPassword));
     }
 
     @GetMapping("/changePassword")
-    public String changePasswordPageUrl() {
+    public String changePasswordPageUrl(@AuthenticationPrincipal AuthenticationUser user
+            , @RequestParam(name = UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY, required = false) String username
+            , @SessionAttribute(name = WebAttributes.AUTHENTICATION_EXCEPTION, required = false) Exception exception
+            , HttpServletRequest request
+            , Model model) {
+        if (user != null) {
+            username = user.getUsername();
+        }
+        if (exception != null) {
+            model.addAttribute("error", exception.getMessage());
+            request.getSession().removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+        }
+        model.addAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY, username);
         return "changePassword";
     }
 
@@ -39,8 +58,20 @@ public class AuthenticationPageController {
     }
 
     @GetMapping("/login")
-    public String loginPageUrl() {
+    public String loginPageUrl(@SessionAttribute(name = WebAttributes.AUTHENTICATION_EXCEPTION, required = false) Exception exception
+            , HttpServletRequest request
+            , Model model) {
+        if (exception != null) {
+            model.addAttribute("error", exception.getMessage());
+            request.getSession().removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+        }
         return "login";
+    }
+
+    @PostMapping("/register")
+    @ResponseBody
+    public ResponseEntity<SecurityUser> register(@Valid @RequestBody SecurityUser securityUser) {
+        return ResponseEntity.ok(securityUserService.regist(securityUser));
     }
 
     @GetMapping("/register")

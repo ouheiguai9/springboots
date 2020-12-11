@@ -5,7 +5,7 @@ spring:
     #    username: root
     #    password: root
     #    platform: h2
-    url: jdbc:mysql://127.0.0.1/factory?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1/factory?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8
     driver-class-name: com.mysql.jdbc.Driver
     username: factory
     password: factory
@@ -49,3 +49,5 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        model:
+          generator_name_as_sequence_name: false

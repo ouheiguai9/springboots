@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 /**
  * Created by ganzl on 2020/4/3.
@@ -30,14 +29,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().mvcMatchers("/captcha");          //验证码
         web.ignoring().mvcMatchers("/error/**");         //错误页面
         web.ignoring().mvcMatchers("/register");         //注册
-        web.ignoring().mvcMatchers("/changePassword");   //修改密码
+        web.ignoring().mvcMatchers(changePasswordUrl);   //修改密码
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         String loginPageUrl = securityProperties.getLoginPageUrl();
         String loginProcessingUrl = securityProperties.getLoginProcessingUrl();
-        AuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler(loginPageUrl);
+        AuthenticationFailureHandler failureHandler = new CustomizedAuthFailureHandler(loginPageUrl, changePasswordUrl);
 
         http
                 .authorizeRequests()
@@ -57,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void setCaptchaProperties(CaptchaProperties captchaProperties) {
         this.captchaProperties = captchaProperties;
     }
-
+    private final String changePasswordUrl = "/changePassword";
     private CaptchaProperties captchaProperties;
     private SecurityProperties securityProperties;
 }

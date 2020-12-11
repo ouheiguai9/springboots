@@ -24,14 +24,14 @@ public class SecurityUserService {
     /**
      * 修改密码
      *
-     * @param id          用户id
+     * @param username    用户id
      * @param oldPassword 原始密码
      * @param newPassword 新密码
      * @return 是否成功
      */
-    public boolean changePassword(String id, String oldPassword, String newPassword) {
-        Optional<SecurityUser> opt = securityUserRepository.findById(id);
-        if (!opt.isPresent()) throw new RecordNotExistsException(id);
+    public boolean changePassword(String username, String oldPassword, String newPassword) {
+        Optional<SecurityUser> opt = securityUserRepository.findByUsername(username);
+        if (!opt.isPresent()) throw new RecordNotExistsException(username);
         SecurityUser securityUser = opt.get();
         if (!passwordEncoder.matches(oldPassword, securityUser.getPassword())) {
             throw new CustomizedException("ERR-90001");
