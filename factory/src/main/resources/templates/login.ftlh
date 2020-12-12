@@ -8,9 +8,10 @@
 <div class="layui-admin-login-main">
     <h2 class="layui-admin-login-header">智能工厂管理系统</h2>
     <form class="layui-form" action="login" method="post">
+        <div class="layui-admin-login-error-info">${error!}</div>
         <div class="layui-form-item">
             <label class="layui-admin-login-icon layui-icon layui-icon-username" for="username"></label>
-            <input type="text" name="username" id="username" lay-verify="required" placeholder="用户名"
+            <input type="text" name="username" id="username" lay-verify="required" placeholder="用户名/手机号/邮箱"
                    class="layui-input">
         </div>
         <div class="layui-form-item">
@@ -32,10 +33,10 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-col-xs8">
-                <input type="checkbox" name="remember" lay-skin="primary" title="记住密码">
+                <a href="register" class="layui-admin-link">新用户注册</a>
             </div>
             <div class="layui-col-xs3 layui-col-md-offset1">
-                <a href="javascript:void(1);" class="layui-admin-link" style="display:block; margin-top: 7px; float: right">忘记密码？</a>
+                <a href="javascript:void(1);" class="layui-admin-link" style="float: right">忘记密码？</a>
             </div>
         </div>
         <div class="layui-form-item">

@@ -9,12 +9,15 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.io.IOException;
 
 /**
  * Created by ganzl on 2020/11/27.
@@ -40,7 +43,8 @@ public class AuthenticationPageController {
             , @RequestParam(name = UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY, required = false) String username
             , @SessionAttribute(name = WebAttributes.AUTHENTICATION_EXCEPTION, required = false) Exception exception
             , HttpServletRequest request
-            , Model model) {
+            , HttpServletResponse response
+            , Model model) throws IOException {
         if (user != null) {
             username = user.getUsername();
         }
@@ -48,13 +52,11 @@ public class AuthenticationPageController {
             model.addAttribute("error", exception.getMessage());
             request.getSession().removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
         }
+        if (!StringUtils.hasText(username)) {
+            response.sendRedirect(loginPageUrl(null, null, null));
+        }
         model.addAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY, username);
         return "changePassword";
-    }
-
-    @GetMapping("/")
-    public String homePageUrl() {
-        return "home";
     }
 
     @GetMapping("/login")
@@ -66,6 +68,11 @@ public class AuthenticationPageController {
             request.getSession().removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
         }
         return "login";
+    }
+
+    @GetMapping("/")
+    public String homePageUrl() {
+        return "home";
     }
 
     @PostMapping("/register")
