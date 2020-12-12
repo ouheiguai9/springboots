@@ -20,7 +20,7 @@
 .layui-admin-login-header {
     height: 50px;
     line-height: 50px;
-    color: #393D49;
+    color: #393d49;
     font-size: 25px;
     text-align: center;
 }
@@ -41,6 +41,6 @@
 .layui-admin-login-error-info {
     height: 30px;
     line-height: 30px;
-    color: #FF5722;
+    color: #ff5722;
     text-align: center;
 }

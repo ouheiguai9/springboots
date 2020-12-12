@@ -1,3 +1,99 @@
 .layui-admin-link {
     color: #029789 !important;
 }
+
+/**layer**/
+.layui-layer-tips .layui-layer-content {
+    background-color: #ff5722 !important;
+}
+
+.layui-layer-tips i.layui-layer-TipsB, .layui-layer-tips i.layui-layer-TipsT {
+    border-right-color: #ff5722 !important;
+}
+
+body .layui-admin-layer {
+    display: flex;
+    width: auto !important;
+    height: auto !important;
+    min-width: auto !important;
+    border-radius: 20px;
+}
+
+body .layui-admin-layer .layui-layer-content {
+    display: flex;
+    width: auto !important;
+    height: auto !important;
+    padding: 0;
+    border-radius: 20px;
+}
+
+body .layui-admin-layer .layui-layer-content .success-box, body .layui-admin-layer .layui-layer-content .failure-box {
+    display: flex;
+    width: 150px;
+    height: 150px;
+    padding: 10px;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+}
+
+body .layui-admin-layer .layui-layer-content .failure-box {
+    width: 260px !important;
+    height: auto !important;
+    padding: 20px 10px;
+    background-color: #fff;
+}
+
+body .layui-admin-layer .layui-layer-content .layui-icon {
+    line-height: 90px;
+    font-size: 80px;
+    color: #8aee5d
+}
+
+body .layui-admin-layer .layui-layer-content .layui-text {
+    display: block;
+    width: 100%;
+    line-height: 40px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    color: #8aee5d;
+}
+
+body .layui-admin-layer .layui-layer-content .failure-box .layui-icon, body .layui-admin-layer .layui-layer-content .failure-box .layui-text {
+    color: #ff5722;
+}
+
+body .layui-admin-layer .layui-layer-content .error-detail {
+    padding-top: 15px;
+    line-height: 28px;
+    font-size: 18px;
+    color: #999;
+    text-align: center;
+}
+
+body .layui-admin-layer .layui-layer-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 0;
+}
+
+body .layui-admin-layer .layui-layer-btn .layui-layer-btn0 {
+    border: none;
+    background: none;
+}
+
+body .layui-admin-layer .layui-layer-btn a {
+    height: 40px;
+    line-height: 40px;
+    margin: 0;
+    padding: 0;
+    font-size: 40px;
+    color: #ddd;
+}
+
+body .layui-admin-layer .layui-layer-btn a .layui-icon {
+    font-size: 40px;
+}

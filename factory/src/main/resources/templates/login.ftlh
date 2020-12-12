@@ -12,12 +12,12 @@
         <div class="layui-form-item">
             <label class="layui-admin-login-icon layui-icon layui-icon-username" for="username"></label>
             <input type="text" name="username" id="username" lay-verify="required" placeholder="用户名/手机号/邮箱"
-                   class="layui-input">
+                   class="layui-input" lay-verType="tips">
         </div>
         <div class="layui-form-item">
             <label class="layui-admin-login-icon layui-icon layui-icon-password" for="password"></label>
             <input type="password" name="password" id="password" lay-verify="required" placeholder="密码"
-                   class="layui-input">
+                   class="layui-input" lay-verType="tips">
         </div>
         <#if allowCaptcha>
             <div class="layui-form-item">
@@ -25,7 +25,7 @@
                     <div class="layui-col-xs8">
                         <label class="layui-admin-login-icon layui-icon layui-icon-vercode" for="captcha"></label>
                         <input type="text" id="captcha" name="_captcha_" lay-verify="required" placeholder="图形验证码"
-                               class="layui-input">
+                               class="layui-input" lay-verType="tips">
                     </div>
                     <div class="layui-col-xs3 layui-col-md-offset1">
                         <img src="captcha" class="layui-admin-login-captcha" title="单击刷新" alt="验证码"/>
