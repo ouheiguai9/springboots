@@ -10,23 +10,25 @@
     <#if !security.isAuthentication()>
         <h2 class="layui-admin-login-header">智能工厂管理系统</h2>
     </#if>
-    <form class="layui-form" action="changePassword" method="post">
+    <form class="layui-form">
         <div class="layui-admin-login-error-info">${error!}</div>
+        <input type="hidden" name="authentication" id="authentication"
+               value="${security.isAuthentication()?string('yes', 'no')}">
         <input type="hidden" name="username" id="username" value="${username}">
         <div class="layui-form-item">
             <label class="layui-admin-login-icon layui-icon layui-icon-password" for="oldPassword"></label>
-            <input type="password" name="oldPassword" id="oldPassword" lay-verify="required" placeholder="原始密码"
-                   class="layui-input" lay-verType="tips">
+            <input type="password" name="oldPassword" id="oldPassword" lay-verify="required|password" placeholder="原始密码"
+                   class="layui-input">
         </div>
         <div class="layui-form-item">
             <label class="layui-admin-login-icon layui-icon layui-icon-password" for="newPassword"></label>
-            <input type="password" name="newPassword" id="newPassword" lay-verify="required" placeholder="新密码"
-                   class="layui-input" lay-verType="tips">
+            <input type="password" name="newPassword" id="newPassword" lay-verify="required|password" placeholder="新密码"
+                   class="layui-input">
         </div>
         <div class="layui-form-item">
             <label class="layui-admin-login-icon layui-icon layui-icon-password" for="password"></label>
-            <input type="password" name="repassword" id="repassword" lay-verify="required" placeholder="确认密码"
-                   class="layui-input" lay-verType="tips">
+            <input type="password" name="repassword" id="repassword" lay-verify="required|repassword" placeholder="确认密码"
+                   class="layui-input" data-equal="newPassword">
         </div>
         <div class="layui-form-item">
             <button class="layui-btn layui-btn-fluid" lay-submit>确 定</button>
@@ -35,5 +37,5 @@
 </div>
 </body>
 <script src="plugin/layui/layui.js" type="text/javascript" charset="UTF-8"></script>
-<script src="js/login.js" type="text/javascript" charset="UTF-8"></script>
+<script src="js/changePassword.js" type="text/javascript" charset="UTF-8"></script>
 </html>

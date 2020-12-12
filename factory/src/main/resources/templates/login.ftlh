@@ -19,21 +19,26 @@
             <input type="password" name="password" id="password" lay-verify="required" placeholder="密码"
                    class="layui-input">
         </div>
-        <div class="layui-form-item">
-            <div class="layui-row">
-                <div class="layui-col-xs8">
-                    <label class="layui-admin-login-icon layui-icon layui-icon-vercode" for="captcha"></label>
-                    <input type="text" id="captcha" name="_captcha_" lay-verify="required" placeholder="图形验证码"
-                           class="layui-input">
-                </div>
-                <div class="layui-col-xs3 layui-col-md-offset1">
-                    <img src="captcha" class="layui-admin-login-captcha" title="单击刷新" alt="验证码"/>
+        <#if allowCaptcha>
+            <div class="layui-form-item">
+                <div class="layui-row">
+                    <div class="layui-col-xs8">
+                        <label class="layui-admin-login-icon layui-icon layui-icon-vercode" for="captcha"></label>
+                        <input type="text" id="captcha" name="_captcha_" lay-verify="required" placeholder="图形验证码"
+                               class="layui-input">
+                    </div>
+                    <div class="layui-col-xs3 layui-col-md-offset1">
+                        <img src="captcha" class="layui-admin-login-captcha" title="单击刷新" alt="验证码"/>
+                    </div>
                 </div>
             </div>
-        </div>
+        </#if>
         <div class="layui-form-item">
             <div class="layui-col-xs8">
-                <a href="register" class="layui-admin-link">新用户注册</a>
+                <#if allowRegistration>
+                    <a href="register" class="layui-admin-link">新用户注册</a>
+                </#if>
+                &nbsp;
             </div>
             <div class="layui-col-xs3 layui-col-md-offset1">
                 <a href="javascript:void(1);" class="layui-admin-link" style="float: right">忘记密码？</a>

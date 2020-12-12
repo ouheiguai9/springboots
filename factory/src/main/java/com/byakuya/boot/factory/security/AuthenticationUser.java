@@ -68,7 +68,7 @@ public class AuthenticationUser implements UserDetails, CredentialsContainer {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        if (isAdmin()) return false;
+        if (isAdmin()) return true;
         return realUser.getLastPasswordModifiedDate() != null && realUser.getLastPasswordModifiedDate().plusDays(passwordValidPeriod).isAfter(LocalDateTime.now());
     }
 
