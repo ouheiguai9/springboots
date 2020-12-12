@@ -68,9 +68,11 @@ public class AuthenticationPageController {
     }
 
     @GetMapping("/login")
-    public String loginPageUrl(@SessionAttribute(name = WebAttributes.AUTHENTICATION_EXCEPTION, required = false) Exception exception
+    public String loginPageUrl(@AuthenticationPrincipal AuthenticationUser user
+            , @SessionAttribute(name = WebAttributes.AUTHENTICATION_EXCEPTION, required = false) Exception exception
             , HttpServletRequest request
             , Model model) {
+        if (user != null) return "redirect:/logout";
         if (exception != null) {
             model.addAttribute("error", exception.getMessage());
             request.getSession().removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
