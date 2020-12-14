@@ -81,6 +81,11 @@ public class AuthenticationUser implements UserDetails, CredentialsContainer {
         return admin != null;
     }
 
+    public String getNickname() {
+        if (isAdmin()) return admin.getNickname();
+        return realUser.getDetail().getNickname();
+    }
+
     public Optional<SecurityUser> getRealUser() {
         return Optional.ofNullable(realUser);
     }

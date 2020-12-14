@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <#include "../include/common_head_tpt.ftlh">
-    <link href="css/login.css" rel="stylesheet" type="text/css">
+    <link href="css/error.css" rel="stylesheet" type="text/css">
 </head>
-<body>
+<body class="layui-layout-body layui-bg-gray">
 <div class="layui-fluid">
-    <div class="layadmin-tips">
+    <div class="layui-admin-error-tips">
         <i class="layui-icon" face>&#xe664;</i>
         <div class="layui-text">
             <h1>

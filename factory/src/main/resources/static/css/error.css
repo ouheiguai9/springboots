@@ -1,0 +1,28 @@
+.layui-admin-error-tips {
+    padding-top: 40px;
+    text-align: center;
+}
+
+.layui-admin-error-tips .layui-icon {
+    display: inline-block;
+    font-size: 300px;
+    color: #393D49;
+}
+
+.layui-admin-error-tips h1 {
+    font-size: 100px;
+    line-height: 100px;
+    color: #009688;
+}
+
+.layui-admin-error-tips .layui-text {
+    width: 500px;
+    margin: 30px auto;
+    padding-top: 20px;
+    border-top: 5px solid #009688;
+    font-size: 16px;
+}
+
+.layui-admin-error-tips .layui-text .layui-anim {
+    display: inline-block;
+}

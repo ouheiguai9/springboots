@@ -14,6 +14,14 @@
     <#return (authentication?keys)?size gt 0>
 </#function>
 
+<#function isAdmin>
+    <#return authentication.principal.isAdmin()>
+</#function>
+
+<#function getCurrentUser>
+    <#return (authentication.principal)!{}>
+</#function>
+
 <#function hasAuthority authority>
     <#local rtnVal = false>
     <#if isAuthentication()>

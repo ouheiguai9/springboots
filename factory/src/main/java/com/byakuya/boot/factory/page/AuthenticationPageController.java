@@ -43,14 +43,10 @@ public class AuthenticationPageController {
     }
 
     @GetMapping("/changePassword")
-    public String changePasswordPageUrl(@AuthenticationPrincipal AuthenticationUser user
-            , @RequestParam(name = UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY, required = false) String username
+    public String changePasswordPageUrl(@RequestParam(name = UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY, required = false) String username
             , @SessionAttribute(name = WebAttributes.AUTHENTICATION_EXCEPTION, required = false) Exception exception
             , HttpServletRequest request
             , Model model) {
-        if (user != null) {
-            username = user.getUsername();
-        }
         if (!StringUtils.hasText(username)) {
             return "redirect:/login";
         }
@@ -59,6 +55,13 @@ public class AuthenticationPageController {
             request.getSession().removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
         }
         model.addAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY, username);
+        return "changePassword";
+    }
+
+    @GetMapping("/safeChangePassword")
+    public String safeChangePasswordPageUrl(@AuthenticationPrincipal AuthenticationUser user, Model model) {
+        if(user.isAdmin()) return "404";
+        model.addAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY, user.getUsername());
         return "changePassword";
     }
 

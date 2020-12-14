@@ -43,19 +43,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users").hasAnyAuthority(ConstantUtils.ADMIN_USER_AUTHORITY)
                 .anyRequest().authenticated()
                 .and()
-                .csrf().disable()
                 .apply(new CustomizedFormLoginConfigurer<>()).setEnableCaptcha(captchaProperties != null).loginPage(loginPageUrl).loginProcessingUrl(loginProcessingUrl).failureHandler(failureHandler).permitAll()
                 //.formLogin().loginPage(loginPageUrl).loginProcessingUrl(loginProcessingUrl).failureHandler(failureHandler).permitAll()
                 .and()
                 .logout().logoutSuccessUrl(loginPageUrl)
                 .and()
-                .httpBasic();
+                .httpBasic()
+                .and()
+                .csrf().disable()
+                .headers().frameOptions().sameOrigin();
     }
 
     @Autowired(required = false)
     public void setCaptchaProperties(CaptchaProperties captchaProperties) {
         this.captchaProperties = captchaProperties;
     }
+
     private final String changePasswordUrl = "/changePassword";
     private CaptchaProperties captchaProperties;
     private SecurityProperties securityProperties;
