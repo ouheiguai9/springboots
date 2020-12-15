@@ -92,7 +92,7 @@
             </li>
         </ul>
     </div>
-    <div class="layui-tab layui-tab-brief" lay-allowClose="true" lay-filter="lay-admin-tabs">
+    <div class="layui-tab layui-tab-brief" lay-unauto lay-allowClose="true" lay-filter="lay-admin-tabs">
         <ul class="layui-tab-title">
             <li class="layui-this"><i class="layui-icon layui-icon-home"></i></li>
         </ul>

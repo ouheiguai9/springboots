@@ -54,6 +54,14 @@ header {
     background-position: center center;
 }
 
+.layui-admin .layui-layer-tips .layui-layer-content {
+    background-color: #333 !important;
+}
+
+.layui-admin .layui-layer-tips i.layui-layer-TipsB, .layui-layer-tips i.layui-layer-TipsT {
+    border-right-color: #333 !important;
+}
+
 .layui-admin .layui-side .layui-nav {
     width: 220px;
     margin-top: 50px;

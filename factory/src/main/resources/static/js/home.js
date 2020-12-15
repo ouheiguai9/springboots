@@ -9,6 +9,7 @@ layui.config({
   var util = layui.util;
   var $ = layui.$;
   var feedback = layui.feedback;
+  var pageTab = new PageTab();
 
   /********************************组件渲染*********************************/
 
@@ -39,28 +40,16 @@ layui.config({
     var jq = $(this);
     var jqTitle = $('.layui-tab-title');
     var param = {
-      key: jq.data('key')
+      key: jq.data('key') + pageTab.pages.length
       , url: jq.data('href')
       , target: jq.data('target')
-      , name: jq.find('a').html()
+      , name: jq.find('a').html() + pageTab.pages.length
     };
-    while (rollPageTabsTitle(false)) {
+    if (param.target !== 'inner') {
+      window.open(param.url, '_blank');
+      return;
     }
-    var maxWidth = jqTitle.innerWidth();
-    var items = jqTitle.find('li').not('.layui-hide');
-    var invalidWidth = 130;
-    items.each(function (index, item) {
-      invalidWidth += $(item).outerWidth();
-    });
-    if (invalidWidth > maxWidth) {
-      $(items[0]).addClass('layui-hide');
-    }
-
-    element.tabAdd('lay-admin-tabs', {
-      title: param.name
-      , content: param.url
-      , id: param.key
-    });
+    pageTab.addPageTab(param);
   });
 
   util.event('lay-click-event', {
@@ -69,7 +58,8 @@ layui.config({
       $('.layui-admin').toggleClass('layui-admin-shrink');
     }
     , refresh: function () {
-
+      var thisUrl = pageTab.pages[pageTab.selectedIndex].url;
+      pageTab.jqBody.find('div.page-tabs-body-item').eq(pageTab.selectedIndex).find('iframe').attr('src', thisUrl);
     }
     , fullscreen: function (jq) {
       var fullClass = 'layui-icon-screen-full';
@@ -84,10 +74,24 @@ layui.config({
       }
     }
     , leftPage: function () {
-      rollPageTabsTitle(true);
+      pageTab.rollPageTabTitle(true);
     }
-    , rightPage: function (jq) {
-      rollPageTabsTitle(false);
+    , rightPage: function () {
+      pageTab.rollPageTabTitle(false);
+    }
+    , closeThisTabs: function () {
+      if (pageTab.selectedIndex === 0) return;
+      element.tabDelete(pageTab.layTabFilter, pageTab.pages[pageTab.selectedIndex].key);
+    }
+    , closeOtherTabs: function () {
+      $.each(pageTab.pages.slice(1, pageTab.selectedIndex).concat(pageTab.pages.slice(pageTab.selectedIndex + 1, pageTab.pages.length)), function (index, item) {
+        element.tabDelete(pageTab.layTabFilter, item.key);
+      });
+    }
+    , closeAllTabs: function () {
+      $.each(pageTab.pages.slice(1, pageTab.pages.length), function (index, item) {
+        element.tabDelete(pageTab.layTabFilter, item.key);
+      });
     }
     , logout: function () {
       feedback.confirm('确定退出系统?', function () {
@@ -114,37 +118,140 @@ layui.config({
     document.exitFullscreen ? document.exitFullscreen() : document.mozCancelFullScreen ? document.mozCancelFullScreen() : document.webkitCancelFullScreen ? document.webkitCancelFullScreen() : document.msExitFullscreen && document.msExitFullscreen()
   }
 
-  /**
-   * 移动标题
-   * @param isLeft 是否左移
-   * @return {boolean}
-   */
-  function rollPageTabsTitle(isLeft) {
-    var jqTitle = $('.layui-tab-title');
-    var items = jqTitle.find('li');
-    var showItems = items.not('.layui-hide');
-    var begin = items.index(showItems[0]);
-    var step = -1;
-    if (isLeft) {
-      if (begin === 0) return false;
-      begin += step;
-    } else {
-      step = 1;
-      begin += showItems.length;
-      if (begin === items.length) return false;
-    }
-    var maxWidth = jqTitle.innerWidth();
-    var invalidWidth = 130;
-    var tmpLen = 0;
-    while (begin > -1 && begin < items.length && invalidWidth < maxWidth) {
-      if (tmpLen < showItems.length) {
-        var showItemIndex = begin - step * showItems.length;
-        $(items[begin - step * showItems.length]).addClass('layui-hide');
-      }
-      invalidWidth += $(items[begin]).removeClass('layui-hide').outerWidth();
-      tmpLen++;
-      begin += step;
-    }
-    return true;
+  function PageTab() {
+    this.layTabFilter = 'lay-admin-tabs';
+    this.jqTitle = $('.page-tabs .layui-tab-title');
+    this.jqBody = $('.layui-admin section.layui-body');
+    this.maxJqTitileWidth = this.jqTitle.innerWidth();
+    this.selectedIndex = 0;
+    this.pages = [{}];
+    this.pageMap = {};
+    this.showTitleStartIndex = 0;
+    this.showTitleEndIndex = 0;
+
+    var that = this;
+    this.jqTitle.resize(function () {
+      that.resize($(this).innerWidth());
+    });
+    element.on('tab(' + this.layTabFilter + ')', function () {
+      that.selectPageTab(that.jqTitle.find('li').index(this));
+    });
+    element.on('tabDelete(' + this.layTabFilter + ')', function (data) {
+      that.deletePageTab(data.index);
+    });
   }
+
+  $.extend(PageTab.prototype, {
+    resize: function (size) {
+      this.maxJqTitileWidth = size;
+      this.selfAdaptionTitle(this.selectedIndex);
+    }
+    , addPageTab: function (param) {
+      var exists = this.pageMap[param.key];
+      if (!exists) {
+        exists = this.pages.length;
+        this.pageMap[param.key] = exists;
+        this.pages.push(param);
+        element.tabAdd(this.layTabFilter, {
+          title: param.name
+          , content: param.url
+          , id: param.key
+        });
+        var bodyItem = $('<div class="page-tabs-body-item layui-hide"/>').appendTo(this.jqBody);
+        $('<iframe frameborder="0" class="iframe-item"/>').appendTo(bodyItem).attr('src', param.url);
+      }
+      this.selfAdaptionTitle(exists);
+      element.tabChange(this.layTabFilter, param.key);
+    }
+    , deletePageTab: function (index) {
+      console.info(this);
+      delete this.pageMap[this.pages[index].key];
+      this.pages.splice(index, 1);
+      console.info(this);
+      if (this.selectedIndex === index) {
+        this.selectedIndex = -1;
+      } else if (this.selectedIndex > index) {
+        this.selectedIndex--;
+      }
+      this.jqBody.find('div.page-tabs-body-item').eq(index).remove();
+    }
+    , selectPageTab: function (index) {
+      if (this.selectedIndex === index) return;
+      this.jqBody.find('.page-tabs-body-item').addClass('layui-hide').eq(index).removeClass('layui-hide');
+      this.selectedIndex = index;
+    }
+    , selfAdaptionTitle: function (forceIndex) {
+      var items = this.jqTitle.find('li').addClass('layui-hide');
+      var invalidWidth = this.renderTitleDom(items[forceIndex], true).outerWidth();
+      var left = forceIndex - 1, right = forceIndex + 1;
+      this.showTitleStartIndex = this.showTitleEndIndex = forceIndex;
+      while (invalidWidth < this.maxJqTitileWidth) {
+        var additional = 0;
+        if (left > -1) {
+          additional += this.renderTitleDom(items[left], true).outerWidth();
+          this.showTitleStartIndex = left;
+          left -= 1;
+        }
+        if (right < items.length) {
+          additional += this.renderTitleDom(items[right], true).outerWidth();
+          this.showTitleEndIndex = right;
+          right += 1;
+        }
+        if (additional === 0) break;
+        invalidWidth += additional;
+      }
+      if (invalidWidth > this.maxJqTitileWidth && this.showTitleStartIndex < this.showTitleEndIndex) {
+        var hideIndex;
+        if (this.showTitleEndIndex === (items.length - 1)) {
+          hideIndex = this.showTitleStartIndex;
+          this.showTitleStartIndex++;
+        } else {
+          hideIndex = this.showTitleEndIndex;
+          this.showTitleEndIndex--;
+        }
+        this.renderTitleDom(items[hideIndex], false);
+      }
+    }
+    , rollPageTabTitle: function (isLeft) {
+      var begin = this.showTitleStartIndex, step = -1, invalidWidth = 0;
+      if (isLeft) {
+        if (this.showTitleStartIndex === 0) return false;
+      } else {
+        if (this.showTitleEndIndex === (this.pages.length - 1)) return false;
+        step = 1;
+        begin = this.showTitleEndIndex;
+      }
+      begin += step;
+      var items = this.jqTitle.find('li');
+      var tmpLen = 0, showLen = this.showTitleEndIndex - this.showTitleStartIndex + 1;
+      while (begin > -1 && begin < items.length && invalidWidth < this.maxJqTitileWidth) {
+        if (tmpLen < showLen) {
+          this.renderTitleDom(items[begin - step * showLen], false);
+        }
+        invalidWidth += this.renderTitleDom(items[begin], true).outerWidth();
+        tmpLen++;
+        begin += step;
+      }
+      if (isLeft) {
+        this.showTitleStartIndex -= tmpLen;
+        this.showTitleEndIndex -= Math.min(tmpLen, showLen);
+      } else {
+        this.showTitleStartIndex += Math.min(tmpLen, showLen);
+        this.showTitleEndIndex += tmpLen;
+      }
+      if (invalidWidth > this.maxJqTitileWidth && this.showTitleStartIndex < this.showTitleEndIndex) {
+        var hideIndex;
+        if (isLeft) {
+          hideIndex = this.showTitleStartIndex++;
+        } else {
+          hideIndex = this.showTitleEndIndex--;
+        }
+        this.renderTitleDom(items[hideIndex], false);
+      }
+      return true;
+    }
+    , renderTitleDom: function (dom, show) {
+      return show ? $(dom).removeClass('layui-hide') : $(dom).addClass('layui-hide');
+    }
+  }, true);
 });
