@@ -168,6 +168,18 @@ header {
     padding-right: 15px;
 }
 
+.page-tabs .layui-tab-title li .layui-tab-close {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    margin: -7px 0 0;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    border-radius: 50%;
+    font-size: 12px;
+}
+
 .page-tabs .layui-tab-title li.layui-this, .page-tabs .layui-tab-title li:hover {
     background-color: #f6f6f6;
 }
@@ -204,11 +216,11 @@ header {
     width: 60px
 }
 
-.layui-admin-shrink .layui-side .layui-nav-item {
+.layui-admin-shrink .layui-side .layui-nav .layui-nav-item {
     position: static
 }
 
-.layui-admin-shrink .layui-side .layui-nav-item > a {
+.layui-admin-shrink .layui-side .layui-nav .layui-nav-item > a {
     padding-right: 0
 }
 

@@ -9,7 +9,7 @@
 <header>
     <ul class="layui-nav layui-layout-left">
         <li class="layui-nav-item" lay-unselect>
-            <a href="javascript:void(1);" lay-click-event="flexible" title="侧边伸缩">
+            <a id="menuFlexible" href="javascript:void(1);" lay-click-event="flexible" title="侧边伸缩">
                 <i class="layui-icon layui-icon-shrink-right"></i>
             </a>
         </li>
@@ -38,8 +38,12 @@
             </a>
             <dl class="layui-nav-child">
                 <#if !security.isAdmin()>
-                    <dd lay-unselect><a href="javascript:void(1);">基本资料</a></dd>
-                    <dd lay-unselect><a href="javascript:void(1);">修改密码</a></dd>
+                    <dd class="j-href-menu" data-key="test" data-href="safeChangePassword" data-target="inner" lay-unselect>
+                        <a href="javascript:void(1);">基本资料</a>
+                    </dd>
+                    <dd class="j-href-menu" data-key="test" data-href="safeChangePassword" data-target="inner" lay-unselect>
+                        <a href="javascript:void(1);">修改密码</a>
+                    </dd>
                     <hr>
                 </#if>
                 <dd lay-unselect lay-click-event="logout">
@@ -54,19 +58,19 @@
         <div class="layui-logo"></div>
         <ul class="layui-nav layui-nav-tree">
             <li data-name="home" class="layui-nav-item layui-nav-itemed">
-                <a href="javascript:void(1);" lay-tips="主页" lay-direction="2">
+                <a href="javascript:void(1);" class="j-folder-menu">
                     <i class="layui-icon layui-icon-home"></i>
                     <cite>主页</cite>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd data-name="console" class="layui-this">
-                        <a lay-href="home/console.html">控制台</a>
+                    <dd class="j-href-menu" data-key="test" data-href="safeChangePassword" data-target="inner">
+                        <a href="javascript:void(1);">控制台</a>
                     </dd>
-                    <dd data-name="console">
-                        <a lay-href="home/homepage1.html">主页一</a>
+                    <dd class="j-href-menu" data-key="test" data-href="safeChangePassword" data-target="inner">
+                        <a href="javascript:void(1);">主页一</a>
                     </dd>
-                    <dd data-name="console">
-                        <a lay-href="home/homepage2.html">主页二</a>
+                    <dd class="j-href-menu" data-key="test" data-href="safeChangePassword" data-target="inner">
+                        <a href="javascript:void(1);">主页二</a>
                     </dd>
                 </dl>
             </li>
