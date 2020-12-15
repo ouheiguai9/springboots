@@ -40,10 +40,10 @@ layui.config({
     var jq = $(this);
     var jqTitle = $('.layui-tab-title');
     var param = {
-      key: jq.data('key') + pageTab.pages.length
+      key: jq.data('key')
       , url: jq.data('href')
       , target: jq.data('target')
-      , name: jq.find('a').html() + pageTab.pages.length
+      , name: jq.find('a').html()
     };
     if (param.target !== 'inner') {
       window.open(param.url, '_blank');
@@ -164,14 +164,28 @@ layui.config({
       element.tabChange(this.layTabFilter, param.key);
     }
     , deletePageTab: function (index) {
-      console.info(this);
       delete this.pageMap[this.pages[index].key];
       this.pages.splice(index, 1);
-      console.info(this);
       if (this.selectedIndex === index) {
         this.selectedIndex = -1;
       } else if (this.selectedIndex > index) {
         this.selectedIndex--;
+      }
+      var items = this.jqTitle.find('li');
+      if (this.showTitleStartIndex >= index) {
+        this.showTitleStartIndex--;
+        this.showTitleEndIndex--;
+      } else if (this.showTitleEndIndex >= index) {
+        if (this.showTitleEndIndex === items.length) {
+          this.showTitleStartIndex--;
+        }
+        this.showTitleEndIndex = Math.min(this.showTitleEndIndex, this.pages.length - 1);
+      }
+      if (items.eq(this.showTitleStartIndex).hasClass('layui-hide')) {
+        this.renderTitleDom(items[this.showTitleStartIndex], true);
+      }
+      if (items.eq(this.showTitleEndIndex).hasClass('layui-hide')) {
+        this.renderTitleDom(items[this.showTitleEndIndex], true);
       }
       this.jqBody.find('div.page-tabs-body-item').eq(index).remove();
     }

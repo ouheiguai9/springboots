@@ -66,10 +66,10 @@
                     <dd class="j-href-menu" data-key="test" data-href="safeChangePassword" data-target="inner">
                         <a href="javascript:void(1);">控制台</a>
                     </dd>
-                    <dd class="j-href-menu" data-key="test" data-href="safeChangePassword" data-target="inner">
+                    <dd class="j-href-menu" data-key="aaaa" data-href="aaaaa" data-target="inner">
                         <a href="javascript:void(1);">主页一</a>
                     </dd>
-                    <dd class="j-href-menu" data-key="test" data-href="safeChangePassword" data-target="inner">
+                    <dd class="j-href-menu" data-key="bbbb" data-href="bbbbbb" data-target="inner">
                         <a href="javascript:void(1);">主页二</a>
                     </dd>
                 </dl>
