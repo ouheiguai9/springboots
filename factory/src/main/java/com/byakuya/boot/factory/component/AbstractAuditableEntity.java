@@ -1,5 +1,6 @@
 package com.byakuya.boot.factory.component;
 
+import com.byakuya.boot.factory.SystemVersion;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.domain.Auditable;
@@ -18,6 +19,8 @@ import java.util.Optional;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractAuditableEntity<U> implements Auditable<U, String, LocalDateTime>, Serializable {
+    private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;
+
     @JsonProperty
     @Override
     public Optional<U> getCreatedBy() {
@@ -97,9 +100,13 @@ public abstract class AbstractAuditableEntity<U> implements Auditable<U, String,
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private @Nullable U createdBy;
-    private @Nullable LocalDateTime createdDate;
+    private @Nullable
+    U createdBy;
+    private @Nullable
+    LocalDateTime createdDate;
     @ManyToOne(fetch = FetchType.LAZY)
-    private @Nullable U lastModifiedBy;
-    private @Nullable LocalDateTime lastModifiedDate;
+    private @Nullable
+    U lastModifiedBy;
+    private @Nullable
+    LocalDateTime lastModifiedDate;
 }

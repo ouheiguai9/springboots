@@ -34,6 +34,11 @@ public class AuthenticationPageController {
         this.securityProperties = securityProperties;
     }
 
+    @GetMapping("/auth/page/{module}/{component}")
+    public String anyDynamicAuthPageUrl(@PathVariable String module, @PathVariable String component) {
+        return String.format("module/%s/%s", module, component);
+    }
+
     @PostMapping("/changePassword")
     @ResponseBody
     public ResponseEntity<Boolean> changePassword(@NotBlank String username
@@ -55,13 +60,6 @@ public class AuthenticationPageController {
             request.getSession().removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
         }
         model.addAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY, username);
-        return "changePassword";
-    }
-
-    @GetMapping("/safeChangePassword")
-    public String safeChangePasswordPageUrl(@AuthenticationPrincipal AuthenticationUser user, Model model) {
-        if(user.isAdmin()) return "404";
-        model.addAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY, user.getUsername());
         return "changePassword";
     }
 
@@ -105,6 +103,13 @@ public class AuthenticationPageController {
     public String registerPageUrl(Model model) {
         model.addAttribute("allowCaptcha", allowCaptcha());
         return securityProperties.isAllowRegistration() ? "register" : "redirect:/login";
+    }
+
+    @GetMapping("/safeChangePassword")
+    public String safeChangePasswordPageUrl(@AuthenticationPrincipal AuthenticationUser user, Model model) {
+        if (user.isAdmin()) return "404";
+        model.addAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY, user.getUsername());
+        return "changePassword";
     }
 
     @Autowired(required = false)

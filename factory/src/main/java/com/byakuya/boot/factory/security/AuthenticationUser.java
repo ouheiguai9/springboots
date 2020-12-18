@@ -1,6 +1,5 @@
 package com.byakuya.boot.factory.security;
 
-import com.byakuya.boot.factory.ConstantUtils;
 import com.byakuya.boot.factory.SystemVersion;
 import com.byakuya.boot.factory.component.user.SecurityUser;
 import com.byakuya.boot.factory.property.SecurityProperties;
@@ -40,7 +39,7 @@ public class AuthenticationUser implements UserDetails, CredentialsContainer {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return isAdmin() ? AuthorityUtils.createAuthorityList(ConstantUtils.ADMIN_USER_AUTHORITY) : AuthorityUtils.NO_AUTHORITIES;
+        return AuthorityUtils.NO_AUTHORITIES;
     }
 
     @Override

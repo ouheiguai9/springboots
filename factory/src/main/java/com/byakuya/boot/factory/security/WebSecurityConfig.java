@@ -1,6 +1,5 @@
 package com.byakuya.boot.factory.security;
 
-import com.byakuya.boot.factory.ConstantUtils;
 import com.byakuya.boot.factory.property.CaptchaProperties;
 import com.byakuya.boot.factory.property.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,13 +39,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers("/users").hasAnyAuthority(ConstantUtils.ADMIN_USER_AUTHORITY)
+                .mvcMatchers("/auth/page/{module}/{component}/**").access("@customizedWebSecurity.checkAuthPageUrl(authentication, #module, #component)")
                 .anyRequest().authenticated()
                 .and()
                 .apply(new CustomizedFormLoginConfigurer<>()).setEnableCaptcha(captchaProperties != null).loginPage(loginPageUrl).loginProcessingUrl(loginProcessingUrl).failureHandler(failureHandler).permitAll()
                 //.formLogin().loginPage(loginPageUrl).loginProcessingUrl(loginProcessingUrl).failureHandler(failureHandler).permitAll()
                 .and()
-                .logout().logoutSuccessUrl(loginPageUrl)
+                .logout().logoutSuccessUrl(loginPageUrl).invalidateHttpSession(true)
                 .and()
                 .httpBasic()
                 .and()
