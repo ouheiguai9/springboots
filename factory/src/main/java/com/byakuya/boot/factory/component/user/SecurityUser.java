@@ -2,13 +2,11 @@ package com.byakuya.boot.factory.component.user;
 
 import com.byakuya.boot.factory.SystemVersion;
 import com.byakuya.boot.factory.component.AbstractAuditableEntity;
-import com.byakuya.boot.factory.component.DateSequenceTableGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -51,15 +49,11 @@ public class SecurityUser extends AbstractAuditableEntity<SecurityUser> {
     private String email;
     private LocalDateTime endValidPeriod;
     @Id
-    @GeneratedValue(generator = "USER_ID_GENERATOR")
-    @GenericGenerator(name = "USER_ID_GENERATOR"
-            , strategy = "com.byakuya.boot.factory.component.DateSequenceTableGenerator"
-            , parameters = {
-            @Parameter(name = DateSequenceTableGenerator.PK_PREFIX_PARAM, value = "USER")
-    })
+    @GenericGenerator(name = "system_uuid", strategy = "uuid")
+    @GeneratedValue(generator = "system_uuid")
     private String id;
     private LocalDateTime lastPasswordModifiedDate;
-    private boolean locked;
+
     @NotBlank
     private String password;
     @NotBlank

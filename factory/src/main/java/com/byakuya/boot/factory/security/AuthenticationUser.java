@@ -2,7 +2,7 @@ package com.byakuya.boot.factory.security;
 
 import com.byakuya.boot.factory.SystemVersion;
 import com.byakuya.boot.factory.component.user.SecurityUser;
-import com.byakuya.boot.factory.property.SecurityProperties;
+import com.byakuya.boot.factory.config.property.SecurityProperties;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;

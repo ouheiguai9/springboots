@@ -2,7 +2,7 @@ package com.byakuya.boot.factory.security;
 
 import com.byakuya.boot.factory.component.user.SecurityUser;
 import com.byakuya.boot.factory.component.user.SecurityUserService;
-import com.byakuya.boot.factory.property.SecurityProperties;
+import com.byakuya.boot.factory.config.property.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,8 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 /**
  * Created by ganzl on 2020/4/9.
@@ -31,11 +29,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (admin.getUsername().equals(username)) {
             rtnVal = new AuthenticationUser(securityProperties.getAdmin());
         } else {
-            Optional<SecurityUser> optionalUser = securityUserService.loadUser(username);
-            if (!optionalUser.isPresent()) {
-                throw new UsernameNotFoundException(username);
-            }
-            rtnVal = new AuthenticationUser(optionalUser.get(), securityProperties.getPasswordValidPeriod());
+            SecurityUser user = securityUserService.loadUser(username).orElseThrow(() -> new UsernameNotFoundException(username));
+            rtnVal = new AuthenticationUser(user, securityProperties.getPasswordValidPeriod());
         }
         return rtnVal;
     }

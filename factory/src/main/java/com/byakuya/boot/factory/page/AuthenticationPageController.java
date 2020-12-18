@@ -2,8 +2,8 @@ package com.byakuya.boot.factory.page;
 
 import com.byakuya.boot.factory.component.user.SecurityUser;
 import com.byakuya.boot.factory.component.user.SecurityUserService;
-import com.byakuya.boot.factory.property.CaptchaProperties;
-import com.byakuya.boot.factory.property.SecurityProperties;
+import com.byakuya.boot.factory.config.property.CaptchaProperties;
+import com.byakuya.boot.factory.config.property.SecurityProperties;
 import com.byakuya.boot.factory.security.AuthenticationUser;
 import com.byakuya.boot.factory.security.TextCaptcha;
 import org.springframework.beans.factory.annotation.Autowired;

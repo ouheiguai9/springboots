@@ -3,6 +3,8 @@ package com.byakuya.boot.factory.component;
 import com.byakuya.boot.factory.SystemVersion;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.domain.Auditable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.util.ProxyUtils;
@@ -21,13 +23,11 @@ import java.util.Optional;
 public abstract class AbstractAuditableEntity<U> implements Auditable<U, String, LocalDateTime>, Serializable {
     private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;
 
-    @JsonProperty
     @Override
     public Optional<U> getCreatedBy() {
         return Optional.ofNullable(createdBy);
     }
 
-    @JsonIgnore
     @Override
     public void setCreatedBy(U createdBy) {
         this.createdBy = createdBy;
@@ -39,19 +39,16 @@ public abstract class AbstractAuditableEntity<U> implements Auditable<U, String,
         return Optional.ofNullable(createdDate);
     }
 
-    @JsonIgnore
     @Override
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 
-    @JsonProperty
     @Override
     public Optional<U> getLastModifiedBy() {
         return Optional.ofNullable(lastModifiedBy);
     }
 
-    @JsonIgnore
     @Override
     public void setLastModifiedBy(U lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
@@ -63,7 +60,6 @@ public abstract class AbstractAuditableEntity<U> implements Auditable<U, String,
         return Optional.ofNullable(lastModifiedDate);
     }
 
-    @JsonIgnore
     @Override
     public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
@@ -93,20 +89,28 @@ public abstract class AbstractAuditableEntity<U> implements Auditable<U, String,
         return null != this.getId() && this.getId().equals(that.getId());
     }
 
+    @JsonIgnore
     @Transient
     @Override
     public boolean isNew() {
         return null == getId();
     }
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    private @Nullable
-    U createdBy;
-    private @Nullable
-    LocalDateTime createdDate;
+    @Nullable
+    private U createdBy;
+    @JsonIgnore
+    @Nullable
+    private LocalDateTime createdDate;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    private @Nullable
-    U lastModifiedBy;
-    private @Nullable
-    LocalDateTime lastModifiedDate;
+    @Nullable
+    private U lastModifiedBy;
+    @JsonIgnore
+    @Nullable
+    private LocalDateTime lastModifiedDate;
+    @Setter
+    @Getter
+    private boolean locked = false;
 }

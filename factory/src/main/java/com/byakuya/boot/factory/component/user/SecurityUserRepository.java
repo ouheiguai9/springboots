@@ -1,5 +1,6 @@
 package com.byakuya.boot.factory.component.user;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Optional;
@@ -18,4 +19,7 @@ public interface SecurityUserRepository extends PagingAndSortingRepository<Secur
     Optional<SecurityUser> findByUsername(String username);
 
     Optional<SecurityUser> findUserByIdOrUsernameOrPhoneOrEmail(String id, String username, String phone, String email);
+
+    @EntityGraph(attributePaths = {"menuSet", "roleSet"})
+    Optional<SecurityUser> queryById(String id);
 }

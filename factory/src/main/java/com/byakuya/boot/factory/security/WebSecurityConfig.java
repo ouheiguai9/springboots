@@ -1,7 +1,7 @@
 package com.byakuya.boot.factory.security;
 
-import com.byakuya.boot.factory.property.CaptchaProperties;
-import com.byakuya.boot.factory.property.SecurityProperties;
+import com.byakuya.boot.factory.config.property.CaptchaProperties;
+import com.byakuya.boot.factory.config.property.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;

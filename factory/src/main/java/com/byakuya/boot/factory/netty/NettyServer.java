@@ -1,6 +1,6 @@
 package com.byakuya.boot.factory.netty;
 
-import com.byakuya.boot.factory.property.NettyProperties;
+import com.byakuya.boot.factory.config.property.NettyProperties;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;

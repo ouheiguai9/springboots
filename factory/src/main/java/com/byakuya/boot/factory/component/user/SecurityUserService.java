@@ -2,7 +2,7 @@ package com.byakuya.boot.factory.component.user;
 
 import com.byakuya.boot.factory.exception.CustomizedException;
 import com.byakuya.boot.factory.exception.RecordNotExistsException;
-import com.byakuya.boot.factory.property.SecurityProperties;
+import com.byakuya.boot.factory.config.property.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
