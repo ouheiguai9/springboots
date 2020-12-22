@@ -5,7 +5,7 @@ spring:
     #    username: root
     #    password: root
     #    platform: h2
-    url: jdbc:mysql://sh-cdb-6vu58or0.sql.tencentcdb.com:60484/factory?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8
+    url: jdbc:mysql://127.0.0.1/factory?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8
     driver-class-name: com.mysql.jdbc.Driver
     username: factory
     password: factory
@@ -42,6 +42,9 @@ spring:
         enabled: false #是否启用StatViewServlet默认值true
         url-pattern: /druid/*
         reset-enable: true
+    initialization-mode: always
+    data: classpath:sql/data.sql
+    continue-on-error: true
   jpa:
     hibernate:
       ddl-auto: update
