@@ -99,13 +99,16 @@ public abstract class AbstractAuditableEntity<U> implements Auditable<U, String,
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @Nullable
+    @JoinColumn(name = "creator", updatable = false)
     private U createdBy;
     @JsonIgnore
     @Nullable
+    @Column(updatable = false)
     private LocalDateTime createdDate;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @Nullable
+    @JoinColumn(name = "updater")
     private U lastModifiedBy;
     @JsonIgnore
     @Nullable
