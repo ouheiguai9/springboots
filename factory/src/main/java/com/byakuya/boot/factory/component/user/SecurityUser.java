@@ -45,7 +45,7 @@ public class SecurityUser extends AbstractAuditableEntity<SecurityUser> {
 
     @Email
     @NotBlank
-    @Column(unique = true, updatable = false, nullable = false)
+    @Column(unique = true, nullable = false)
     private String email;
     private LocalDateTime endValidPeriod;
     @Id
@@ -53,14 +53,13 @@ public class SecurityUser extends AbstractAuditableEntity<SecurityUser> {
     @GeneratedValue(generator = "system_uuid")
     private String id;
     private LocalDateTime lastPasswordModifiedDate;
-
     @NotBlank
     private String password;
     @NotBlank
     @Pattern(regexp = "^1[0-9]{10}$")
-    @Column(unique = true, updatable = false, nullable = false)
+    @Column(unique = true, nullable = false)
     private String phone;
     @NotBlank
-    @Column(unique = true, updatable = false, nullable = false)
+    @Column(unique = true, nullable = false)
     private String username;
 }

@@ -1,5 +1,6 @@
 package com.byakuya.boot.factory.security;
 
+import com.byakuya.boot.factory.component.menu.MenuRepository;
 import com.byakuya.boot.factory.component.user.SecurityUser;
 import com.byakuya.boot.factory.component.user.SecurityUserService;
 import com.byakuya.boot.factory.config.property.SecurityProperties;
@@ -17,7 +18,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    public UserDetailsServiceImpl(SecurityUserService securityUserService, SecurityProperties securityProperties) {
+    public UserDetailsServiceImpl(MenuRepository menuRepository, SecurityUserService securityUserService, SecurityProperties securityProperties) {
+        this.menuRepository = menuRepository;
         this.securityUserService = securityUserService;
         this.securityProperties = securityProperties;
     }
@@ -34,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         return rtnVal;
     }
-
+    private final MenuRepository menuRepository;
     private final SecurityProperties securityProperties;
     private final SecurityUserService securityUserService;
 

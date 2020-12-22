@@ -1,9 +1,11 @@
 package com.byakuya.boot.factory.component.user;
 
+import com.byakuya.boot.factory.config.property.SecurityProperties;
 import com.byakuya.boot.factory.exception.CustomizedException;
 import com.byakuya.boot.factory.exception.RecordNotExistsException;
-import com.byakuya.boot.factory.config.property.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -30,9 +32,7 @@ public class SecurityUserService {
      * @return 是否成功
      */
     public boolean changePassword(String username, String oldPassword, String newPassword) {
-        Optional<SecurityUser> opt = securityUserRepository.findByUsername(username);
-        if (!opt.isPresent()) throw new RecordNotExistsException(username);
-        SecurityUser securityUser = opt.get();
+        SecurityUser securityUser = securityUserRepository.findByUsername(username).orElseThrow(() -> new RecordNotExistsException(username));
         if (!passwordEncoder.matches(oldPassword, securityUser.getPassword())) {
             throw new CustomizedException("ERR-90001");
         }
@@ -53,17 +53,30 @@ public class SecurityUserService {
     }
 
     /**
-     * 修改用户详细信息
+     * 修改个人详细信息,不可修改密码
      *
      * @param securityUser 修改用户信息
      * @return 更新后用户信息
      */
     public SecurityUser modifyUserDetail(SecurityUser securityUser) {
-        Optional<SecurityUser> opt = securityUserRepository.findById(securityUser.getId());
-        if (!opt.isPresent()) throw new RecordNotExistsException(securityUser.getId());
-        SecurityUser old = opt.get();
+        SecurityUser old = get(securityUser.getId());
         old.setDetail(securityUser.getDetail());
         return securityUserRepository.save(old);
+    }
+
+    SecurityUser get(String id) {
+        return securityUserRepository.findById(id).orElseThrow(() -> new RecordNotExistsException(id));
+    }
+
+    /**
+     * 查询用户列表
+     *
+     * @param pageable 分页参数
+     * @param search   过滤条件
+     * @return 分页用户列表
+     */
+    Page<SecurityUser> queryList(Pageable pageable, String search) {
+        return securityUserRepository.findAll(pageable);
     }
 
     /**

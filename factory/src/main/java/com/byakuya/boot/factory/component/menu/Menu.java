@@ -3,10 +3,10 @@ package com.byakuya.boot.factory.component.menu;
 import com.byakuya.boot.factory.SystemVersion;
 import com.byakuya.boot.factory.component.AbstractAuditableEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -20,16 +20,16 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name = "T_SYS_MENU")
+@NamedEntityGraph(name = "Menu.Graph", attributeNodes = {@NamedAttributeNode("parent"), @NamedAttributeNode("children")})
 public class Menu extends AbstractAuditableEntity<Menu> {
     private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;
 
-    @JsonProperty
-    public Optional<String> getParentId() {
+    Optional<String> getParentId() {
+        if (StringUtils.hasText(parentId)) return Optional.of(parentId);
         return Optional.ofNullable(parent).map(Menu::getId);
     }
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent")
     private Set<Menu> children;
     @NotBlank
     @Column(unique = true, updatable = false, nullable = false)
@@ -47,4 +47,6 @@ public class Menu extends AbstractAuditableEntity<Menu> {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Menu parent;
+    @Transient
+    private String parentId;
 }

@@ -28,12 +28,12 @@ public class RoleController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Role> getRole(@PathVariable String id) {
-        return ResponseEntity.ok(roleRepository.findById(id).orElseThrow(() -> new RecordNotExistsException(id)));
+    public ResponseEntity<Role> read(@PathVariable String id) {
+        return ResponseEntity.ok(get(id));
     }
 
     @GetMapping
-    public ResponseEntity<Page<Role>> getRoleList(@PageableDefault Pageable pageable) {
+    public ResponseEntity<Page<Role>> read(@PageableDefault Pageable pageable) {
         return ResponseEntity.ok(roleRepository.findAll(pageable));
     }
 

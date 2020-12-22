@@ -38,22 +38,26 @@
             </div>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" lay-filter="editForm">
+            <form class="layui-form layui-form-pane" lay-filter="editForm">
                 <input type="hidden" name="id">
-                <div class="layui-row layui-col-space10 layui-form-item">
-                    <div class="layui-col-lg6">
+                <div class="layui-row">
+                    <div class="layui-form-item layui-col-md6">
                         <label class="layui-form-label" for="txtName">角色名称：</label>
                         <div class="layui-input-block">
                             <input id="txtName" type="text" name="name" class="layui-input" placeholder="角色名称"
                                    autocomplete="off" lay-verify="required" lay-verType="tips">
                         </div>
                     </div>
-                    <div class="layui-form-item">
+                </div>
+                <div class="layui-row">
+                    <div class="layui-form-item layui-form-text layui-col-md6">
                         <label class="layui-form-label" for="txtDesc">描述信息：</label>
                         <div class="layui-input-block">
                             <textarea id="txtDesc" name="description" class="layui-textarea"></textarea>
                         </div>
                     </div>
+                </div>
+                <div class="layui-row">
                     <div class="layui-form-item">
                         <div class="layui-input-block">
                             <button class="layui-btn" lay-submit lay-filter="editForm">立即提交</button>

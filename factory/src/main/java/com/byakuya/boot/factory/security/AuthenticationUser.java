@@ -90,6 +90,7 @@ public class AuthenticationUser implements UserDetails, CredentialsContainer {
     }
 
     private final SecurityProperties.Admin admin;
+    private final CustomizedGrantedAuthority authority = null;
     private final long passwordValidPeriod;
     private final SecurityUser realUser;
     private String password;

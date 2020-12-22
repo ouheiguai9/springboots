@@ -24,7 +24,9 @@ public class UserDetail implements Serializable {
     public Set<Menu> getMenus() {
         Set<Menu> rtnVal = new HashSet<>(getMenuSet());
         Optional.ofNullable(roleSet).ifPresent(roles -> {
-            roles.forEach(role -> rtnVal.addAll(role.getMenuSet()));
+            roles.forEach(role -> {
+                if (!role.isLocked()) rtnVal.addAll(role.getMenuSet());
+            });
         });
         return rtnVal;
     }
