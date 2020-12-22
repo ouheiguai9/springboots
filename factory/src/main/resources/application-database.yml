@@ -51,3 +51,7 @@ spring:
         format_sql: true
         model:
           generator_name_as_sequence_name: false
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
