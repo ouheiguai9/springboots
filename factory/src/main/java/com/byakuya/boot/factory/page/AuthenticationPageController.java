@@ -74,9 +74,7 @@ public class AuthenticationPageController {
     public String homePageUrl(@AuthenticationPrincipal AuthenticationUser user
             , Model model) {
         List<Menu> topMenuList = menuRepository.findAll().stream().filter(x -> !x.getParentId().isPresent() && user.getAuthority().check(x.getCode())).sorted(Comparator.comparingInt(Menu::getOrdering).reversed()).collect(Collectors.toList());
-        topMenuList.forEach(menu -> {
-            menu.setChildren(menu.getChildren().stream().filter(x -> user.getAuthority().check(menu.getCode(), x.getCode())).collect(Collectors.toSet()));
-        });
+        topMenuList.forEach(menu -> menu.setOrderChildren(menu.getChildren().stream().filter(x -> user.getAuthority().check(menu.getCode(), x.getCode())).sorted(Comparator.comparingInt(Menu::getOrdering).reversed()).collect(Collectors.toList())));
         if (topMenuList.size() == 1) {
             topMenuList = new ArrayList<>(topMenuList.get(0).getChildren());
         }

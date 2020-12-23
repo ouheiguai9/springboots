@@ -76,7 +76,7 @@
                             <cite>${menu.getName()}</cite>
                         </a>
                         <dl class="layui-nav-child">
-                            <#list menu.children as subMenu>
+                            <#list menu.orderChildren as subMenu>
                                 <dd class="j-href-menu" data-key="${subMenu.getId()}"
                                     data-href="auth/page/${menu.getCode()}/${subMenu.getCode()}" data-target="inner">
                                     <a href="javascript:void(1);">${subMenu.getName()}</a>

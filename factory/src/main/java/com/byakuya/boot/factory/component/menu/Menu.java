@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -43,6 +44,8 @@ public class Menu extends AbstractAuditableEntity<Menu> {
     @NotBlank
     @Column(nullable = false)
     private String name;
+    @Transient
+    private List<Menu> orderChildren;
     private int ordering;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
