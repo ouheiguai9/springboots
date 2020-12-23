@@ -105,15 +105,15 @@ layui.config({
         $('section').toggleClass('layui-hide');
         break;
       case 'lock':
-        updateRoleLocked(row);
+        updateLocked(row);
         break;
       case 'unlock':
-        updateRoleLocked(row);
+        updateLocked(row);
         break;
     }
   });
 
-  function updateRoleLocked(row) {
+  function updateLocked(row) {
     var obj = row.data;
     obj.locked = !obj.locked;
     restful.postForm('auth/api/roles/locked', obj, function (data) {

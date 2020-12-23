@@ -1,5 +1,7 @@
 package com.byakuya.boot.factory.component.user;
 
+import com.byakuya.boot.factory.component.role.Role;
+import com.byakuya.boot.factory.component.role.RoleRepository;
 import com.byakuya.boot.factory.config.property.SecurityProperties;
 import com.byakuya.boot.factory.exception.CustomizedException;
 import com.byakuya.boot.factory.exception.RecordNotExistsException;
@@ -11,14 +13,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Created by ganzl on 2020/11/30.
  */
 @Service
 public class UserService {
-    public UserService(SecurityProperties securityProperties, UserRepository userRepository) {
+    public UserService(RoleRepository roleRepository, SecurityProperties securityProperties, UserRepository userRepository) {
+        this.roleRepository = roleRepository;
         this.securityProperties = securityProperties;
         this.userRepository = userRepository;
     }
@@ -53,13 +59,33 @@ public class UserService {
     }
 
     /**
-     * 修改个人详细信息,不可修改密码
+     * 修改全部属性
      *
      * @param user 修改用户信息
      * @return 更新后用户信息
      */
-    public User modifyUserDetail(User user) {
+    User modifyAll(User user) {
         User old = get(user.getId());
+        old.setUsername(user.getUsername());
+        old.setPhone(user.getPhone());
+        old.setEmail(user.getEmail());
+        old.setBeginValidPeriod(user.getBeginValidPeriod());
+        old.setEndValidPeriod(user.getEndValidPeriod());
+        old.setLocked(user.isLocked());
+        if (StringUtils.hasText(user.getPassword())) {
+            old.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        String roleIdStr = user.getRoleIdStr();
+        if (StringUtils.hasText(roleIdStr)) {
+            Set<Role> roleSet = new HashSet<>();
+            roleRepository.findAllById(Arrays.asList(roleIdStr.split(","))).forEach(roleSet::add);
+            if (!roleSet.isEmpty()) {
+                old.setRoleSet(roleSet);
+            }
+        } else {
+            old.setRoleSet(null);
+        }
+
         old.setAddress(user.getAddress());
         old.setAvatar(user.getAvatar());
         old.setNickname(user.getNickname());
@@ -69,6 +95,34 @@ public class UserService {
 
     User get(String id) {
         return userRepository.findById(id).orElseThrow(() -> new RecordNotExistsException(id));
+    }
+
+    /**
+     * 修改用户锁定状态
+     *
+     * @param id     id
+     * @param locked 是否锁定
+     * @return 对象
+     */
+    User modifyLocked(String id, boolean locked) {
+        User old = get(id);
+        old.setLocked(locked);
+        return userRepository.save(old);
+    }
+
+    /**
+     * 修改特定属性
+     *
+     * @param user 修改用户信息
+     * @return 更新后用户信息
+     */
+    public User modifyPart(User user) {
+        User old = get(user.getId());
+        old.setAddress(user.getAddress());
+        old.setAvatar(user.getAvatar());
+        old.setNickname(user.getNickname());
+        old.setSex(user.isSex());
+        return userRepository.save(old);
     }
 
     /**
@@ -92,6 +146,14 @@ public class UserService {
         if (!StringUtils.hasText(user.getPassword())) {
             user.setPassword(securityProperties.getNewUserDefaultPassword());
         }
+        String roleIdStr = user.getRoleIdStr();
+        if (StringUtils.hasText(roleIdStr)) {
+            Set<Role> roleSet = new HashSet<>();
+            roleRepository.findAllById(Arrays.asList(roleIdStr.split(","))).forEach(roleSet::add);
+            if (!roleSet.isEmpty()) {
+                user.setRoleSet(roleSet);
+            }
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -101,6 +163,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    private final RoleRepository roleRepository;
     private final SecurityProperties securityProperties;
     private final UserRepository userRepository;
     private PasswordEncoder passwordEncoder;

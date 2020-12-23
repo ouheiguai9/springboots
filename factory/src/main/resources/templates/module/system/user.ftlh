@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <#include "../../include/common_head_tpt.ftlh">
+    <link href="plugin/layui_exts/selects/formSelects-v4.css" rel="stylesheet" type="text/css">
     <link href="css/crud.css" rel="stylesheet" type="text/css">
 </head>
 <body class="layui-layout-body layui-bg-gray layui-admin-crud">
-<section id="listSection" class="layui-fluid layui-hide">
+<section id="listSection" class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body">
             <table id="tableList" class="layui-hide" lay-filter="tableList"></table>
@@ -30,7 +31,7 @@
     </script>
 </section>
 
-<section id="editSection" class="layui-fluid">
+<section id="editSection" class="layui-fluid layui-hide">
     <div class="layui-card">
         <div class="layui-card-header">
             <div class="layui-btn-container layui-form-tool">
@@ -39,7 +40,7 @@
         </div>
         <div class="layui-card-body">
             <form class="layui-form layui-form-pane" lay-filter="editForm">
-                <input type="hidden" name="id">
+                <input type="hidden" id="userId" name="id">
                 <div class="layui-row">
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
@@ -76,7 +77,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="password">密码：</label>
                             <div class="layui-input-block">
-                                <input type="text" name="password" id="password" lay-verify="required|password"
+                                <input type="password" name="password" id="password" lay-verify="password"
                                        placeholder="密码"
                                        class="layui-input" lay-verType="tips">
                             </div>
@@ -98,8 +99,18 @@
                         <div class="layui-form-item" pane>
                             <label class="layui-form-label" for="sex">性别：</label>
                             <div class="layui-input-block">
-                                <input type="radio" name="sex" value="男" title="男">
-                                <input type="radio" name="sex" value="女" title="女" checked>
+                                <input type="radio" name="sex" value="true" title="男">
+                                <input type="radio" name="sex" value="false" title="女">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-row">
+                    <div class="layui-col-md12">
+                        <div class="layui-form-item">
+                            <label id="labelRole" class="layui-form-label">角色：</label>
+                            <div class="layui-input-block">
+                                <select name="roleIdStr" xm-select="selectRole"></select>
                             </div>
                         </div>
                     </div>
@@ -109,12 +120,13 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="avatar">图标：</label>
                             <div class="layui-input-block">
-                                <input type="text" name="avatar" id="avatar" placeholder="图标" class="layui-input">
+                                <input type="text" name="avatar" id="avatar" placeholder="图标" class="layui-input"
+                                       disabled>
                             </div>
                         </div>
                     </div>
                     <div class="layui-col-md2">
-                        <button type="button" class="layui-btn layui-btn-normal" id="test-upload-testList">选择图片</button>
+                        <button type="button" class="layui-btn layui-btn-normal" id="btnUpload">选择图片</button>
                     </div>
                 </div>
                 <div class="layui-row">
@@ -132,6 +144,8 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="validPeriod">有效期：</label>
                             <div class="layui-input-block">
+                                <input type="hidden" name="beginValidPeriod" id="beginValidPeriod">
+                                <input type="hidden" name="endValidPeriod" id="endValidPeriod">
                                 <input type="text" name="validPeriod" id="validPeriod" placeholder="有效期"
                                        class="layui-input">
                             </div>
@@ -141,7 +155,7 @@
                 <div class="layui-row">
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <button class="layui-btn" lay-submit lay-filter="editForm">立即提交</button>
+                            <button id="btnSubmit" class="layui-btn" lay-submit lay-filter="editForm">立即提交</button>
                             <button id="btnRest" type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
                     </div>

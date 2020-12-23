@@ -4,22 +4,49 @@ layui.config({
 }).extend({
   restful: 'restful/index'
   , feedback: 'feedback/index'
-}).use(['element', 'util', 'restful', 'table', 'laydate'], function () {
+  , formSelects: 'selects/formSelects-v4.min'
+}).use(['element', 'util', 'restful', 'table', 'laydate', 'upload', 'formSelects'], function () {
   var form = layui.form;
-  var element = layui.element;
   var util = layui.util;
   var $ = layui.$;
   var table = layui.table;
   var feedback = layui.feedback;
   var restful = layui.restful;
   var laydate = layui.laydate;
+  var upload = layui.upload;
+  var formSelects = layui.formSelects;
   var currentRow;
 
   /********************************组件渲染*********************************/
+  formSelects.config('selectRole', {
+    beforeSuccess: function (id, url, searchVal, result) {
+      $.each(result, function (index, item) {
+        item.value = item.id;
+      });
+      return result;
+    }
+  }).data('selectRole', 'server', {
+    url: 'auth/api/roles/all'
+  });
+  //创建一个上传组件
+  upload.render({
+    elem: '#btnUpload'
+    , url: 'upload'
+    , headers: {'avatar': true}
+    , done: function (res, index, upload) { //上传后的回调
+      // noinspection JSUnresolvedVariable
+      $('#avatar').val(res.fileDownloadUri);
+    }
+  });
   laydate.render({
     elem: '#validPeriod'
     , type: 'datetime'
     , range: '至'
+    , done: function (value) {
+      var arr = value.split(' 至 ');
+      $('#beginValidPeriod').val(arr[0]);
+      $('#endValidPeriod').val(arr[1]);
+    }
   });
   table.render({
     elem: '#tableList'
@@ -39,11 +66,11 @@ layui.config({
     , toolbar: '#tableListToolBar'
     , cols: [[
       {field: 'username', width: 100, title: '用户名', sort: true}
-      , {field: 'nickname', title: '昵称', sort: true}
-      , {field: 'phone', width: 100, title: '手机', align: 'center', sort: true}
+      , {field: 'nickname', title: '名称', sort: true}
+      , {field: 'phone', width: 150, title: '手机', align: 'center', sort: true}
       , {field: 'createdDate', width: 200, title: '创建时间', align: 'center', sort: true}
       , {
-        field: 'locked', width: 120, title: '状态', align: 'center', sort: true, templet: function (d) {
+        field: 'locked', width: 100, title: '状态', align: 'center', sort: true, templet: function (d) {
           return d.locked ? '不可用' : '可用';
         }
       }
@@ -63,6 +90,7 @@ layui.config({
   /********************************事件绑定*********************************/
   form.on('submit(editForm)', function (params) {
     var obj = params.field;
+    obj.sex = ('true' === obj.sex);
     if (currentRow) {
       restful.put('auth/api/users', obj, function () {
         currentRow.update(obj);
@@ -81,7 +109,6 @@ layui.config({
   util.event('lay-event', {
     'back': function () {
       currentRow = undefined;
-      $('#btnRest').click();
       $('section').toggleClass('layui-hide');
     }
   });
@@ -99,6 +126,7 @@ layui.config({
   table.on('toolbar(tableList)', function (obj) {
     if (obj.event === 'create') {
       $('section').toggleClass('layui-hide');
+      $('#labelRole').css('height', '38px');
     }
   });
 
@@ -108,18 +136,54 @@ layui.config({
       case 'edit':
         currentRow = row;
         form.val('editForm', row.data);
+        formSelects.value('selectRole', row.data.roleIdStr.split(','));
         $('section').toggleClass('layui-hide');
+        $('#labelRole').css('height', '38px');
         break;
       case 'lock':
-        updateRoleLocked(row);
+        updateLocked(row);
         break;
       case 'unlock':
-        updateRoleLocked(row);
+        updateLocked(row);
         break;
     }
   });
 
-  function updateRoleLocked(row) {
+  /********************************函数定义*********************************/
+  form.verify({
+    password: function (value, item) {
+      if ($('#userId').val() !== '' && value === '') return;
+      if (/^.{6,16}$/.test(value)) {
+        var contain = 0;
+        if (/[A-Z]/.test(value)) {
+          contain += 1;
+        }
+        if (/[a-z]/.test(value)) {
+          contain += 1;
+        }
+        if (/[0-9]/.test(value)) {
+          contain += 1;
+        }
+        if (/[!@#$%^&*? ]/.test(value)) {
+          contain += 1;
+        }
+        if (contain > 2) {
+          return;
+        }
+      }
+      return '长度6-16位(必须包含大小写字母、数字、特殊符号中任意三种)';
+    }
+    , nickname: [
+      /^[\u2E80-\u9FFF]{2,10}$/
+      , '2-10位汉字'
+    ]
+    , username: [
+      /^[a-zA-Z]([a-zA-Z0-9]|[_]){5,16}$/
+      , '以字母开始6-16位(字母/数字/下划线)'
+    ]
+  });
+
+  function updateLocked(row) {
     var obj = row.data;
     obj.locked = !obj.locked;
     restful.postForm('auth/api/users/locked', obj, function (data) {

@@ -27,16 +27,6 @@ public class RoleController {
         return ResponseEntity.ok(roleRepository.save(role));
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Role> read(@PathVariable String id) {
-        return ResponseEntity.ok(get(id));
-    }
-
-    @GetMapping
-    public ResponseEntity<Page<Role>> read(@PageableDefault Pageable pageable) {
-        return ResponseEntity.ok(roleRepository.findAll(pageable));
-    }
-
     @PostMapping(value = "/locked")
     public ResponseEntity<Role> lockRole(@NotBlank String id, boolean locked) {
         Role old = get(id);
@@ -46,6 +36,21 @@ public class RoleController {
 
     private Role get(String id) {
         return roleRepository.findById(id).orElseThrow(() -> new RecordNotExistsException(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<Role>> read(@PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(roleRepository.findAll(pageable));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<Iterable<Role>> read() {
+        return ResponseEntity.ok(roleRepository.findAll());
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Role> read(@PathVariable String id) {
+        return ResponseEntity.ok(get(id));
     }
 
     @PutMapping
