@@ -5,6 +5,8 @@ package com.byakuya.boot.factory;
  * 常量工具类,用于定义系统使用的所有常量
  */
 public class ConstantUtils {
+    //附加资源路径
+    public static final String ADDITIONAL_RESOURCE_PATH = "/additional/";
     //默认REST请求前缀
     public static final String AUTH_REST_API_PREFIX = "/auth/api";
     //验证码在请求中的参数名
