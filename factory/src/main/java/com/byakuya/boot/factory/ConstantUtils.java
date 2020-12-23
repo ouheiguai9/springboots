@@ -13,6 +13,8 @@ public class ConstantUtils {
     public static final String HEADER_ERROR_ATTRIBUTE_KEY = "Header-Error-Attribute";
     //验证码在session中的键名
     public static final String SESSION_CAPTCHA_KEY = "_session_captcha_";
+    //文件上传路径
+    public static final String UPLOAD_DIR = "./upload";
 
     private ConstantUtils() {
 
