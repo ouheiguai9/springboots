@@ -25,8 +25,18 @@ public class CustomizedGrantedAuthority implements GrantedAuthority {
      * @param component 组件
      * @return 是否授权
      */
-    boolean check(String module, String component) {
+    public boolean check(String module, String component) {
         return Optional.ofNullable(authorityMap.get(module)).map(x -> x.contains(component)).orElse(false);
+    }
+
+    /**
+     * 校验模块是否授权
+     *
+     * @param module 模块
+     * @return 是否授权
+     */
+    public boolean check(String module) {
+        return authorityMap.containsKey(module);
     }
 
     @Override
@@ -44,7 +54,12 @@ public class CustomizedGrantedAuthority implements GrantedAuthority {
         }
 
         @Override
-        boolean check(String module, String component) {
+        public boolean check(String module, String component) {
+            return true;
+        }
+
+        @Override
+        public boolean check(String module) {
             return true;
         }
     }

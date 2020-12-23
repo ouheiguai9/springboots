@@ -82,7 +82,7 @@ public class AuthenticationUser implements UserDetails, CredentialsContainer {
         return admin != null;
     }
 
-    CustomizedGrantedAuthority getAuthority() {
+    public CustomizedGrantedAuthority getAuthority() {
         return authority;
     }
 

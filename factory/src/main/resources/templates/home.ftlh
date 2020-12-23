@@ -38,10 +38,13 @@
             </a>
             <dl class="layui-nav-child">
                 <#if !security.isAdmin()>
-                    <dd class="j-href-menu" data-key="test" data-href="safeChangePassword" data-target="inner" lay-unselect>
+                    <dd class="j-href-menu" data-key="personalDetail" data-href="personalDetail" data-target="inner"
+                        lay-unselect>
                         <a href="javascript:void(1);">基本资料</a>
                     </dd>
-                    <dd class="j-href-menu" data-key="test" data-href="safeChangePassword" data-target="inner" lay-unselect>
+                    <dd class="j-href-menu" data-key="safeChangePassword" data-href="safeChangePassword"
+                        data-target="inner"
+                        lay-unselect>
                         <a href="javascript:void(1);">修改密码</a>
                     </dd>
                     <hr>
@@ -57,23 +60,32 @@
     <div class="layui-side-scroll">
         <div class="layui-logo"></div>
         <ul class="layui-nav layui-nav-tree">
-            <li data-name="home" class="layui-nav-item layui-nav-itemed">
-                <a href="javascript:void(1);" class="j-folder-menu">
-                    <i class="layui-icon layui-icon-home"></i>
-                    <cite>主页</cite>
-                </a>
-                <dl class="layui-nav-child">
-                    <dd class="j-href-menu" data-key="test" data-href="safeChangePassword" data-target="inner">
-                        <a href="javascript:void(1);">控制台</a>
-                    </dd>
-                    <dd class="j-href-menu" data-key="aaaa" data-href="aaaaa" data-target="inner">
-                        <a href="javascript:void(1);">主页一</a>
-                    </dd>
-                    <dd class="j-href-menu" data-key="bbbb" data-href="auth/page/system/user" data-target="inner">
-                        <a href="javascript:void(1);">主页二</a>
-                    </dd>
-                </dl>
-            </li>
+            <#list topMenuList as menu>
+                <#if menu.getParentId().isPresent()>
+                    <li data-name="home" class="layui-nav-item layui-nav-itemed j-href-menu" data-key="${menu.getId()}"
+                        data-href="auth/page/${menu.getParent().getCode()}/${menu.getCode()}" data-target="inner">
+                        <a href="javascript:void(1);" class="j-folder-menu">
+                            <i class="layui-icon ${menu.getIcon()}"></i>
+                            <cite>${menu.getName()}</cite>
+                        </a>
+                    </li>
+                <#else>
+                    <li data-name="home" class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:void(1);" class="j-folder-menu">
+                            <i class="layui-icon ${menu.getIcon()}"></i>
+                            <cite>${menu.getName()}</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <#list menu.children as subMenu>
+                                <dd class="j-href-menu" data-key="${subMenu.getId()}"
+                                    data-href="auth/page/${menu.getCode()}/${subMenu.getCode()}" data-target="inner">
+                                    <a href="javascript:void(1);">${subMenu.getName()}</a>
+                                </dd>
+                            </#list>
+                        </dl>
+                    </li>
+                </#if>
+            </#list>
         </ul>
     </div>
 </section>

@@ -1,5 +1,7 @@
 package com.byakuya.boot.factory.page;
 
+import com.byakuya.boot.factory.component.menu.Menu;
+import com.byakuya.boot.factory.component.menu.MenuRepository;
 import com.byakuya.boot.factory.component.user.User;
 import com.byakuya.boot.factory.component.user.UserService;
 import com.byakuya.boot.factory.config.property.CaptchaProperties;
@@ -21,6 +23,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by ganzl on 2020/11/27.
@@ -29,7 +35,8 @@ import java.time.LocalDateTime;
 @Validated
 public class AuthenticationPageController {
 
-    public AuthenticationPageController(UserService userService, SecurityProperties securityProperties) {
+    public AuthenticationPageController(MenuRepository menuRepository, UserService userService, SecurityProperties securityProperties) {
+        this.menuRepository = menuRepository;
         this.userService = userService;
         this.securityProperties = securityProperties;
     }
@@ -64,7 +71,16 @@ public class AuthenticationPageController {
     }
 
     @GetMapping("/")
-    public String homePageUrl() {
+    public String homePageUrl(@AuthenticationPrincipal AuthenticationUser user
+            , Model model) {
+        List<Menu> topMenuList = menuRepository.findAll().stream().filter(x -> !x.getParentId().isPresent() && user.getAuthority().check(x.getCode())).sorted(Comparator.comparingInt(Menu::getOrdering).reversed()).collect(Collectors.toList());
+        topMenuList.forEach(menu -> {
+            menu.setChildren(menu.getChildren().stream().filter(x -> user.getAuthority().check(menu.getCode(), x.getCode())).collect(Collectors.toSet()));
+        });
+        if (topMenuList.size() == 1) {
+            topMenuList = new ArrayList<>(topMenuList.get(0).getChildren());
+        }
+        model.addAttribute("topMenuList", topMenuList);
         return "home";
     }
 
@@ -85,6 +101,11 @@ public class AuthenticationPageController {
 
     private boolean allowCaptcha() {
         return captchaProperties != null && captchaProperties.isEnable();
+    }
+
+    @GetMapping("/personalDetail")
+    public String personalDetailPageUrl() {
+        return "module/system/user";
     }
 
     @PostMapping("/register")
@@ -117,6 +138,7 @@ public class AuthenticationPageController {
         this.captchaProperties = captchaProperties;
     }
 
+    private final MenuRepository menuRepository;
     private final SecurityProperties securityProperties;
     private final UserService userService;
     private CaptchaProperties captchaProperties;
