@@ -17,10 +17,10 @@ import java.util.Optional;
  * Created by ganzl on 2020/11/30.
  */
 @Service
-public class SecurityUserService {
-    public SecurityUserService(SecurityProperties securityProperties, SecurityUserRepository securityUserRepository) {
+public class UserService {
+    public UserService(SecurityProperties securityProperties, UserRepository userRepository) {
         this.securityProperties = securityProperties;
-        this.securityUserRepository = securityUserRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -32,13 +32,13 @@ public class SecurityUserService {
      * @return 是否成功
      */
     public boolean changePassword(String username, String oldPassword, String newPassword) {
-        SecurityUser securityUser = securityUserRepository.findByUsername(username).orElseThrow(() -> new RecordNotExistsException(username));
-        if (!passwordEncoder.matches(oldPassword, securityUser.getPassword())) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RecordNotExistsException(username));
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
             throw new CustomizedException("ERR-90001");
         }
-        securityUser.setPassword(passwordEncoder.encode(newPassword));
-        securityUser.setLastPasswordModifiedDate(LocalDateTime.now());
-        securityUserRepository.save(securityUser);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setLastPasswordModifiedDate(LocalDateTime.now());
+        userRepository.save(user);
         return true;
     }
 
@@ -48,24 +48,27 @@ public class SecurityUserService {
      * @param identifier 用户唯一标识(ID,用户名,邮箱,手机号码)
      * @return 用户
      */
-    public Optional<SecurityUser> loadUser(String identifier) {
-        return securityUserRepository.findUserByIdOrUsernameOrPhoneOrEmail(identifier, identifier, identifier, identifier);
+    public Optional<User> loadUser(String identifier) {
+        return userRepository.findUserByIdOrUsernameOrPhoneOrEmail(identifier, identifier, identifier, identifier);
     }
 
     /**
      * 修改个人详细信息,不可修改密码
      *
-     * @param securityUser 修改用户信息
+     * @param user 修改用户信息
      * @return 更新后用户信息
      */
-    public SecurityUser modifyUserDetail(SecurityUser securityUser) {
-        SecurityUser old = get(securityUser.getId());
-        old.setDetail(securityUser.getDetail());
-        return securityUserRepository.save(old);
+    public User modifyUserDetail(User user) {
+        User old = get(user.getId());
+        old.setAddress(user.getAddress());
+        old.setAvatar(user.getAvatar());
+        old.setNickname(user.getNickname());
+        old.setSex(user.isSex());
+        return userRepository.save(old);
     }
 
-    SecurityUser get(String id) {
-        return securityUserRepository.findById(id).orElseThrow(() -> new RecordNotExistsException(id));
+    User get(String id) {
+        return userRepository.findById(id).orElseThrow(() -> new RecordNotExistsException(id));
     }
 
     /**
@@ -75,22 +78,22 @@ public class SecurityUserService {
      * @param search   过滤条件
      * @return 分页用户列表
      */
-    Page<SecurityUser> queryList(Pageable pageable, String search) {
-        return securityUserRepository.findAll(pageable);
+    Page<User> queryList(Pageable pageable, String search) {
+        return userRepository.findAll(pageable);
     }
 
     /**
      * 新用户注册
      *
-     * @param securityUser 新用户
+     * @param user 新用户
      * @return 新用户
      */
-    public SecurityUser regist(SecurityUser securityUser) {
-        if (!StringUtils.hasText(securityUser.getPassword())) {
-            securityUser.setPassword(securityProperties.getNewUserDefaultPassword());
+    public User regist(User user) {
+        if (!StringUtils.hasText(user.getPassword())) {
+            user.setPassword(securityProperties.getNewUserDefaultPassword());
         }
-        securityUser.setPassword(passwordEncoder.encode(securityUser.getPassword()));
-        return securityUserRepository.save(securityUser);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
     }
 
     @Autowired(required = false)
@@ -99,6 +102,6 @@ public class SecurityUserService {
     }
 
     private final SecurityProperties securityProperties;
-    private final SecurityUserRepository securityUserRepository;
+    private final UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 }

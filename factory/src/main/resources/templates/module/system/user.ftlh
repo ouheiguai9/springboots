@@ -132,7 +132,8 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="validPeriod">有效期：</label>
                             <div class="layui-input-block">
-                                <input type="text" name="validPeriod" id="validPeriod" placeholder="有效期" class="layui-input">
+                                <input type="text" name="validPeriod" id="validPeriod" placeholder="有效期"
+                                       class="layui-input">
                             </div>
                         </div>
                     </div>

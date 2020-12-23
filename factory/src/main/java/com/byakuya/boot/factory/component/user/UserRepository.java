@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * Created by ganzl on 2020/3/11.
  */
-public interface SecurityUserRepository extends PagingAndSortingRepository<SecurityUser, String> {
+public interface UserRepository extends PagingAndSortingRepository<User, String> {
 
     boolean existsByEmail(String email);
 
@@ -16,10 +16,8 @@ public interface SecurityUserRepository extends PagingAndSortingRepository<Secur
 
     boolean existsByUsername(String username);
 
-    Optional<SecurityUser> findByUsername(String username);
+    Optional<User> findByUsername(String username);
 
-    Optional<SecurityUser> findUserByIdOrUsernameOrPhoneOrEmail(String id, String username, String phone, String email);
-
-    @EntityGraph(attributePaths = {"menuSet", "roleSet"})
-    Optional<SecurityUser> queryById(String id);
+    @EntityGraph("User.Graph")
+    Optional<User> findUserByIdOrUsernameOrPhoneOrEmail(String id, String username, String phone, String email);
 }

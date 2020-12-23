@@ -38,10 +38,9 @@ layui.config({
     }
     , toolbar: '#tableListToolBar'
     , cols: [[
-      {type: 'checkbox', fixed: 'left'}
-      , {field: 'username', width: 200, title: '用户名', sort: true}
+      {field: 'username', width: 100, title: '用户名', sort: true}
       , {field: 'detail.nickname', title: '昵称', sort: true}
-      , {field: 'phone', width: 200, title: '手机', align: 'center', sort: true}
+      , {field: 'phone', width: 100, title: '手机', align: 'center', sort: true}
       , {field: 'createdDate', width: 200, title: '创建时间', align: 'center', sort: true}
       , {
         field: 'locked', width: 120, title: '状态', align: 'center', sort: true, templet: function (d) {

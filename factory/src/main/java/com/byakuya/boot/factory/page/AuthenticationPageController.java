@@ -1,7 +1,7 @@
 package com.byakuya.boot.factory.page;
 
-import com.byakuya.boot.factory.component.user.SecurityUser;
-import com.byakuya.boot.factory.component.user.SecurityUserService;
+import com.byakuya.boot.factory.component.user.User;
+import com.byakuya.boot.factory.component.user.UserService;
 import com.byakuya.boot.factory.config.property.CaptchaProperties;
 import com.byakuya.boot.factory.config.property.SecurityProperties;
 import com.byakuya.boot.factory.security.AuthenticationUser;
@@ -29,8 +29,8 @@ import java.time.LocalDateTime;
 @Validated
 public class AuthenticationPageController {
 
-    public AuthenticationPageController(SecurityUserService securityUserService, SecurityProperties securityProperties) {
-        this.securityUserService = securityUserService;
+    public AuthenticationPageController(UserService userService, SecurityProperties securityProperties) {
+        this.userService = userService;
         this.securityProperties = securityProperties;
     }
 
@@ -44,7 +44,7 @@ public class AuthenticationPageController {
     public ResponseEntity<Boolean> changePassword(@NotBlank String username
             , @NotBlank String oldPassword
             , @NotBlank String newPassword) {
-        return ResponseEntity.ok(securityUserService.changePassword(username, oldPassword, newPassword));
+        return ResponseEntity.ok(userService.changePassword(username, oldPassword, newPassword));
     }
 
     @GetMapping("/changePassword")
@@ -89,14 +89,14 @@ public class AuthenticationPageController {
 
     @PostMapping("/register")
     @ResponseBody
-    public ResponseEntity<SecurityUser> register(@Valid @RequestBody SecurityUser securityUser
+    public ResponseEntity<User> register(@Valid @RequestBody User user
             , HttpServletRequest request) {
         if (!securityProperties.isAllowRegistration()) throw new UnsupportedOperationException();
         if (allowCaptcha()) {
             TextCaptcha.verifyCaptcha(request);
         }
-        securityUser.setLastPasswordModifiedDate(LocalDateTime.now());
-        return ResponseEntity.ok(securityUserService.regist(securityUser));
+        user.setLastPasswordModifiedDate(LocalDateTime.now());
+        return ResponseEntity.ok(userService.regist(user));
     }
 
     @GetMapping("/register")
@@ -118,6 +118,6 @@ public class AuthenticationPageController {
     }
 
     private final SecurityProperties securityProperties;
-    private final SecurityUserService securityUserService;
+    private final UserService userService;
     private CaptchaProperties captchaProperties;
 }

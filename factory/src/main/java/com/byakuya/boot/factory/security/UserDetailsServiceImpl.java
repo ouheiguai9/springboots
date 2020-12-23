@@ -1,8 +1,8 @@
 package com.byakuya.boot.factory.security;
 
-import com.byakuya.boot.factory.component.menu.MenuRepository;
-import com.byakuya.boot.factory.component.user.SecurityUser;
-import com.byakuya.boot.factory.component.user.SecurityUserService;
+import com.byakuya.boot.factory.component.menu.Menu;
+import com.byakuya.boot.factory.component.user.User;
+import com.byakuya.boot.factory.component.user.UserService;
 import com.byakuya.boot.factory.config.property.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,15 +12,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.*;
+
 /**
  * Created by ganzl on 2020/4/9.
  */
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    public UserDetailsServiceImpl(MenuRepository menuRepository, SecurityUserService securityUserService, SecurityProperties securityProperties) {
-        this.menuRepository = menuRepository;
-        this.securityUserService = securityUserService;
+    public UserDetailsServiceImpl(UserService userService, SecurityProperties securityProperties) {
+        this.userService = userService;
         this.securityProperties = securityProperties;
     }
 
@@ -31,14 +32,34 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (admin.getUsername().equals(username)) {
             rtnVal = new AuthenticationUser(securityProperties.getAdmin());
         } else {
-            SecurityUser user = securityUserService.loadUser(username).orElseThrow(() -> new UsernameNotFoundException(username));
-            rtnVal = new AuthenticationUser(user, securityProperties.getPasswordValidPeriod());
+            User user = userService.loadUser(username).orElseThrow(() -> new UsernameNotFoundException(username));
+            rtnVal = new AuthenticationUser(user, extractGrantedAuthority(user), securityProperties.getPasswordValidPeriod());
         }
         return rtnVal;
     }
-    private final MenuRepository menuRepository;
+
+    /**
+     * 提取用户权限
+     *
+     * @param user 用户
+     * @return 权限
+     */
+    private CustomizedGrantedAuthority extractGrantedAuthority(User user) {
+        Set<Menu> menuSet = new HashSet<>(user.getMenuSet());
+        Optional.ofNullable(user.getRoleSet()).ifPresent(roles -> roles.forEach(role -> {
+            if (!role.isLocked()) menuSet.addAll(role.getMenuSet());
+        }));
+        Map<String, Set<String>> authorityMap = new HashMap<>();
+        menuSet.stream().filter(x -> x.getParentId().isPresent()).forEach(menu -> {
+            String module = menu.getParent().getCode();
+            //noinspection ConstantConditions
+            authorityMap.putIfAbsent(module, new HashSet<>()).add(menu.getCode());
+        });
+        return new CustomizedGrantedAuthority(authorityMap);
+    }
+
     private final SecurityProperties securityProperties;
-    private final SecurityUserService securityUserService;
+    private final UserService userService;
 
     @Bean
     public static PasswordEncoder passwordEncoder() {

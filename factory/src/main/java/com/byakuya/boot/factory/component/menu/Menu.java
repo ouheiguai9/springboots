@@ -24,7 +24,7 @@ import java.util.Set;
 public class Menu extends AbstractAuditableEntity<Menu> {
     private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;
 
-    Optional<String> getParentId() {
+    public Optional<String> getParentId() {
         if (StringUtils.hasText(parentId)) return Optional.of(parentId);
         return Optional.ofNullable(parent).map(Menu::getId);
     }

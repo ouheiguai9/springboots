@@ -11,7 +11,9 @@ import java.util.*;
 public class CustomizedGrantedAuthority implements GrantedAuthority {
     private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;
 
-    public CustomizedGrantedAuthority(Map<String, Set<String>> authorityMap) {
+    static final CustomizedGrantedAuthority SUPER = new SuperAuthority();
+
+    CustomizedGrantedAuthority(Map<String, Set<String>> authorityMap) {
         //noinspection unchecked
         this.authorityMap = authorityMap == null || authorityMap.isEmpty() ? Collections.EMPTY_MAP : new HashMap<>(authorityMap);
     }
@@ -33,4 +35,17 @@ public class CustomizedGrantedAuthority implements GrantedAuthority {
     }
 
     private final Map<String, Set<String>> authorityMap;
+
+    private static class SuperAuthority extends CustomizedGrantedAuthority {
+        private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;
+
+        SuperAuthority() {
+            super(null);
+        }
+
+        @Override
+        boolean check(String module, String component) {
+            return true;
+        }
+    }
 }

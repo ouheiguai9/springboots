@@ -16,9 +16,10 @@ public class CustomizedWebSecurity {
         if (authentication == null || !authentication.isAuthenticated()) return false;
         return Optional.of(authentication)
                 .map(Authentication::getPrincipal)
+                .filter(x -> x instanceof AuthenticationUser)
                 .map(AuthenticationUser.class::cast).map(user -> {
                     log.info("用户:\t{}, 访问模块:\t{}, 访问组件:\t {}", user.getNickname(), module, component);
-                    return user.isAdmin() || authentication.getAuthorities().stream().filter(x -> x instanceof CustomizedWebSecurity).map(CustomizedGrantedAuthority.class::cast).anyMatch(authority -> authority.check(module, component));
+                    return user.isAdmin() || user.getAuthority().check(module, component);
                 }).orElse(false);
     }
 }

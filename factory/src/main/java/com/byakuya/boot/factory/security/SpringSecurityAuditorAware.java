@@ -1,6 +1,6 @@
 package com.byakuya.boot.factory.security;
 
-import com.byakuya.boot.factory.component.user.SecurityUser;
+import com.byakuya.boot.factory.component.user.User;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -11,9 +11,9 @@ import java.util.Optional;
 /**
  * Created by ganzl on 2020/12/17.
  */
-public class SpringSecurityAuditorAware implements AuditorAware<SecurityUser> {
+public class SpringSecurityAuditorAware implements AuditorAware<User> {
     @Override
-    public Optional<SecurityUser> getCurrentAuditor() {
+    public Optional<User> getCurrentAuditor() {
         return Optional.ofNullable(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .filter(Authentication::isAuthenticated)

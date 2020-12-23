@@ -1,7 +1,7 @@
 package com.byakuya.boot.factory.security;
 
 import com.byakuya.boot.factory.SystemVersion;
-import com.byakuya.boot.factory.component.user.SecurityUser;
+import com.byakuya.boot.factory.component.user.User;
 import com.byakuya.boot.factory.config.property.SecurityProperties;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,11 +18,12 @@ import java.util.Optional;
 public class AuthenticationUser implements UserDetails, CredentialsContainer {
     private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;
 
-    AuthenticationUser(SecurityUser realUser, long passwordValidPeriod) {
+    AuthenticationUser(User realUser, CustomizedGrantedAuthority authority, long passwordValidPeriod) {
         this.admin = null;
         this.realUser = realUser;
         this.password = realUser.getPassword();
         this.passwordValidPeriod = passwordValidPeriod;
+        this.authority = authority;
     }
 
     AuthenticationUser(SecurityProperties.Admin admin) {
@@ -30,6 +31,7 @@ public class AuthenticationUser implements UserDetails, CredentialsContainer {
         this.passwordValidPeriod = Long.MAX_VALUE;
         this.admin = admin;
         this.password = admin.getPassword();
+        this.authority = CustomizedGrantedAuthority.SUPER;
     }
 
     @Override
@@ -80,18 +82,22 @@ public class AuthenticationUser implements UserDetails, CredentialsContainer {
         return admin != null;
     }
 
-    public String getNickname() {
-        if (isAdmin()) return admin.getNickname();
-        return realUser.getDetail().getNickname();
+    CustomizedGrantedAuthority getAuthority() {
+        return authority;
     }
 
-    public Optional<SecurityUser> getRealUser() {
+    public String getNickname() {
+        if (isAdmin()) return admin.getNickname();
+        return realUser.getNickname();
+    }
+
+    Optional<User> getRealUser() {
         return Optional.ofNullable(realUser);
     }
 
     private final SecurityProperties.Admin admin;
-    private final CustomizedGrantedAuthority authority = null;
+    private final CustomizedGrantedAuthority authority;
     private final long passwordValidPeriod;
-    private final SecurityUser realUser;
+    private final User realUser;
     private String password;
 }
