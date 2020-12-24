@@ -15,6 +15,10 @@
 
     <script type="text/html" id="tableListToolBar">
         <div class="layui-btn-container">
+            <div class="tool-bar-search-group">
+                <input type="text" id="search">
+                <button class="layui-btn layui-btn-sm" lay-event="search">查询</button>
+            </div>
             <button class="layui-btn layui-btn-sm" lay-event="create">添加</button>
         </div>
     </script>
@@ -99,7 +103,7 @@
                         <div class="layui-form-item" pane>
                             <label class="layui-form-label" for="sex">性别：</label>
                             <div class="layui-input-block">
-                                <input type="radio" name="sex" value="true" title="男">
+                                <input type="radio" name="sex" value="true" title="男" checked>
                                 <input type="radio" name="sex" value="false" title="女">
                             </div>
                         </div>

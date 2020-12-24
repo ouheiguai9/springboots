@@ -133,6 +133,10 @@ public class UserService {
      * @return 分页用户列表
      */
     Page<User> queryList(Pageable pageable, String search) {
+        if (StringUtils.hasText(search)) {
+            search = "%" + StringUtils.trimWhitespace(search) + "%";
+            return userRepository.queryAllByUsernameLikeOrPhoneLike(pageable, search, search);
+        }
         return userRepository.findAll(pageable);
     }
 

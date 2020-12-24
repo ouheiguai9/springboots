@@ -1,5 +1,7 @@
 package com.byakuya.boot.factory.component.user;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -18,6 +20,12 @@ public interface UserRepository extends PagingAndSortingRepository<User, String>
 
     Optional<User> findByUsername(String username);
 
-    @EntityGraph("User.Graph")
+    @EntityGraph("User.Login")
     Optional<User> findUserByIdOrUsernameOrPhoneOrEmail(String id, String username, String phone, String email);
+
+    @EntityGraph("User.List")
+    Page<User> findAll(Pageable pageable);
+
+    @EntityGraph("User.List")
+    Page<User> queryAllByUsernameLikeOrPhoneLike(Pageable pageable, String username, String phone);
 }

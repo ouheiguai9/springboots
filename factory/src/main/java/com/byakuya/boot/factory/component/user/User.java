@@ -29,7 +29,12 @@ import java.util.stream.Collectors;
 @Getter
 @Entity
 @Table(name = "T_SYS_USER")
-@NamedEntityGraph(name = "User.Graph", attributeNodes = {@NamedAttributeNode("roleSet"), @NamedAttributeNode("menuSet")})
+@NamedEntityGraph(name = "User.Login"
+        , attributeNodes = {@NamedAttributeNode(value = "roleSet", subgraph = "menuSet")
+        , @NamedAttributeNode("menuSet")}
+        , subgraphs = {@NamedSubgraph(name = "menuSet"
+        , attributeNodes = @NamedAttributeNode("menuSet"))})
+@NamedEntityGraph(name = "User.List", attributeNodes = {@NamedAttributeNode("roleSet")})
 public class User extends AbstractAuditableEntity<User> {
 
     private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;

@@ -18,6 +18,24 @@ layui.config({
   var currentRow;
 
   /********************************组件渲染*********************************/
+  $('#avatar').on('mouseenter', function () {
+    if (this.value !== '') {
+      var jq = $(this);
+      var offset = jq.offset();
+      var index = feedback.open({
+        type: 1
+        , title: false
+        , closeBtn: 0
+        , area: [100, 100]
+        , shade: 0
+        , offset: [offset.top - 105, offset.left + jq.outerWidth() - 100]
+        , content: '<img src="' + this.value + '" style="height: 100px; width: 100px;">'
+      });
+      jq.one('mouseleave', function () {
+        feedback.close(index);
+      });
+    }
+  });
   formSelects.config('selectRole', {
     beforeSuccess: function (id, url, searchVal, result) {
       $.each(result, function (index, item) {
@@ -33,7 +51,7 @@ layui.config({
     elem: '#btnUpload'
     , url: 'upload'
     , headers: {'avatar': true}
-    , done: function (res, index, upload) { //上传后的回调
+    , done: function (res) { //上传后的回调
       // noinspection JSUnresolvedVariable
       $('#avatar').val(res.fileDownloadUri);
     }
@@ -127,6 +145,12 @@ layui.config({
     if (obj.event === 'create') {
       $('section').toggleClass('layui-hide');
       $('#labelRole').css('height', '38px');
+    } else if (obj.event === 'search') {
+      table.reload('tableList', {
+        where: {
+          search: $('#search').val()
+        }
+      });
     }
   });
 
@@ -136,9 +160,15 @@ layui.config({
       case 'edit':
         currentRow = row;
         form.val('editForm', row.data);
+        // noinspection JSUnresolvedVariable
         formSelects.value('selectRole', row.data.roleIdStr.split(','));
         $('section').toggleClass('layui-hide');
         $('#labelRole').css('height', '38px');
+        $('input[name="sex"]').prop('checked', function () {
+          return (this.value === 'true' && row.data.sex) || (this.value === 'false' && !row.data.sex);
+        });
+        $('#password').val('');
+        form.render('radio');
         break;
       case 'lock':
         updateLocked(row);

@@ -5,3 +5,22 @@
 .layui-admin-crud .layui-form-tool {
     padding-top: 6px;
 }
+
+.tool-bar-search-group {
+    display: inline-block;
+}
+
+.tool-bar-search-group button.layui-btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.tool-bar-search-group input {
+    margin-bottom: 10px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    font-size: 12px;
+    border: 1px inset #009688;
+    vertical-align: middle;
+}
