@@ -93,7 +93,7 @@ public class UserService {
         return userRepository.save(old);
     }
 
-    User get(String id) {
+    public User get(String id) {
         return userRepository.findById(id).orElseThrow(() -> new RecordNotExistsException(id));
     }
 

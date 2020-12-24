@@ -27,6 +27,12 @@ header {
     border-bottom-color: #333;
 }
 
+.layui-admin header .layui-nav .layui-nav-item a .avatar {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
+
 .layui-admin header .layui-nav .layui-nav-item, .layui-admin .layui-logo {
     line-height: 50px;
 }

@@ -33,8 +33,8 @@
             </a>
         </li>
         <li class="layui-nav-item" lay-unselect>
-            <a href="javascript:void(1);" class="layui-elip" style="max-width: 80px;">
-                ${security.getCurrentUser().getNickname()}
+            <a href="javascript:void(1);" title="${nickname}">
+                <img src="${avatar!"image/default_avatar.jpg"}" alt="${nickname}" class="avatar">
             </a>
             <dl class="layui-nav-child">
                 <#if !security.isAdmin()>

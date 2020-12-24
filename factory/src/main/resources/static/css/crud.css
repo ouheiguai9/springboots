@@ -24,3 +24,17 @@
     border: 1px inset #009688;
     vertical-align: middle;
 }
+
+.layui-fake-input {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    padding-left: 10px;
+    height: 38px;
+    line-height: 38px;
+    border: 1px solid #e6e6e6;
+    background-color: #f0f0f0;
+    border-radius: 0 2px 2px 0;
+    outline: 0;
+
+}

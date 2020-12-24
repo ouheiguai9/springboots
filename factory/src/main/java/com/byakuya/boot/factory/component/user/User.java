@@ -18,6 +18,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -49,9 +50,20 @@ public class User extends AbstractAuditableEntity<User> {
         this.password = password;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public String getRoleIdStr() {
         if (StringUtils.hasText(roleIdStr)) return roleIdStr;
         return Optional.ofNullable(roleSet).map(x -> x.stream().map(Role::getId).collect(Collectors.joining(","))).orElse(null);
+    }
+
+    public String getValidPeriod() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH时mm分ss秒");
+        String endStr = Optional.ofNullable(endValidPeriod).map(formatter::format).orElse("永久");
+        return String.format("%s 至 %s", formatter.format(getBeginValidPeriod()), endStr);
+    }
+
+    public LocalDateTime getBeginValidPeriod() {
+        return Optional.ofNullable(beginValidPeriod).orElse(LocalDateTime.now());
     }
 
     private String address;

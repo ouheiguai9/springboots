@@ -109,7 +109,11 @@ layui.config({
   form.on('submit(editForm)', function (params) {
     var obj = params.field;
     obj.sex = ('true' === obj.sex);
-    if (currentRow) {
+    if ($('#username').length === 0) {
+      restful.put('personalDetail', obj, function () {
+        feedback.successMsg('修改成功');
+      });
+    } else if (currentRow) {
       restful.put('auth/api/users', obj, function () {
         currentRow.update(obj);
         feedback.successMsg('修改成功');

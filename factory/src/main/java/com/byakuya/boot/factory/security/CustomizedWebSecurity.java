@@ -18,7 +18,7 @@ public class CustomizedWebSecurity {
                 .map(Authentication::getPrincipal)
                 .filter(x -> x instanceof AuthenticationUser)
                 .map(AuthenticationUser.class::cast).map(user -> {
-                    log.info("用户:\t{}, 访问模块:\t{}, 访问组件:\t {}", user.getNickname(), module, component);
+                    log.info("用户:\t{}, 访问模块:\t{}, 访问组件:\t {}", user.getUserId(), module, component);
                     return user.isAdmin() || user.getAuthority().check(module, component);
                 }).orElse(false);
     }

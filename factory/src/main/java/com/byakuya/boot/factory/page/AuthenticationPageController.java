@@ -78,7 +78,17 @@ public class AuthenticationPageController {
         if (topMenuList.size() == 1) {
             topMenuList = new ArrayList<>(topMenuList.get(0).getChildren());
         }
+        String nickname = securityProperties.getAdmin().getNickname(), avatar = "";
+        if (!user.isAdmin()) {
+            User me = userService.get(user.getUserId());
+            nickname = me.getNickname();
+            avatar = me.getAvatar();
+        }
         model.addAttribute("topMenuList", topMenuList);
+        model.addAttribute("nickname", nickname);
+        if(StringUtils.hasText(avatar)) {
+            model.addAttribute("avatar", avatar);
+        }
         return "home";
     }
 
@@ -101,9 +111,16 @@ public class AuthenticationPageController {
         return captchaProperties != null && captchaProperties.isEnable();
     }
 
+    @PutMapping("/personalDetail")
+    public ResponseEntity<User> modify(@RequestBody User user) {
+        return ResponseEntity.ok(userService.modifyPart(user));
+    }
+
     @GetMapping("/personalDetail")
-    public String personalDetailPageUrl() {
-        return "module/system/user";
+    public String personalDetailPageUrl(@AuthenticationPrincipal AuthenticationUser user, Model model) {
+        if (user.isAdmin()) return "404";
+        model.addAttribute("me", userService.get(user.getUserId()));
+        return "personalDetail";
     }
 
     @PostMapping("/register")
