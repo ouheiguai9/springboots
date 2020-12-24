@@ -48,7 +48,7 @@ public class CustomizedErrorAttributes extends DefaultErrorAttributes {
         String errorAttributeStr = webRequest.getHeader(ConstantUtils.HEADER_ERROR_ATTRIBUTE_KEY);
         ErrorAttributeOptions newOptions = options.including(Include.EXCEPTION, Include.MESSAGE);
         if (!StringUtils.hasText(errorAttributeStr) || !errorAttributeStr.contains(Include.STACK_TRACE.toString())) {
-            newOptions = options.excluding(Include.STACK_TRACE, Include.BINDING_ERRORS);
+            newOptions = newOptions.excluding(Include.STACK_TRACE, Include.BINDING_ERRORS);
         }
         Map<String, Object> rtnVal = super.getErrorAttributes(webRequest, newOptions);
         Throwable throwable = getError(webRequest);
