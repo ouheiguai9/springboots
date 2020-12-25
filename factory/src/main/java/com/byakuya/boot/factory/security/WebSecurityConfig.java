@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().mvcMatchers("/error/**");
         //注册
         web.ignoring().mvcMatchers("/register");
-        //开发API
+        //开放API
         web.ignoring().mvcMatchers(ConstantUtils.OPEN_REST_API_PREFIX + "/**");
         web.ignoring().mvcMatchers(changePasswordUrl);   //修改密码
     }
