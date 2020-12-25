@@ -1,5 +1,6 @@
 package com.byakuya.boot.factory.security;
 
+import com.byakuya.boot.factory.ConstantUtils;
 import com.byakuya.boot.factory.config.property.CaptchaProperties;
 import com.byakuya.boot.factory.config.property.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().mvcMatchers("/image/**");         //图片
-        web.ignoring().mvcMatchers("/css/**");           //样式表
-        web.ignoring().mvcMatchers("/js/**");            //脚本
-        web.ignoring().mvcMatchers("/plugin/**");        //插件
-        web.ignoring().mvcMatchers("/captcha");          //验证码
-        web.ignoring().mvcMatchers("/error/**");         //错误页面
-        web.ignoring().mvcMatchers("/register");         //注册
+        //图片
+        web.ignoring().mvcMatchers("/image/**");
+        //样式表
+        web.ignoring().mvcMatchers("/css/**");
+        //脚本
+        web.ignoring().mvcMatchers("/js/**");
+        //插件
+        web.ignoring().mvcMatchers("/plugin/**");
+        //验证码
+        web.ignoring().mvcMatchers("/captcha");
+        //错误页面
+        web.ignoring().mvcMatchers("/error/**");
+        //注册
+        web.ignoring().mvcMatchers("/register");
+        //开发API
+        web.ignoring().mvcMatchers(ConstantUtils.OPEN_REST_API_PREFIX + "/**");
         web.ignoring().mvcMatchers(changePasswordUrl);   //修改密码
     }
 
