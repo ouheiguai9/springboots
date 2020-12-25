@@ -147,6 +147,10 @@ layui.config({
     });
   }
 
+  /**
+   * 授权按钮点击事件
+   * @param row 点击行
+   */
   function authorize(row) {
     restful.get('auth/api/roles/menu/' + row.data.id, {}, function (idArr) {
       currentRow.data.idArr = idArr;
@@ -169,6 +173,11 @@ layui.config({
     });
   }
 
+  /**
+   * 打开授权界面
+   * @param data 菜单树数据
+   * @param checkedMenuIdArr 选中菜单
+   */
   function openAuthorizePanel(data, checkedMenuIdArr) {
     laytpl($('#menuContent').html()).render({}, function (html) {
       feedback.open({
@@ -186,6 +195,12 @@ layui.config({
     });
   }
 
+  /**
+   * 渲染树形组件
+   * @param id domId
+   * @param checkedMenuIdArr  已经选中
+   * @param menuList  所有菜单
+   */
   function renderMenu(id, checkedMenuIdArr, menuList) {
     tree.render({
       elem: '#' + id
@@ -196,6 +211,11 @@ layui.config({
     tree.setChecked(id, checkedMenuIdArr);
   }
 
+  /**
+   * 将菜单对象转换为树形对象,递归实现
+   * @param menu
+   * @return {{disabled: boolean, id: string, title: string, spread: boolean}}
+   */
   function menu2tree(menu) {
     var treeObj = {
       id: menu.id
@@ -217,6 +237,10 @@ layui.config({
     return treeObj;
   }
 
+  /**
+   * 获取选中叶子节点的id拼接成[,]分隔字符串
+   * @return {string}
+   */
   function getCheckedMenuId() {
     var checkedArray = tree.getChecked('menuTree');
     var idArray = [];

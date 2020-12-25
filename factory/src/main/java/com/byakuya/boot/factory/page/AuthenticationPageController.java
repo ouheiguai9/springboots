@@ -76,7 +76,7 @@ public class AuthenticationPageController {
         List<Menu> topMenuList = menuRepository.findAll().stream().filter(x -> !x.getParentId().isPresent() && user.getAuthority().check(x.getCode())).sorted(Comparator.comparingInt(Menu::getOrdering).reversed()).collect(Collectors.toList());
         topMenuList.forEach(menu -> menu.setOrderChildren(menu.getChildren().stream().filter(x -> user.getAuthority().check(menu.getCode(), x.getCode())).sorted(Comparator.comparingInt(Menu::getOrdering).reversed()).collect(Collectors.toList())));
         if (topMenuList.size() == 1) {
-            topMenuList = new ArrayList<>(topMenuList.get(0).getChildren());
+            topMenuList = new ArrayList<>(topMenuList.get(0).getOrderChildren());
         }
         String nickname = securityProperties.getAdmin().getNickname(), avatar = "";
         if (!user.isAdmin()) {

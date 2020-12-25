@@ -56,8 +56,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Map<String, Set<String>> authorityMap = new HashMap<>();
         menuSet.stream().filter(x -> x.getParentId().isPresent()).forEach(menu -> {
             String module = menu.getParent().getCode();
-            //noinspection ConstantConditions
-            authorityMap.putIfAbsent(module, new HashSet<>()).add(menu.getCode());
+            Set<String> exists = authorityMap.computeIfAbsent(module, k -> new HashSet<>());
+            exists.add(menu.getCode());
         });
         return new CustomizedGrantedAuthority(authorityMap);
     }

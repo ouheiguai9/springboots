@@ -42,6 +42,16 @@ public class UserController {
         return ResponseEntity.ok(userService.queryList(pageable, search));
     }
 
+    @GetMapping("/menu/{id}")
+    public ResponseEntity<Iterable<String>> readRoleAllMenuId(@PathVariable String id) {
+        return ResponseEntity.ok(userService.queryUserAllMenuId(id));
+    }
+
+    @PostMapping("/authorize")
+    public ResponseEntity<User> readRoleAllMenuId(@NotBlank String id, String menuIdStr) {
+        return ResponseEntity.ok(userService.authorize(id, menuIdStr));
+    }
+
     @PutMapping
     @Validated({UpdateGroup.class})
     public ResponseEntity<User> update(@Valid @RequestBody User user) {

@@ -1,5 +1,7 @@
 package com.byakuya.boot.factory.component.user;
 
+import com.byakuya.boot.factory.component.menu.Menu;
+import com.byakuya.boot.factory.component.menu.MenuRepository;
 import com.byakuya.boot.factory.component.role.Role;
 import com.byakuya.boot.factory.component.role.RoleRepository;
 import com.byakuya.boot.factory.config.property.SecurityProperties;
@@ -23,10 +25,25 @@ import java.util.Set;
  */
 @Service
 public class UserService {
-    public UserService(RoleRepository roleRepository, SecurityProperties securityProperties, UserRepository userRepository) {
+    public UserService(MenuRepository menuRepository, RoleRepository roleRepository, SecurityProperties securityProperties, UserRepository userRepository) {
+        this.menuRepository = menuRepository;
         this.roleRepository = roleRepository;
         this.securityProperties = securityProperties;
         this.userRepository = userRepository;
+    }
+
+    public User authorize(String id, String menuIdStr) {
+        User old = get(id);
+        Set<Menu> menuSet = new HashSet<>();
+        if (StringUtils.hasText(menuIdStr)) {
+            menuRepository.findAllById(Arrays.asList(menuIdStr.split(","))).forEach(menuSet::add);
+        }
+        old.setMenuSet(menuSet);
+        return userRepository.save(old);
+    }
+
+    public User get(String id) {
+        return userRepository.findById(id).orElseThrow(() -> new RecordNotExistsException(id));
     }
 
     /**
@@ -93,10 +110,6 @@ public class UserService {
         return userRepository.save(old);
     }
 
-    public User get(String id) {
-        return userRepository.findById(id).orElseThrow(() -> new RecordNotExistsException(id));
-    }
-
     /**
      * 修改用户锁定状态
      *
@@ -141,6 +154,16 @@ public class UserService {
     }
 
     /**
+     * 查询用户所有授权菜单id
+     *
+     * @param id 用户id
+     * @return 所有授权菜单id
+     */
+    Iterable<String> queryUserAllMenuId(String id) {
+        return userRepository.findUserAllMenuId(id);
+    }
+
+    /**
      * 新用户注册
      *
      * @param user 新用户
@@ -167,6 +190,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    private final MenuRepository menuRepository;
     private final RoleRepository roleRepository;
     private final SecurityProperties securityProperties;
     private final UserRepository userRepository;

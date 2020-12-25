@@ -3,6 +3,7 @@ package com.byakuya.boot.factory.component.user;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Optional;
@@ -28,4 +29,7 @@ public interface UserRepository extends PagingAndSortingRepository<User, String>
 
     @EntityGraph("User.List")
     Page<User> queryAllByUsernameLikeOrPhoneLike(Pageable pageable, String username, String phone);
+
+    @Query("select m.id from User u,in(u.menuSet) m where u.id=?1")
+    Iterable<String> findUserAllMenuId(String id);
 }
