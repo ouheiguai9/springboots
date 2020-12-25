@@ -180,6 +180,11 @@ layui.config({
       case 'unlock':
         updateLocked(row);
         break;
+      case 'authorize':
+        feedback.open({
+          content: $('#menuContent')
+        });
+        break;
     }
   });
 

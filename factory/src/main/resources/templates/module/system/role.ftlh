@@ -32,15 +32,14 @@
 
     <script type="text/html" id="menuContent">
         <div class="authorize-card">
-            <div ></div>
-            <div class="layui-card-header">
+            <div class="authorize-card-header">
                 <div class="layui-btn-container">
                     <button class="layui-btn layui-btn-sm" lay-event="doAuthorizeSave">保存</button>
                     <button class="layui-btn layui-btn-sm" lay-event="doAuthorizeRest">重置</button>
                     <button class="layui-btn layui-btn-sm" lay-event="doAuthorizeCancel">取消</button>
                 </div>
             </div>
-            <div class="layui-card-body">
+            <div class="authorize-card-body">
                 <div id="menuTree"></div>
             </div>
         </div>

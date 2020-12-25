@@ -4,7 +4,7 @@ layui.config({
 }).extend({
   restful: 'restful/index'
   , feedback: 'feedback/index'
-}).use(['element', 'util', 'restful', 'table'], function () {
+}).use(['element', 'util', 'restful', 'table', 'tree', 'laytpl'], function () {
   var form = layui.form;
   var element = layui.element;
   var util = layui.util;
@@ -12,7 +12,9 @@ layui.config({
   var table = layui.table;
   var feedback = layui.feedback;
   var restful = layui.restful;
-  var currentRow;
+  var tree = layui.tree;
+  var laytpl = layui.laytpl;
+  var currentRow, menuData;
 
   /********************************组件渲染*********************************/
   table.render({
@@ -78,6 +80,25 @@ layui.config({
       $('#btnRest').click();
       $('section').toggleClass('layui-hide');
     }
+    , 'doAuthorizeSave': function () {
+      var checkData = tree.getChecked('menuTree');
+      restful.postForm('auth/api/roles/authorize', {
+        id: currentRow.data.id
+        , menuIdStr: getCheckedMenuId()
+      }, function () {
+        currentRow = undefined;
+        feedback.closeAll();
+        feedback.successMsg('修改成功');
+      });
+    }
+    , 'doAuthorizeRest': function () {
+      tree.reload('menuTree');
+      tree.setChecked('menuTree', currentRow.data.idArr);
+    }
+    , 'doAuthorizeCancel': function () {
+      currentRow = undefined;
+      feedback.closeAll();
+    }
   });
 
   table.on('sort(tableList)', function (obj) {
@@ -110,6 +131,10 @@ layui.config({
       case 'unlock':
         updateLocked(row);
         break;
+      case 'authorize':
+        currentRow = row;
+        authorize(row);
+        break;
     }
   });
 
@@ -120,5 +145,91 @@ layui.config({
       row.update(data);
       row.tr.toggleClass('layui-disabled').find('.j-locked-btn').toggleClass('layui-hide');
     });
+  }
+
+  function authorize(row) {
+    restful.get('auth/api/roles/menu/' + row.data.id, {}, function (idArr) {
+      currentRow.data.idArr = idArr;
+      if (!menuData) {
+        restful.get('auth/api/menus', {}, function (data) {
+          data.sort(function (a, b) {
+            // noinspection JSUnresolvedVariable
+            return b.ordering - a.ordering;
+          });
+          var treeData = new Array(data.length);
+          $.each(data, function (i, item) {
+            treeData[i] = menu2tree(item);
+          });
+          menuData = treeData;
+          openAuthorizePanel(menuData, idArr);
+        });
+      } else {
+        openAuthorizePanel(menuData, idArr);
+      }
+    });
+  }
+
+  function openAuthorizePanel(data, checkedMenuIdArr) {
+    laytpl($('#menuContent').html()).render({}, function (html) {
+      feedback.open({
+        type: 1
+        , title: false
+        , area: ['300px', '100%']
+        , offset: 'rt'
+        , closeBtn: 0
+        , anim: 1
+        , content: html
+        , success: function () {
+          renderMenu('menuTree', checkedMenuIdArr, data);
+        }
+      });
+    });
+  }
+
+  function renderMenu(id, checkedMenuIdArr, menuList) {
+    tree.render({
+      elem: '#' + id
+      , data: menuList
+      , showCheckbox: true
+      , id: id
+    });
+    tree.setChecked(id, checkedMenuIdArr);
+  }
+
+  function menu2tree(menu) {
+    var treeObj = {
+      id: menu.id
+      , title: menu.name
+      , disabled: menu.locked
+      , spread: !menu.locked
+    };
+    var children = menu.children;
+    if (children.length > 0) {
+      children.sort(function (a, b) {
+        // noinspection JSUnresolvedVariable
+        return b.ordering - a.ordering;
+      });
+      $.each(children, function (i, item) {
+        children[i] = menu2tree(item);
+      });
+      treeObj.children = children;
+    }
+    return treeObj;
+  }
+
+  function getCheckedMenuId() {
+    var checkedArray = tree.getChecked('menuTree');
+    var idArray = [];
+    while (checkedArray.length > 0) {
+      var menu = checkedArray.pop();
+      if (menu.children && menu.children.length > 0) {
+        $.each(menu.children, function (i, item) {
+          checkedArray.push(item);
+        })
+      } else {
+        idArray.push(menu.id);
+      }
+    }
+    return idArray.join(',');
   }
 });
