@@ -9,6 +9,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.LineBasedFrameDecoder;
+import io.netty.handler.codec.string.StringDecoder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -44,7 +46,10 @@ public class NettyServer {
                         @SuppressWarnings("RedundantThrows")
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(deviceChannelHandler);
+                            ch.pipeline()
+                                    .addLast(new LineBasedFrameDecoder(1024))
+                                    .addLast(new StringDecoder())
+                                    .addLast(deviceChannelHandler);
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)
@@ -52,7 +57,7 @@ public class NettyServer {
 
 
             ChannelFuture channelFuture = server.bind(nettyProperties.getPort()).sync();
-            if(channelFuture.isSuccess()) {
+            if (channelFuture.isSuccess()) {
                 log.info("netty 服务器监听端口[{}]!", nettyProperties.getPort());
             }
 //            channelFuture.channel().closeFuture().sync();
@@ -65,6 +70,6 @@ public class NettyServer {
 
     private final EventLoopGroup bossGroup = new NioEventLoopGroup();
     private final EventLoopGroup workerGroup = new NioEventLoopGroup();
-    private NettyProperties nettyProperties;
     private DeviceChannelHandler deviceChannelHandler;
+    private NettyProperties nettyProperties;
 }
