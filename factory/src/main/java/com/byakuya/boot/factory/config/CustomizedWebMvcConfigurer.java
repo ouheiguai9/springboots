@@ -19,7 +19,8 @@ import java.nio.file.Paths;
 public class CustomizedWebMvcConfigurer implements WebMvcConfigurer {
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
-        configurer.addPathPrefix(ConstantUtils.AUTH_REST_API_PREFIX, cls -> cls.isAnnotationPresent(AuthRestAPIController.class));
+        configurer.addPathPrefix(ConstantUtils.AUTH_REST_API_PREFIX, cls -> cls.isAnnotationPresent(AuthRestAPIController.class))
+                .addPathPrefix(ConstantUtils.OPEN_REST_API_PREFIX, cls -> cls.isAnnotationPresent(OpenRestAPIController.class));
     }
 
     @Override

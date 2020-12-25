@@ -16,7 +16,7 @@
     <script type="text/html" id="tableListToolBar">
         <div class="layui-btn-container">
             <div class="tool-bar-search-group">
-                <input type="text" id="search">
+                <input type="text" id="search" placeholder="用户名/手机号码">
                 <button class="layui-btn layui-btn-sm" lay-event="search">查询</button>
             </div>
             <button class="layui-btn layui-btn-sm" lay-event="create">添加</button>
@@ -24,14 +24,19 @@
     </script>
 
     <script type="text/html" id="tableListRowToolBar">
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        {{# if(d.locked) { }}
-        <a class="j-locked-btn j-row-disable layui-btn layui-btn-danger layui-btn-xs" lay-event="unlock">启用</a>
-        <a class="j-locked-btn layui-btn layui-btn-danger layui-btn-xs layui-hide" lay-event="lock">禁用</a>
-        {{# } else { }}
-        <a class="j-locked-btn layui-btn layui-btn-danger layui-btn-xs layui-hide" lay-event="unlock">启用</a>
-        <a class="j-locked-btn layui-btn layui-btn-danger layui-btn-xs" lay-event="lock">禁用</a>
-        {{# } }}
+        <div class="layui-btn-group">
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="j-locked-btn layui-btn layui-btn-normal layui-btn-xs{{ d.locked?' layui-hide':''}}"
+               lay-event="authorize">授权</a>
+            <a class="j-locked-btn layui-btn layui-btn-danger layui-btn-xs{{ d.locked?' j-row-disable':' layui-hide'}}"
+               lay-event="unlock">启用</a>
+            <a class="j-locked-btn layui-btn layui-btn-danger layui-btn-xs{{ d.locked?' layui-hide':''}}"
+               lay-event="lock">禁用</a>
+        </div>
+    </script>
+
+    <script type="text/html" id="menuContent">
+        <div>test</div>
     </script>
 </section>
 
