@@ -33,7 +33,17 @@ layui.config({
     , toolbar: '#tableListToolBar'
     , cols: [[
       {type: 'checkbox', fixed: 'left'}
-      , {field: 'type', width: 150, title: '设备类型', sort: true}
+      , {
+        field: 'type', width: 150, title: '设备类型', sort: true, templet: function (d) {
+          switch (d.type) {
+            case 'TriColorLed':
+              return '三色灯';
+            case 'RemoteUSB':
+              return '远程硬盘';
+          }
+          return d.type;
+        }
+      }
       , {field: 'serialNumber', width: 200, title: '主串号'}
       , {field: 'serialNumber1', width: 200, title: '辅助串号1'}
       , {field: 'serialNumber2', width: 200, title: '辅助串号1'}

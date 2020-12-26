@@ -76,6 +76,7 @@
                             <div class="layui-input-block">
                                 <select id="type" name="type">
                                     <option value="TriColorLed">三色灯</option>
+                                    <option value="RemoteUSB">远程硬盘</option>
                                 </select>
                             </div>
                         </div>
