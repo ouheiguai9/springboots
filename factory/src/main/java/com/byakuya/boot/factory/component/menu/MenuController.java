@@ -3,11 +3,13 @@ package com.byakuya.boot.factory.component.menu;
 import com.byakuya.boot.factory.config.AuthRestAPIController;
 import com.byakuya.boot.factory.exception.RecordNotExistsException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.stream.Stream;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by ganzl on 2020/12/22.
@@ -22,12 +24,12 @@ public class MenuController {
 
     @PostMapping
     public ResponseEntity<Menu> create(@Valid @RequestBody Menu menu) {
-        menu.getParentId().ifPresent(x -> menu.setParent(get(x)));
+        if (StringUtils.hasText(menu.getParentId())) {
+            menu.setParent(menuRepository.findById(menu.getParentId()).orElse(null));
+        } else {
+            menu.setParent(null);
+        }
         return ResponseEntity.ok(menuRepository.save(menu));
-    }
-
-    private Menu get(String id) {
-        return menuRepository.findById(id).orElseThrow(() -> new RecordNotExistsException(id));
     }
 
     @GetMapping(value = "/{id}")
@@ -35,9 +37,13 @@ public class MenuController {
         return ResponseEntity.ok(get(id));
     }
 
+    private Menu get(String id) {
+        return menuRepository.findById(id).orElseThrow(() -> new RecordNotExistsException(id));
+    }
+
     @GetMapping
-    public ResponseEntity<Stream<Menu>> read() {
-        return ResponseEntity.ok(menuRepository.findAll().stream().filter(x -> x.getParent() == null));
+    public ResponseEntity<List<Menu>> read() {
+        return ResponseEntity.ok(menuRepository.findAll().stream().filter(Menu::noParent).collect(Collectors.toList()));
     }
 
     @PutMapping
@@ -47,8 +53,10 @@ public class MenuController {
         old.setIcon(menu.getIcon());
         old.setDescription(menu.getDescription());
         old.setOrdering(menu.getOrdering());
-        if (!old.getParentId().equals(menu.getParentId())) {
-            old.setParent(menu.getParentId().map(this::get).orElse(null));
+        if (StringUtils.hasText(menu.getParentId())) {
+            old.setParent(menuRepository.findById(menu.getParentId()).orElse(null));
+        } else {
+            old.setParent(null);
         }
         return ResponseEntity.ok(menuRepository.save(old));
     }

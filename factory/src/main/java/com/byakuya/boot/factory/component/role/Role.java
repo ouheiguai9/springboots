@@ -3,6 +3,7 @@ package com.byakuya.boot.factory.component.role;
 import com.byakuya.boot.factory.SystemVersion;
 import com.byakuya.boot.factory.component.AbstractAuditableEntity;
 import com.byakuya.boot.factory.component.menu.Menu;
+import com.byakuya.boot.factory.component.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +20,7 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name = "T_SYS_ROLE")
-public class Role extends AbstractAuditableEntity<Role> {
+public class Role extends AbstractAuditableEntity<User> {
     private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;
     private String description;
     @Id

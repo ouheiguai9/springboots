@@ -61,18 +61,18 @@
         <div class="layui-logo"></div>
         <ul class="layui-nav layui-nav-tree">
             <#list topMenuList as menu>
-                <#if menu.getParentId().isPresent()>
+                <#if menu.getParentId()??>
                     <li data-name="home" class="layui-nav-item layui-nav-itemed j-href-menu" data-key="${menu.getId()}"
                         data-href="auth/page/${menu.getParent().getCode()}/${menu.getCode()}" data-target="inner">
                         <a href="javascript:void(1);" class="j-folder-menu">
-                            <i class="layui-icon ${menu.getIcon()}"></i>
+                            <i class="layui-icon layui-icon-menu-fill ${menu.getIcon()}"></i>
                             <cite>${menu.getName()}</cite>
                         </a>
                     </li>
                 <#else>
                     <li data-name="home" class="layui-nav-item layui-nav-itemed">
                         <a href="javascript:void(1);" class="j-folder-menu">
-                            <i class="layui-icon ${menu.getIcon()}"></i>
+                            <i class="layui-icon layui-icon-menu-fill ${menu.getIcon()}"></i>
                             <cite>${menu.getName()}</cite>
                         </a>
                         <dl class="layui-nav-child">

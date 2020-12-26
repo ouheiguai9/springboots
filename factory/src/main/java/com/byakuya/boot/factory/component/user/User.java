@@ -33,10 +33,10 @@ import java.util.stream.Collectors;
 @NamedEntityGraph(name = "User.Login"
         , attributeNodes = {
         @NamedAttributeNode(value = "roleSet", subgraph = "roleMenuSet")
-        , @NamedAttributeNode(value = "menuSet", subgraph = "userMenuSet")}
+        , @NamedAttributeNode(value = "menuSet", subgraph = "menuParent")}
         , subgraphs = {
-        @NamedSubgraph(name = "roleMenuSet", attributeNodes = @NamedAttributeNode("menuSet"))
-        , @NamedSubgraph(name = "userMenuSet", attributeNodes = @NamedAttributeNode("parent"))
+        @NamedSubgraph(name = "roleMenuSet", attributeNodes = @NamedAttributeNode(value = "menuSet", subgraph = "menuParent"))
+        , @NamedSubgraph(name = "menuParent", attributeNodes = @NamedAttributeNode("parent"))
 })
 @NamedEntityGraph(name = "User.List", attributeNodes = {@NamedAttributeNode("roleSet")})
 public class User extends AbstractAuditableEntity<User> {

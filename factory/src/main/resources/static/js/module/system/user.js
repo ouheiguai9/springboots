@@ -260,15 +260,7 @@ layui.config({
       currentRow.data.idArr = idArr;
       if (!menuData) {
         restful.get('auth/api/menus', {}, function (data) {
-          data.sort(function (a, b) {
-            // noinspection JSUnresolvedVariable
-            return b.ordering - a.ordering;
-          });
-          var treeData = new Array(data.length);
-          $.each(data, function (i, item) {
-            treeData[i] = menu2tree(item);
-          });
-          menuData = treeData;
+          menuData = $.map(data, menu2tree);
           openAuthorizePanel(menuData, idArr);
         });
       } else {
@@ -327,16 +319,10 @@ layui.config({
       , disabled: menu.locked
       , spread: !menu.locked
     };
-    var children = menu.children;
+    // noinspection JSUnresolvedVariable
+    var children = menu.orderChildren;
     if (children.length > 0) {
-      children.sort(function (a, b) {
-        // noinspection JSUnresolvedVariable
-        return b.ordering - a.ordering;
-      });
-      $.each(children, function (i, item) {
-        children[i] = menu2tree(item);
-      });
-      treeObj.children = children;
+      treeObj.children = $.map(children, menu2tree);
     }
     return treeObj;
   }

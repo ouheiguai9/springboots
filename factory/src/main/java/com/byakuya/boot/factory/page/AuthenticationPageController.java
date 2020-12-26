@@ -24,7 +24,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,8 +72,8 @@ public class AuthenticationPageController {
     @GetMapping("/")
     public String homePageUrl(@AuthenticationPrincipal AuthenticationUser user
             , Model model) {
-        List<Menu> topMenuList = menuRepository.findAll().stream().filter(x -> !x.getParentId().isPresent() && user.getAuthority().check(x.getCode())).sorted(Comparator.comparingInt(Menu::getOrdering).reversed()).collect(Collectors.toList());
-        topMenuList.forEach(menu -> menu.setOrderChildren(menu.getChildren().stream().filter(x -> user.getAuthority().check(menu.getCode(), x.getCode())).sorted(Comparator.comparingInt(Menu::getOrdering).reversed()).collect(Collectors.toList())));
+        List<Menu> topMenuList = menuRepository.findAll().stream().filter(x -> x.noParent() && user.getAuthority().check(x.getCode())).collect(Collectors.toList());
+        topMenuList.forEach(menu -> menu.setOrderChildren(menu.getOrderChildren().stream().filter(x -> user.getAuthority().check(menu.getCode(), x.getCode())).collect(Collectors.toList())));
         if (topMenuList.size() == 1) {
             topMenuList = new ArrayList<>(topMenuList.get(0).getOrderChildren());
         }
@@ -86,7 +85,7 @@ public class AuthenticationPageController {
         }
         model.addAttribute("topMenuList", topMenuList);
         model.addAttribute("nickname", nickname);
-        if(StringUtils.hasText(avatar)) {
+        if (StringUtils.hasText(avatar)) {
             model.addAttribute("avatar", avatar);
         }
         return "home";

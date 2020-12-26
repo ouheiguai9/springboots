@@ -2,7 +2,9 @@ package com.byakuya.boot.factory.component.menu;
 
 import com.byakuya.boot.factory.SystemVersion;
 import com.byakuya.boot.factory.component.AbstractAuditableEntity;
+import com.byakuya.boot.factory.component.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -10,9 +12,11 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by ganzl on 2020/12/18.
@@ -21,16 +25,32 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name = "T_SYS_MENU")
-@NamedEntityGraph(name = "Menu.Graph", attributeNodes = {@NamedAttributeNode("parent"), @NamedAttributeNode("children")})
-public class Menu extends AbstractAuditableEntity<Menu> {
+@NamedEntityGraph(name = "Menu.Graph", attributeNodes = {
+        @NamedAttributeNode("parent")
+        , @NamedAttributeNode(value = "children")
+})
+public class Menu extends AbstractAuditableEntity<User> {
     private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;
 
-    public Optional<String> getParentId() {
-        if (StringUtils.hasText(parentId)) return Optional.of(parentId);
-        return Optional.ofNullable(parent).map(Menu::getId);
+    @JsonProperty
+    public List<Menu> getOrderChildren() {
+        if (orderChildren == null) {
+            orderChildren = children.stream().sorted(Comparator.comparingInt(Menu::getOrdering).reversed()).collect(Collectors.toList());
+        }
+        return orderChildren;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent")
+    public String getParentId() {
+        if (StringUtils.hasText(parentId)) return parentId;
+        return Optional.ofNullable(parent).map(Menu::getId).orElse(null);
+    }
+
+    public boolean noParent() {
+        return parent == null;
+    }
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "parent")
     private Set<Menu> children;
     @NotBlank
     @Column(unique = true, updatable = false, nullable = false)
@@ -44,6 +64,7 @@ public class Menu extends AbstractAuditableEntity<Menu> {
     @NotBlank
     @Column(nullable = false)
     private String name;
+    @JsonIgnore
     @Transient
     private List<Menu> orderChildren;
     private int ordering;

@@ -54,7 +54,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             if (!role.isLocked()) menuSet.addAll(role.getMenuSet());
         }));
         Map<String, Set<String>> authorityMap = new HashMap<>();
-        menuSet.stream().filter(x -> x.getParentId().isPresent()).forEach(menu -> {
+        menuSet.forEach(menu -> {
             String module = menu.getParent().getCode();
             Set<String> exists = authorityMap.computeIfAbsent(module, k -> new HashSet<>());
             exists.add(menu.getCode());
