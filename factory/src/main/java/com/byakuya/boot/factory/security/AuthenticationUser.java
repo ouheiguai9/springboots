@@ -29,7 +29,7 @@ public class AuthenticationUser extends org.springframework.security.core.userde
 
     AuthenticationUser(SecurityProperties.Admin admin) {
         super(admin.getUsername(), admin.getPassword(), AuthorityUtils.NO_AUTHORITIES);
-        this.userId = admin.getUsername();
+        this.userId = null;
         this.admin = true;
         this.authority = CustomizedGrantedAuthority.SUPER;
     }
@@ -50,6 +50,7 @@ public class AuthenticationUser extends org.springframework.security.core.userde
     public boolean isAdmin() {
         return admin;
     }
+
     private final boolean admin;
     private final CustomizedGrantedAuthority authority;
     private final String userId;
