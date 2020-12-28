@@ -6,7 +6,7 @@
 </head>
 <body class="layui-layout-body layui-bg-gray">
 <div class="layui-admin-login-main" style="padding-top: 80px;">
-    <h2 class="layui-admin-login-header">智能工厂管理系统</h2>
+    <h2 class="layui-admin-login-header">智慧机床</h2>
     <form class="layui-form">
         <div class="layui-admin-login-error-info">${error!}</div>
         <div class="layui-form-item">

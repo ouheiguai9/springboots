@@ -1,6 +1,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>智能工厂</title>
+<title>智慧机床</title>
 <base href="${request.contextPath}/">
 <link rel="shortcut icon" type="image/ico" href="image/favicon.ico"/>
 <link rel="bookmark" href="image/favicon.ico"/>
