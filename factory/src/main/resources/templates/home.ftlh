@@ -70,7 +70,7 @@
                         </a>
                     </li>
                 <#else>
-                    <li data-name="home" class="layui-nav-item layui-nav-itemed">
+                    <li data-name="home" class="layui-nav-item<#if menu_index==0> layui-nav-itemed</#if>">
                         <a href="javascript:void(1);" class="j-folder-menu">
                             <i class="layui-icon layui-icon-menu-fill ${menu.getIcon()}"></i>
                             <cite>${menu.getName()}</cite>
