@@ -21,9 +21,6 @@ layui.config({
     , id: 'tableList'
     , url: tableUrl
     , parseData: function (rows) {
-      $.each(rows, function (i, row) {
-        row.rowNumber = (i + 1);
-      });
       tableRows = rows;
       return {
         'code': 0
@@ -34,7 +31,7 @@ layui.config({
     }
     , toolbar: '#tableListToolBar'
     , cols: [[
-      {field: 'rowNumber', width: 50, title: '序号'}
+      {type: 'numbers'}
       , {field: 'name', width: 200, title: '班次'}
       , {field: 'startTime', width: 200, title: '开始时间'}
       , {
@@ -92,10 +89,8 @@ layui.config({
   });
 
   function addRow() {
-    var rank = tableRows.length + 1;
     tableRows.push({
-      rowNumber: rank
-      , name: '第' + rank + '班'
+      name: '第' + (tableRows.length + 1) + '班'
       , startTime: ''
       , endTime: ''
     });
