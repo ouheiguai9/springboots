@@ -29,7 +29,7 @@ public class ScheduleController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> lockSchedule(@AuthenticationPrincipal AuthenticationUser user, @PathVariable String id) {
+    public ResponseEntity<Boolean> delete(@AuthenticationPrincipal AuthenticationUser user, @PathVariable String id) {
         scheduleRepository.delete(get(id, user));
         return ResponseEntity.ok(true);
     }
