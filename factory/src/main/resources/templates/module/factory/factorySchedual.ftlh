@@ -30,5 +30,5 @@
 </section>
 </body>
 <script src="plugin/layui/layui.js" type="text/javascript" charset="UTF-8"></script>
-<script src="js/module/factory/factorySchedule.js" type="text/javascript" charset="UTF-8"></script>
+<script src="js/module/factory/schedule.js" type="text/javascript" charset="UTF-8"></script>
 </html>
