@@ -2,6 +2,7 @@ package com.byakuya.boot.factory.component.user;
 
 import com.byakuya.boot.factory.component.UpdateGroup;
 import com.byakuya.boot.factory.config.AuthRestAPIController;
+import com.byakuya.boot.factory.jackson.DynamicJsonView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -50,6 +51,12 @@ public class UserController {
     @PostMapping("/authorize")
     public ResponseEntity<User> readRoleAllMenuId(@NotBlank String id, String menuIdStr) {
         return ResponseEntity.ok(userService.authorize(id, menuIdStr));
+    }
+
+    @GetMapping(value = "/simple")
+    @DynamicJsonView(include = {"id", "username", "phone", "nickname"}, type = User.class)
+    public ResponseEntity<Page<User>> readSimple(@PageableDefault Pageable pageable, String search) {
+        return ResponseEntity.ok(userService.queryListSimple(pageable, search));
     }
 
     @PutMapping

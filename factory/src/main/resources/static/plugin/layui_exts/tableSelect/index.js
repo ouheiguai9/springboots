@@ -40,16 +40,18 @@ layui.define(['layer', 'table'], function (exports) {
             $('<table />').attr('id', tableId).attr('lay-filter', tableId).appendTo(tableSelectContentJq);
             // noinspection JSValidateTypes
             table.render({
-              elem: '#' + tableId
-              , id: tableId
-              , url: option.url
-              , height: tableSelectContentJq.innerHeight() - 10
-              , size: 'sm'
-              , request: {
+              elem: '#' + tableId,
+              id: tableId,
+              url: option.url,
+              height: tableSelectContentJq.innerHeight() - 10,
+              size: 'sm',
+              request: {
                 pageName: 'page'
                 , limitName: 'size'
-              }
-              , parseData: function (res) {
+              },
+              toolbar: '<div><div class="layui-btn-container"><div class="tool-bar-search-group"><input type="text" id="tableSelectSearch"><button class="layui-btn layui-btn-sm" lay-event="search">查询</button></div></div></div>',
+              defaultToolbar: [],
+              parseData: function (res) {
                 // noinspection JSUnresolvedVariable
                 return {
                   'code': 0,
@@ -58,14 +60,27 @@ layui.define(['layer', 'table'], function (exports) {
                   'data': res.content
                 };
               }
-              , cols: [[
+              ,
+              cols: [[
                 {type: (option.multiple ? 'checkbox' : 'radio'), fixed: 'left'}
               ].concat(option.fields)]
-              , autoSort: false
-              , page: {
+              ,
+              autoSort: false
+              ,
+              page: {
                 curr: 0
                 , first: 0
                 , limit: option.limit
+              }
+            });
+
+            table.on('toolbar(' + tableId + ')', function (obj) {
+              if (obj.event === 'search') {
+                table.reload(tableId, {
+                  where: {
+                    search: $('#tableSelectSearch').val()
+                  }
+                });
               }
             });
           },
@@ -89,8 +104,8 @@ layui.define(['layer', 'table'], function (exports) {
         , width: '600px'
         , height: '400px'
         , showField: 'nickname'
-        , url: 'auth/api/users'
-        , limit: 10
+        , url: 'auth/api/users/simple'
+        , limit: 5
         , fields: [
           {field: 'username', width: 100, title: '用户名'}
           , {field: 'nickname', title: '名称'}

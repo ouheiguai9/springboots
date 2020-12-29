@@ -154,6 +154,21 @@ public class UserService {
     }
 
     /**
+     * 查询用户列表
+     *
+     * @param pageable 分页参数
+     * @param search   过滤条件
+     * @return 分页用户列表
+     */
+    Page<User> queryListSimple(Pageable pageable, String search) {
+        if (StringUtils.hasText(search)) {
+            search = "%" + StringUtils.trimWhitespace(search) + "%";
+            return userRepository.findAllSimple(pageable, search, search, search);
+        }
+        return userRepository.findAllByLockedFalse(pageable);
+    }
+
+    /**
      * 查询用户所有授权菜单id
      *
      * @param id 用户id
