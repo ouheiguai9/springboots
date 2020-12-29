@@ -55,7 +55,7 @@
         </div>
         <div class="layui-card-body">
             <form class="layui-form layui-form-pane" lay-filter="editForm">
-                <input type="hidden" name="id">
+                <input type="text" name="id" class="layui-hide">
                 <div class="layui-row">
                     <div class="layui-form-item layui-col-md6">
                         <label class="layui-form-label" for="txtName">角色名称：</label>

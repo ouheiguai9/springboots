@@ -25,7 +25,7 @@
     vertical-align: middle;
 }
 
-.layui-fake-input {
+.layui-fake-input, .layui-fake-select {
     box-sizing: border-box;
     display: block;
     width: 100%;
@@ -36,6 +36,29 @@
     background-color: #f0f0f0;
     border-radius: 0 2px 2px 0;
     outline: 0;
+}
+
+.layui-fake-select {
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.layui-fake-select .select-item {
+    display: inline-block;
+    height: 28px;
+    padding: 0 5px;
+    margin-right: 10px;
+    line-height: 28px;
+    background-color: #009688;
+    color: #fff;
+}
+
+.layui-fake-select .select-item span {
+    vertical-align: middle;
+}
+
+.layui-fake-select .select-item .select-item-desc {
+    margin-right: 5px;
 }
 
 .authorize-card {
@@ -72,4 +95,12 @@
     line-height: 28px;
     padding: 0 15px;
     box-sizing: border-box;
+}
+
+.table-select-content {
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    padding: 0 15px;
+    overflow: hidden;
 }

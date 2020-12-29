@@ -60,7 +60,7 @@
         </div>
         <div class="layui-card-body">
             <form class="layui-form layui-form-pane" lay-filter="editForm">
-                <input type="hidden" id="userId" name="id">
+                <input type="text" id="userId" name="id" class="layui-hide">
                 <div class="layui-row">
                     <div class="layui-col-md6">
                         <div class="layui-form-item">

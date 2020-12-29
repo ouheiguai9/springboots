@@ -38,7 +38,7 @@
         </div>
         <div class="layui-card-body">
             <form class="layui-form layui-form-pane" lay-filter="editForm">
-                <input type="hidden" name="id">
+                <input type="text" name="id" class="layui-hide">
                 <div class="layui-row">
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
@@ -94,10 +94,10 @@
                     </div>
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
-                            <label class="layui-form-label" for="consumer">买家：</label>
+                            <label class="layui-form-label" for="consumerId">收货方：</label>
                             <div class="layui-input-block">
-                                <input id="consumer" type="text" name="consumer" class="layui-input"
-                                       placeholder="买家">
+                                <input id="consumerId" type="text" name="consumerId" class="layui-input"
+                                       placeholder="收货方">
                             </div>
                         </div>
                     </div>

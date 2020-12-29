@@ -9,6 +9,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 /**
  * Created by ganzl on 2020/12/26.
@@ -19,7 +21,18 @@ import javax.validation.constraints.NotBlank;
 @Table(name = "T_SYS_DEVICE")
 public class Device extends AbstractAuditableEntity<User> {
     private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;
-    private String consumer;
+
+    public String getConsumerId() {
+        return Optional.ofNullable(consumer).map(User::getId).orElse(null);
+    }
+
+    public String getConsumerName() {
+        return Optional.ofNullable(consumer).map(User::getNickname).orElse(null);
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "consumer_id")
+    private User consumer;
     private String description;
     @Id
     @GenericGenerator(name = "system_uuid", strategy = "uuid")
@@ -31,7 +44,19 @@ public class Device extends AbstractAuditableEntity<User> {
     private String serialNumber;
     private String serialNumber1;
     private String serialNumber2;
-    @NotBlank
+    @NotNull
     @Column(nullable = false)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private DeviceType type;
+
+    public enum DeviceType {
+        TriColorLed("三色灯"), RemoteUSB("远程硬盘");
+
+        DeviceType(String name) {
+            this.name = name;
+        }
+
+        @Getter
+        private String name;
+    }
 }

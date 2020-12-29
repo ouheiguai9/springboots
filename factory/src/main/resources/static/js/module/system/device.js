@@ -4,7 +4,8 @@ layui.config({
 }).extend({
   restful: 'restful/index'
   , feedback: 'feedback/index'
-}).use(['element', 'util', 'restful', 'table'], function () {
+  , tableSelect: 'tableSelect/index'
+}).use(['element', 'util', 'restful', 'tableSelect'], function () {
   var form = layui.form;
   var element = layui.element;
   var util = layui.util;
@@ -12,9 +13,11 @@ layui.config({
   var table = layui.table;
   var feedback = layui.feedback;
   var restful = layui.restful;
+  var tableSelect = layui.tableSelect;
   var currentRow;
 
   /********************************组件渲染*********************************/
+  tableSelect.renderUser('consumerId');
   table.render({
     elem: '#tableList'
     , url: 'auth/api/devices'
@@ -48,7 +51,7 @@ layui.config({
       , {field: 'serialNumber1', width: 200, title: '辅助串号1'}
       , {field: 'serialNumber2', width: 200, title: '辅助串号1'}
       , {field: 'producer', width: 150, title: '生产商'}
-      , {field: 'consumer', width: 150, title: '买家'}
+      , {field: 'consumerName', width: 150, title: '收货方'}
       , {field: 'createdDate', width: 200, title: '创建时间', align: 'center', sort: true}
       , {
         field: 'locked', width: 120, title: '状态', align: 'center', sort: true, templet: function (d) {
@@ -71,9 +74,13 @@ layui.config({
   /********************************事件绑定*********************************/
   form.on('submit(editForm)', function (params) {
     var obj = params.field;
+    // noinspection JSUnresolvedVariable
+    if (obj.consumerId) {
+      obj.consumer = {id: obj.consumerId};
+    }
     if (currentRow) {
-      restful.put('auth/api/devices', obj, function () {
-        currentRow.update(obj);
+      restful.put('auth/api/devices', obj, function (data) {
+        currentRow.update(data);
         feedback.successMsg('修改成功');
       });
     } else {
@@ -116,6 +123,10 @@ layui.config({
       case 'edit':
         currentRow = row;
         form.val('editForm', row.data);
+        if (row.data.consumer) {
+          // noinspection JSUnresolvedVariable
+          tableSelect.resetValue('consumerId', row.data.consumerId, row.data.consumerName);
+        }
         $('section').toggleClass('layui-hide');
         break;
       case 'lock':
