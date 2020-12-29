@@ -1,5 +1,8 @@
 package com.byakuya.boot.factory.component.device;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Optional;
@@ -8,5 +11,11 @@ import java.util.Optional;
  * Created by ganzl on 2020/12/26.
  */
 public interface DeviceRepository extends PagingAndSortingRepository<Device, String> {
+    @EntityGraph("Device.List")
+    Page<Device> findAll(Pageable pageable);
+
+    @EntityGraph("Device.List")
+    Page<Device> findAllByProducerLikeOrConsumer_nicknameLikeOrConsumer_phoneLike(Pageable pageable, String producer, String nickname, String phone);
+
     Optional<Device> findByIdAndConsumer_idAndType(String id, String userId, Device.DeviceType type);
 }

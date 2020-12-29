@@ -114,6 +114,12 @@ layui.config({
   table.on('toolbar(tableList)', function (obj) {
     if (obj.event === 'create') {
       $('section').toggleClass('layui-hide');
+    } else if (obj.event === 'search') {
+      table.reload('tableList', {
+        where: {
+          search: $('#search').val()
+        }
+      });
     }
   });
 

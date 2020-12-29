@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,7 +51,11 @@ public class DeviceController {
 
     @GetMapping
     @DynamicJsonView(exclude = {"consumer"}, type = Device.class)
-    public ResponseEntity<Page<Device>> read(@PageableDefault Pageable pageable) {
+    public ResponseEntity<Page<Device>> read(@PageableDefault Pageable pageable, String search) {
+        if (StringUtils.hasText(search)) {
+            search = "%" + StringUtils.trimWhitespace(search) + "%";
+            return ResponseEntity.ok(deviceRepository.findAllByProducerLikeOrConsumer_nicknameLikeOrConsumer_phoneLike(pageable, search, search, search));
+        }
         return ResponseEntity.ok(deviceRepository.findAll(pageable));
     }
 

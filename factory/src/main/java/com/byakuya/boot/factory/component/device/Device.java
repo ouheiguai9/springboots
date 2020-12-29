@@ -19,6 +19,7 @@ import java.util.Optional;
 @Getter
 @Entity
 @Table(name = "T_SYS_DEVICE")
+@NamedEntityGraph(name = "Device.List", attributeNodes = {@NamedAttributeNode("consumer")})
 public class Device extends AbstractAuditableEntity<User> {
     private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;
 
