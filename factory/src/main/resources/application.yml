@@ -2,7 +2,6 @@ server:
   port: 443
   servlet:
     application-display-name: '智慧机床'
-    context-path: '/factory'
     session:
       timeout: 30m
   ssl:
