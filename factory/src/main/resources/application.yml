@@ -26,9 +26,12 @@ spring:
     time-zone: GMT+8
     date-format: 'yyyy-MM-dd HH:mm:ss'
   activemq:
-    broker-url: 'mqtt://127.0.0.1:9527'
+    broker-url: 'tcp://127.0.0.1:61616'
     user: factory
     password: factory!123456
+    in-memory: false
+  jms:
+    pub-sub-domain: true
 logging:
   config: classpath:logback-spring.xml
 
