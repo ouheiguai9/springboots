@@ -5,8 +5,8 @@ spring:
     #    username: root
     #    password: root
     #    platform: h2
-    url: jdbc:mysql://172.17.0.13/factory?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8
-    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost/factory?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8
+    driver-class-name: com.mysql.cj.jdbc.Driver
     username: factory
     password: factory
     platform: mysql

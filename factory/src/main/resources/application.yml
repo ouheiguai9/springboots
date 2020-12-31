@@ -1,18 +1,15 @@
 server:
-  port: 443
+  port: 80
   servlet:
     application-display-name: '智慧机床'
     session:
       timeout: 30m
-  ssl:
-    key-store: /root/ssl/Tomcat/www.xigumes.com.jks
-    key-store-password: fnpfdz089o0o0yv
-    key-store-type: JKS
-    enabled: true
+    context-path: '/factory'
 
 spring:
   profiles:
-    active: pro,database,system
+    active: pro
+    include: database,system
   messages:
     basename: i18n/error_message
     encoding: UTF-8
@@ -26,9 +23,9 @@ spring:
     time-zone: GMT+8
     date-format: 'yyyy-MM-dd HH:mm:ss'
   activemq:
-    broker-url: 'tcp://127.0.0.1:61616'
-    user: factory
-    password: factory!123456
+    broker-url: 'tcp://www.xigumes.com:61616'
+    user: 'factory'
+    password: 'factory!123456'
     in-memory: false
   jms:
     pub-sub-domain: true
