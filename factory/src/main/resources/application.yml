@@ -8,8 +8,7 @@ server:
 
 spring:
   profiles:
-    active: pro
-    include: database,system
+    include: database,system,pro
   messages:
     basename: i18n/error_message
     encoding: UTF-8
