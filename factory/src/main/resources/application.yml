@@ -22,12 +22,14 @@ spring:
     time-zone: GMT+8
     date-format: 'yyyy-MM-dd HH:mm:ss'
   activemq:
-    broker-url: 'tcp://www.xigumes.com:61616'
+    broker-url: 'tcp://127.0.0.1:61616'
     user: 'factory'
     password: 'factory!123456'
     in-memory: false
   jms:
-    pub-sub-domain: true
+    listener:
+      concurrency: 1
+      max-concurrency: 20
 logging:
   config: classpath:logback-spring.xml
 
