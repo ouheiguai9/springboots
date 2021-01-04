@@ -34,7 +34,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             rtnVal = new AuthenticationUser(securityProperties.getAdmin());
         } else {
             User user = userService.loadUser(username).orElseThrow(() -> new UsernameNotFoundException(username));
-            LocalDateTime now = LocalDateTime.now(), begin = user.getBeginValidPeriod(), end = user.getEndValidPeriod(), last = user.getLastPasswordModifiedDate();
+            LocalDateTime begin = user.getBeginValidPeriod(), now = LocalDateTime.now(), end = user.getEndValidPeriod(), last = user.getLastPasswordModifiedDate();
             boolean isExpired = now.isBefore(begin) || (end != null && now.isAfter(end));
             boolean isExpiredPassword = last == null || now.isAfter(last.plusDays(securityProperties.getPasswordValidPeriod()));
             rtnVal = new AuthenticationUser(user.getId(), user.getUsername(), user.getPassword(), !user.isLocked(), !isExpired, !isExpiredPassword, !user.isLocked(), extractGrantedAuthority(user));
