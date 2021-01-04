@@ -4,6 +4,7 @@
 <head>
     <#include "include/common_head_tpt.ftlh">
     <link href="css/index.css" rel="stylesheet" type="text/css">
+    <link href="css/crud.css" rel="stylesheet" type="text/css">
 </head>
 <body class="layui-admin layui-layout-body layui-bg-gray layui-unselect">
 <header>
@@ -49,6 +50,9 @@
                     </dd>
                     <hr>
                 </#if>
+                <dd lay-unselect>
+                    <a id="setHomePage" href="javascript:void(1);">设置首页</a>
+                </dd>
                 <dd lay-unselect lay-click-event="logout">
                     <a href="javascript:void(1);" style="color: #ff5722; text-align: center;">退出</a>
                 </dd>
@@ -106,15 +110,27 @@
     </div>
     <div class="layui-tab layui-tab-brief" lay-unauto lay-allowClose="true" lay-filter="lay-admin-tabs">
         <ul class="layui-tab-title">
-            <li class="layui-this"><i class="layui-icon layui-icon-home"></i></li>
+            <li class="layui-this" lay-id="home"><i class="layui-icon layui-icon-home"></i></li>
         </ul>
     </div>
 </section>
 <section class="layui-body">
     <div class="page-tabs-body-item">
-        <iframe src="home" frameborder="0" class="iframe-item"></iframe>
+        <iframe id="homeIframe" frameborder="0" class="iframe-item"></iframe>
     </div>
 </section>
+<script type="text/html" id="menuContent">
+    <div class="authorize-card">
+        <div class="authorize-card-header">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-sm" lay-click-event="cancelSetHomePage">取消</button>
+            </div>
+        </div>
+        <div class="authorize-card-body">
+            <div id="menuTree"></div>
+        </div>
+    </div>
+</script>
 </body>
 <script src="plugin/layui/layui.js" type="text/javascript" charset="UTF-8"></script>
 <script src="js/index.js" type="text/javascript" charset="UTF-8"></script>

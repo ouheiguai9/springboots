@@ -4,12 +4,16 @@ layui.config({
 }).extend({
   restful: 'restful/index'
   , feedback: 'feedback/index'
-}).use(['element', 'util', 'restful'], function () {
+}).use(['element', 'util', 'restful', 'tree', 'laytpl'], function () {
   var element = layui.element;
   var util = layui.util;
   var $ = layui.$;
   var feedback = layui.feedback;
+  var restful = layui.restful;
+  var tree = layui.tree;
+  var laytpl = layui.laytpl;
   var pageTab = new PageTab();
+  var treeData, myHomePageUrlKey = 'myHomePageUrl';
 
   /********************************组件渲染*********************************/
 
@@ -52,15 +56,99 @@ layui.config({
     pageTab.addPageTab(param);
   });
 
+  $('#setHomePage').on('click', function () {
+    if (!treeData) {
+      restful.get('authMenus', {}, function (data) {
+        treeData = $.map(data, menu2tree);
+        openMenuPanel(treeData);
+      });
+    } else {
+      openMenuPanel(treeData);
+    }
+  });
+
+  /**
+   * 打开菜单选择界面
+   * @param data 菜单树数据
+   */
+  function openMenuPanel(data) {
+    laytpl($('#menuContent').html()).render({}, function (html) {
+      feedback.open({
+        type: 1
+        , title: false
+        , area: ['300px', '100%']
+        , offset: 'rt'
+        , closeBtn: 0
+        , anim: 1
+        , content: html
+        , success: function () {
+          renderMenu('menuTree', data);
+        }
+      });
+    });
+  }
+
+  /**
+   * 渲染树形组件
+   * @param id domId
+   * @param menuList  所有菜单
+   */
+  function renderMenu(id, menuList) {
+    tree.render({
+      elem: '#' + id
+      , onlyIconControl: true
+      , data: menuList
+      , id: id
+      , click: function (treeObj) {
+        var menu = treeObj.data;
+        if (menu.children && menu.children.length > 0) {
+          feedback.tips('目录不能选', treeObj.elem);
+          return;
+        }
+        feedback.confirm('确定设置为首页', function () {
+          feedback.closeAll();
+          localStorage.setItem(myHomePageUrlKey, menu.url);
+          element.tabChange(pageTab.layTabFilter, 'home');
+          refresh();
+        });
+      }
+    });
+  }
+
+  /**
+   * 将菜单对象转换为树形对象,递归实现
+   * @param menu
+   * @return {{disabled: boolean, id: string, title: string, spread: boolean}}
+   */
+  function menu2tree(menu) {
+    var treeObj = {
+      id: menu.id
+      , title: menu.name
+      , disabled: menu.locked
+      , spread: !menu.locked
+    };
+    // noinspection JSUnresolvedVariable
+    var children = menu.orderChildren;
+    if (children.length > 0) {
+      treeObj.children = $.map(children, function (subMenu) {
+        var sub = menu2tree(subMenu);
+        sub.url = 'auth/page/' + menu.code + '/' + subMenu.code;
+        return sub;
+      });
+    }
+    return treeObj;
+  }
+
+  window.openSetHomePage = function () {
+    $('#setHomePage').click();
+  };
+
   util.event('lay-click-event', {
     flexible: function (jq) {
       jq.children('i').toggleClass('layui-icon-shrink-right').toggleClass('layui-icon-spread-left');
       $('.layui-admin').toggleClass('layui-admin-shrink');
     }
-    , refresh: function () {
-      var thisUrl = pageTab.pages[pageTab.selectedIndex].url;
-      pageTab.jqBody.find('div.page-tabs-body-item').eq(pageTab.selectedIndex).find('iframe').attr('src', thisUrl);
-    }
+    , refresh: refresh
     , fullscreen: function (jq) {
       var fullClass = 'layui-icon-screen-full';
       var restoreClass = 'layui-icon-screen-restore';
@@ -98,7 +186,26 @@ layui.config({
         location.href = 'logout';
       });
     }
+    , cancelSetHomePage: function () {
+      feedback.closeAll();
+    }
   });
+
+  /**
+   * 刷新当前页
+   */
+  function refresh() {
+    var thisUrl;
+    if (pageTab.selectedIndex === 0) {
+      thisUrl = localStorage.getItem(myHomePageUrlKey);
+      if (!thisUrl) {
+        thisUrl = "home";
+      }
+    } else {
+      thisUrl = pageTab.pages[pageTab.selectedIndex].url;
+    }
+    pageTab.jqBody.find('div.page-tabs-body-item').eq(pageTab.selectedIndex).find('iframe').attr('src', thisUrl);
+  }
 
   /**
    * 全屏
@@ -117,6 +224,8 @@ layui.config({
     // noinspection JSUnresolvedVariable
     document.exitFullscreen ? document.exitFullscreen() : document.mozCancelFullScreen ? document.mozCancelFullScreen() : document.webkitCancelFullScreen ? document.webkitCancelFullScreen() : document.msExitFullscreen && document.msExitFullscreen()
   }
+
+  refresh();
 
   function PageTab() {
     this.layTabFilter = 'lay-admin-tabs';

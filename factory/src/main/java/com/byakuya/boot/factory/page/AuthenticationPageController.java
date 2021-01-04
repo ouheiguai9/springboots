@@ -7,6 +7,7 @@ import com.byakuya.boot.factory.component.user.UserService;
 import com.byakuya.boot.factory.config.property.CaptchaProperties;
 import com.byakuya.boot.factory.config.property.SecurityProperties;
 import com.byakuya.boot.factory.security.AuthenticationUser;
+import com.byakuya.boot.factory.security.CustomizedGrantedAuthority;
 import com.byakuya.boot.factory.security.TextCaptcha;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -69,11 +70,33 @@ public class AuthenticationPageController {
         return "changePassword";
     }
 
+    @GetMapping("/home")
+    public String defaultHomePageUrl() {
+        return "home";
+    }
+
+    @GetMapping("/authMenus")
+    @ResponseBody
+    public ResponseEntity<List<Menu>> getAuthMenuList(@AuthenticationPrincipal AuthenticationUser user) {
+        return ResponseEntity.ok(getAuthMenus(user.getAuthority()));
+    }
+
+    /**
+     * 获取已经授权的菜单
+     *
+     * @param authority 权限
+     * @return 已经授权的菜单
+     */
+    private List<Menu> getAuthMenus(CustomizedGrantedAuthority authority) {
+        List<Menu> menuList = menuRepository.findAll().stream().filter(x -> x.noParent() && authority.check(x.getCode())).collect(Collectors.toList());
+        menuList.forEach(menu -> menu.setOrderChildren(menu.getOrderChildren().stream().filter(x -> authority.check(menu.getCode(), x.getCode())).collect(Collectors.toList())));
+        return menuList;
+    }
+
     @GetMapping("/")
     public String homePageUrl(@AuthenticationPrincipal AuthenticationUser user
             , Model model) {
-        List<Menu> topMenuList = menuRepository.findAll().stream().filter(x -> x.noParent() && user.getAuthority().check(x.getCode())).collect(Collectors.toList());
-        topMenuList.forEach(menu -> menu.setOrderChildren(menu.getOrderChildren().stream().filter(x -> user.getAuthority().check(menu.getCode(), x.getCode())).collect(Collectors.toList())));
+        List<Menu> topMenuList = getAuthMenus(user.getAuthority());
         if (topMenuList.size() == 1) {
             topMenuList = new ArrayList<>(topMenuList.get(0).getOrderChildren());
         }
