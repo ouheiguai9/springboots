@@ -199,7 +199,7 @@ layui.config({
     if (pageTab.selectedIndex === 0) {
       thisUrl = localStorage.getItem(myHomePageUrlKey);
       if (!thisUrl) {
-        thisUrl = "home";
+        thisUrl = 'home';
       }
     } else {
       thisUrl = pageTab.pages[pageTab.selectedIndex].url;
