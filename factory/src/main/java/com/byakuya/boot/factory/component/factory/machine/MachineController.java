@@ -4,6 +4,7 @@ import com.byakuya.boot.factory.component.device.Device;
 import com.byakuya.boot.factory.component.device.DeviceRepository;
 import com.byakuya.boot.factory.config.AuthRestAPIController;
 import com.byakuya.boot.factory.exception.RecordNotExistsException;
+import com.byakuya.boot.factory.jackson.DynamicJsonView;
 import com.byakuya.boot.factory.security.AuthenticationUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -46,6 +48,12 @@ public class MachineController {
 
     private Machine get(String id, AuthenticationUser user) {
         return machineRepository.findByIdAndCreatedBy_id(id, user.getUserId()).orElseThrow(() -> new RecordNotExistsException(id));
+    }
+
+    @GetMapping("/device")
+    @DynamicJsonView(exclude = {"id", "serialNumber"}, type = Device.class)
+    public ResponseEntity<List<Device>> read(@AuthenticationPrincipal AuthenticationUser user, Device.DeviceType type) {
+        return ResponseEntity.ok(deviceRepository.findAllByConsumer_idAndTypeAndLockedFalse(user.getUserId(), type));
     }
 
     @GetMapping

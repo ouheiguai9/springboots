@@ -4,8 +4,7 @@ layui.config({
 }).extend({
   restful: 'restful/index'
   , feedback: 'feedback/index'
-  , tableSelect: 'tableSelect/index'
-}).use(['element', 'util', 'restful', 'tableSelect'], function () {
+}).use(['element', 'util', 'restful', 'table'], function () {
   var form = layui.form;
   var element = layui.element;
   var util = layui.util;
@@ -13,11 +12,9 @@ layui.config({
   var table = layui.table;
   var feedback = layui.feedback;
   var restful = layui.restful;
-  var tableSelect = layui.tableSelect;
   var currentRow;
 
   /********************************组件渲染*********************************/
-  tableSelect.renderUser('consumerId');
   table.render({
     elem: '#tableList'
     , url: 'auth/api/factory/machines'
@@ -111,12 +108,14 @@ layui.config({
     switch (row.event) {
       case 'edit':
         currentRow = row;
-        form.val('editForm', row.data);
-        if (row.data.consumer) {
-          // noinspection JSUnresolvedVariable
-          tableSelect.resetValue('consumerId', row.data.consumerId, row.data.consumerName);
-        }
-        $('section').toggleClass('layui-hide');
+        restful.get('auth/api/factory/machines/device', {type: 'TriColorLed'}, function (data) {
+          var selectJq = $('#triColorLEDId').empty();
+          $.each(data, function (i, item) {
+            $('<option value="' + item.id + '">' + item.serialNumber + '</option>').appendTo(selectJq);
+          });
+          form.val('editForm', row.data);
+          $('section').toggleClass('layui-hide');
+        });
         break;
       case 'delete':
         deleteRow(row);

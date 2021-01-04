@@ -80,8 +80,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="triColorLEDId">三色灯：</label>
                             <div class="layui-input-block">
-                                <input id="triColorLEDId" type="text" name="triColorLEDId" class="layui-input"
-                                       placeholder="三色灯">
+                                <select id="triColorLEDId" name="triColorLEDId"></select>
                             </div>
                         </div>
                     </div>

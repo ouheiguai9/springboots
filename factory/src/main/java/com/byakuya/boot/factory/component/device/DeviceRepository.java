@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -18,4 +19,6 @@ public interface DeviceRepository extends PagingAndSortingRepository<Device, Str
     Page<Device> findAllByProducerLikeOrConsumer_nicknameLikeOrConsumer_phoneLike(Pageable pageable, String producer, String nickname, String phone);
 
     Optional<Device> findByIdAndConsumer_idAndType(String id, String userId, Device.DeviceType type);
+
+    List<Device> findAllByConsumer_idAndTypeAndLockedFalse(String userId, Device.DeviceType type);
 }
