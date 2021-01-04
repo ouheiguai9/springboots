@@ -9,4 +9,7 @@ layui.use(['form', 'jquery'], function () {
   $('div.u-menu-item').on('click', function () {
     window.location.href = this.dataset.href;
   });
+  $('img.layui-admin-login-captcha').on('click', function () {
+    $(this).prop('src', 'captcha?r=' + Math.random());
+  });
 });

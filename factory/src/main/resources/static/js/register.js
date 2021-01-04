@@ -14,6 +14,9 @@ layui.config({
 
 
   /********************************事件绑定*********************************/
+  $('img.layui-admin-login-captcha').on('click', function () {
+    $(this).prop('src', 'captcha?r=' + Math.random());
+  });
   form.on('submit()', function (params) {
     var obj = params.field;
     obj.detail = {

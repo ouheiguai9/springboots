@@ -36,6 +36,7 @@
 .layui-admin-login-captcha {
     width: 100%;
     max-height: 38px;
+    cursor: pointer;
 }
 
 .layui-admin-login-error-info {
