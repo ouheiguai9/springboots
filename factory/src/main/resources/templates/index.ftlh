@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <#include "include/common_head_tpt.ftlh">
-    <link href="css/home.css" rel="stylesheet" type="text/css">
+    <link href="css/index.css" rel="stylesheet" type="text/css">
 </head>
 <body class="layui-admin layui-layout-body layui-bg-gray layui-unselect">
 <header>
@@ -112,10 +112,10 @@
 </section>
 <section class="layui-body">
     <div class="page-tabs-body-item">
-        <iframe src="auth/page/system/role" frameborder="0" class="iframe-item"></iframe>
+        <iframe src="home" frameborder="0" class="iframe-item"></iframe>
     </div>
 </section>
 </body>
 <script src="plugin/layui/layui.js" type="text/javascript" charset="UTF-8"></script>
-<script src="js/home.js" type="text/javascript" charset="UTF-8"></script>
+<script src="js/index.js" type="text/javascript" charset="UTF-8"></script>
 </html>

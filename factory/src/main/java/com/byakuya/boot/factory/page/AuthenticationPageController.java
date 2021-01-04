@@ -88,7 +88,7 @@ public class AuthenticationPageController {
         if (StringUtils.hasText(avatar)) {
             model.addAttribute("avatar", avatar);
         }
-        return "home";
+        return "index";
     }
 
     @GetMapping("/login")
