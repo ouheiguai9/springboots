@@ -22,3 +22,5 @@ spring:
     in-memory: false
   jpa:
     show-sql: false
+  profiles:
+    active: pro
