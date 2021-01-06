@@ -8,7 +8,7 @@ server:
 
 spring:
   profiles:
-    include: database,system
+    include: database,system,pro
     active: dev
   messages:
     basename: i18n/error_message
