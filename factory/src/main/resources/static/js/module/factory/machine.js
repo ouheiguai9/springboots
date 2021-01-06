@@ -93,7 +93,7 @@ layui.config({
   //监听头部工具条
   table.on('toolbar(tableList)', function (obj) {
     if (obj.event === 'create') {
-      $('section').toggleClass('layui-hide');
+      renderLedSelect();
     } else if (obj.event === 'search') {
       table.reload('tableList', {
         where: {
@@ -108,20 +108,28 @@ layui.config({
     switch (row.event) {
       case 'edit':
         currentRow = row;
-        restful.get('auth/api/factory/machines/device', {type: 'TriColorLed'}, function (data) {
-          var selectJq = $('#triColorLEDId').empty();
-          $.each(data, function (i, item) {
-            $('<option value="' + item.id + '">' + item.serialNumber + '</option>').appendTo(selectJq);
-          });
-          form.val('editForm', row.data);
-          $('section').toggleClass('layui-hide');
-        });
+        renderLedSelect();
         break;
       case 'delete':
         deleteRow(row);
         break;
     }
   });
+
+  function renderLedSelect() {
+    restful.get('auth/api/factory/machines/triColorLED', {}, function (data) {
+      var selectJq = $('#triColorLEDId').empty();
+      $.each(data, function (i, item) {
+        $('<option value="' + item.id + '">' + item.serialNumber + '</option>').appendTo(selectJq);
+      });
+      if (currentRow) {
+        form.val('editForm', currentRow.data);
+      } else {
+        form.val('editForm', {});
+      }
+      $('section').toggleClass('layui-hide');
+    });
+  }
 
   function deleteRow(row) {
     feedback.confirm('确定删除?', function (index) {

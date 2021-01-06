@@ -4,6 +4,8 @@ import com.byakuya.boot.factory.SystemVersion;
 import com.byakuya.boot.factory.component.AbstractAuditableEntity;
 import com.byakuya.boot.factory.component.device.Device;
 import com.byakuya.boot.factory.component.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -19,8 +21,19 @@ import java.util.Optional;
 @Getter
 @Entity
 @Table(name = "T_APP_FACTORY_MACHINE")
+@NamedEntityGraph(name = "Machine.List", attributeNodes = {@NamedAttributeNode("triColorLED")})
 public class Machine extends AbstractAuditableEntity<User> {
     private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;
+
+    @JsonIgnore
+    Device getTriColorLED() {
+        return triColorLED;
+    }
+
+    @JsonProperty
+    void setTriColorLED(Device triColorLED) {
+        this.triColorLED = triColorLED;
+    }
 
     public String getTriColorLEDId() {
         return Optional.ofNullable(triColorLED).map(Device::getId).orElse(null);

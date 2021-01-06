@@ -50,10 +50,10 @@ public class MachineController {
         return machineRepository.findByIdAndCreatedBy_id(id, user.getUserId()).orElseThrow(() -> new RecordNotExistsException(id));
     }
 
-    @GetMapping("/device")
-    @DynamicJsonView(exclude = {"id", "serialNumber"}, type = Device.class)
-    public ResponseEntity<List<Device>> read(@AuthenticationPrincipal AuthenticationUser user, Device.DeviceType type) {
-        return ResponseEntity.ok(deviceRepository.findAllByConsumer_idAndTypeAndLockedFalse(user.getUserId(), type));
+    @GetMapping("/triColorLED")
+    @DynamicJsonView(include = {"id", "serialNumber"}, type = Device.class)
+    public ResponseEntity<List<Device>> read(@AuthenticationPrincipal AuthenticationUser user) {
+        return ResponseEntity.ok(deviceRepository.findAllByConsumer_idAndTypeAndLockedFalse(user.getUserId(), Device.DeviceType.TriColorLed));
     }
 
     @GetMapping
