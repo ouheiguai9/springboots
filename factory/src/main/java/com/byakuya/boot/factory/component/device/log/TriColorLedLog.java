@@ -16,6 +16,7 @@ import java.time.LocalTime;
  * Created by ganzl on 2021/1/4.
  */
 @Data
+@Entity
 @Table(name = "T_SYS_DEVICE_LED_LOG")
 public class TriColorLedLog implements Serializable {
     private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;

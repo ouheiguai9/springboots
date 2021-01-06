@@ -4,6 +4,7 @@ import com.byakuya.boot.factory.SystemVersion;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
  * Created by ganzl on 2021/1/6.
  */
 @Data
+@Entity
 @Table(name = "T_SYS_DEVICE_LED_MSG")
 class TriColorLedMsg implements Serializable {
     private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;
