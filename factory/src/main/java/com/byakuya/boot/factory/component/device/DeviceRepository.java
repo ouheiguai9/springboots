@@ -22,5 +22,5 @@ public interface DeviceRepository extends PagingAndSortingRepository<Device, Str
 
     Optional<Device> findByIdAndConsumer_idAndType(String id, String userId, Device.DeviceType type);
 
-    Optional<Device> findDeviceBySerialNumberAndSerialNumber1(String number, String number1);
+    Optional<Device> findDeviceBySerialNumberAndSerialNumber1AndType(String number, String number1, Device.DeviceType type);
 }

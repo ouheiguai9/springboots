@@ -25,5 +25,4 @@ system:
     candidate-char: '0123456789' #候选字符
     length: 4 #验证码长度
     valid-second: 180 #验证码有效期(单位秒)
-  netty:
-    port: 9527 #netty服务器端口(默认9527)
+  tri-color-led-interval: 3 #三色灯消息间隔时间(单位分钟)
