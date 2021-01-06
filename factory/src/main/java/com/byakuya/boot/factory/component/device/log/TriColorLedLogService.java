@@ -41,8 +41,7 @@ public class TriColorLedLogService {
             TriColorLedLog triColorLedLog = new TriColorLedLog();
             triColorLedLog.setDevice(device);
             triColorLedLog.setVoltage(voltage);
-            triColorLedLog.setDate(inTime.toLocalDate());
-            triColorLedLog.setTime(inTime.toLocalTime());
+            triColorLedLog.setTime(inTime);
             TriColorLedLog.Status status = TriColorLedLog.Status.NONE;
             if (signal.charAt(0) == '1') {
                 status = TriColorLedLog.Status.RED;
@@ -52,8 +51,16 @@ public class TriColorLedLogService {
                 status = TriColorLedLog.Status.GREEN;
             }
             triColorLedLog.setStatus(status);
-            Proxy proxy = LAST_LOG_CACHE.computeIfAbsent(device.getId(), key -> new Proxy());
-            proxy.setLog(triColorLedLog, inTime, triColorLedLogRepository, interval);
+            Proxy proxy = getDeviceLastLog(device.getId());
+            proxy.setLog(triColorLedLog, triColorLedLogRepository, interval);
+        });
+    }
+
+    private Proxy getDeviceLastLog(String deviceId) {
+        return LAST_LOG_CACHE.computeIfAbsent(deviceId, key -> {
+            Proxy proxy = new Proxy();
+            triColorLedLogRepository.findFirstByDevice_IdOrderByTimeDesc(deviceId).ifPresent(x -> proxy.setLog(x, triColorLedLogRepository, interval));
+            return proxy;
         });
     }
 
@@ -63,22 +70,20 @@ public class TriColorLedLogService {
     @Value("${system.tri-color-led-interval:3}")
     private int interval;
 
-    private static class Proxy {
+    public static class Proxy {
         synchronized void setLog(TriColorLedLog newLog
-                , LocalDateTime inTime
                 , TriColorLedLogRepository triColorLedLogRepository
                 , int interval) {
             if (log == null) {
                 log = triColorLedLogRepository.save(newLog);
             } else {
                 LocalDateTime heartbeat = lastModifyTime.plusMinutes(2 * interval);
-                if (inTime.isAfter(heartbeat) || newLog.getStatus() != log.getStatus()) {
+                if (newLog.getTime().isAfter(heartbeat) || newLog.getStatus() != log.getStatus()) {
                     Duration duration;
-                    LocalDateTime startTime = log.getLogInTime();
-                    if (inTime.isAfter(heartbeat)) {
-                        duration = Duration.between(startTime, lastModifyTime.plusMinutes(interval));
+                    if (newLog.getTime().isAfter(heartbeat)) {
+                        duration = Duration.between(log.getTime(), lastModifyTime.plusMinutes(interval));
                     } else {
-                        duration = Duration.between(startTime, inTime);
+                        duration = Duration.between(log.getTime(), newLog.getTime());
                     }
                     log.setDuration(duration.abs().getSeconds());
                     log.setDevice(newLog.getDevice());
@@ -86,7 +91,7 @@ public class TriColorLedLogService {
                     log = triColorLedLogRepository.save(newLog);
                 }
             }
-            lastModifyTime = inTime;
+            lastModifyTime = newLog.getTime();
         }
 
         private LocalDateTime lastModifyTime;

@@ -8,9 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 /**
  * Created by ganzl on 2021/1/4.
@@ -20,11 +18,6 @@ import java.time.LocalTime;
 @Table(name = "T_SYS_DEVICE_LED_LOG")
 public class TriColorLedLog implements Serializable {
     private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;
-
-    public LocalDateTime getLogInTime() {
-        return LocalDateTime.of(date, time);
-    }
-    private LocalDate date;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "device_id")
@@ -36,7 +29,7 @@ public class TriColorLedLog implements Serializable {
     private String id;
     @Enumerated(EnumType.STRING)
     private Status status;
-    private LocalTime time;
+    private LocalDateTime time;
     private int voltage;
 
     enum Status {
