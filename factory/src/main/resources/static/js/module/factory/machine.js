@@ -119,7 +119,9 @@ layui.config({
   function renderLedSelect() {
     restful.get('auth/api/factory/machines/triColorLED', {}, function (data) {
       var selectJq = $('#triColorLEDId').empty();
+      $('<option value="">未选择</option>').appendTo(selectJq);
       $.each(data, function (i, item) {
+        // noinspection JSUnresolvedVariable
         $('<option value="' + item.id + '">' + item.serialNumber + '</option>').appendTo(selectJq);
       });
       if (currentRow) {
