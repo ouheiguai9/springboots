@@ -123,6 +123,12 @@ layui.config({
         $('<option value="' + item.id + '">' + item.serialNumber + '</option>').appendTo(selectJq);
       });
       if (currentRow) {
+        // noinspection JSUnresolvedVariable
+        if(currentRow.data.triColorLEDId) {
+          // noinspection JSUnresolvedVariable
+          $('<option value="' + currentRow.data.triColorLEDId + '">' + currentRow.data.triColorLEDSerialNumber + '</option>').appendTo(selectJq);
+        }
+        console.info(currentRow.data);
         form.val('editForm', currentRow.data);
       } else {
         form.val('editForm', {});
