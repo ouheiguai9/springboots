@@ -32,7 +32,16 @@ public class TriColorLedLog implements Serializable {
     private LocalDateTime time;
     private int voltage;
 
-    enum Status {
-        RED, YELLOW, GREEN, NONE
+    public enum Status {
+        RED("故障"), YELLOW("暂停"), GREEN("运行"), NONE("离线");
+
+        Status(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+        private String name;
     }
 }

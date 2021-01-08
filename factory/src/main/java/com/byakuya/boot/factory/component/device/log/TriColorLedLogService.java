@@ -4,6 +4,7 @@ import com.byakuya.boot.factory.component.device.Device;
 import com.byakuya.boot.factory.component.device.DeviceRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.time.Duration;
@@ -21,6 +22,40 @@ public class TriColorLedLogService {
         this.deviceRepository = deviceRepository;
         this.triColorLedLogRepository = triColorLedLogRepository;
         this.triColorLedMsgRepository = triColorLedMsgRepository;
+    }
+
+    public LocalDateTime addInterval(LocalDateTime time) {
+        return time.plusMinutes(interval);
+    }
+
+    public String formatDuration(Duration duration) {
+        Duration copy = Duration.from(duration);
+        StringBuilder builder = new StringBuilder();
+        long days = copy.toDays();
+        if (days > 0) {
+            builder.append(days).append("天");
+            copy = copy.minusDays(days);
+        }
+        long hours = copy.toHours();
+        if (hours > 0) {
+            builder.append(hours).append("小时");
+            copy = copy.minusHours(hours);
+        }
+        long minutes = copy.toMinutes();
+        if (minutes > 0) {
+            builder.append(minutes).append("分钟");
+            copy = copy.minusMinutes(minutes);
+        }
+        builder.append(copy.getSeconds()).append("秒");
+        return builder.toString();
+    }
+
+    public LocalDateTime getHeartBeat(LocalDateTime time) {
+        return getHeartBeat(time, interval);
+    }
+
+    private static LocalDateTime getHeartBeat(LocalDateTime time, int interval) {
+        return time.plusMinutes(2 * interval);
     }
 
     @Transactional
@@ -56,10 +91,12 @@ public class TriColorLedLogService {
         });
     }
 
-    private Proxy getDeviceLastLog(String deviceId) {
+    public Proxy getDeviceLastLog(String deviceId) {
         return LAST_LOG_CACHE.computeIfAbsent(deviceId, key -> {
             Proxy proxy = new Proxy();
-            triColorLedLogRepository.findFirstByDevice_IdOrderByTimeDesc(deviceId).ifPresent(x -> proxy.setLog(x, triColorLedLogRepository, interval));
+            if (StringUtils.hasText(key)) {
+                triColorLedLogRepository.findFirstByDevice_IdOrderByTimeDesc(key).ifPresent(x -> proxy.setLog(x, triColorLedLogRepository, interval));
+            }
             return proxy;
         });
     }
@@ -71,13 +108,26 @@ public class TriColorLedLogService {
     private int interval;
 
     public static class Proxy {
+        public LocalDateTime getLastModifyTime() {
+            return lastModifyTime;
+        }
+
+        public synchronized TriColorLedLog getLog() {
+            if (log == null) return null;
+            TriColorLedLog copy = new TriColorLedLog();
+            copy.setTime(log.getTime());
+            copy.setStatus(log.getStatus());
+            copy.setVoltage(log.getVoltage());
+            return copy;
+        }
+
         synchronized void setLog(TriColorLedLog newLog
                 , TriColorLedLogRepository triColorLedLogRepository
                 , int interval) {
             if (log == null) {
                 log = triColorLedLogRepository.save(newLog);
             } else {
-                LocalDateTime heartbeat = lastModifyTime.plusMinutes(2 * interval);
+                LocalDateTime heartbeat = getHeartBeat(lastModifyTime, interval);
                 if (newLog.getTime().isAfter(heartbeat) || newLog.getStatus() != log.getStatus()) {
                     Duration duration;
                     if (newLog.getTime().isAfter(heartbeat)) {

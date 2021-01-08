@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -13,6 +14,9 @@ import java.util.Optional;
 public interface MachineRepository extends PagingAndSortingRepository<Machine, String> {
     @EntityGraph("Machine.List")
     Page<Machine> findAllByCreatedBy_id(Pageable pageable, String id);
+
+    @EntityGraph("Machine.List")
+    List<Machine> findAllByCreatedBy_idOrderByCreatedDateAsc(String id);
 
     Optional<Machine> findByIdAndCreatedBy_id(String id, String userId);
 }
