@@ -2,6 +2,7 @@ package com.byakuya.boot.factory.component.device.log;
 
 import com.byakuya.boot.factory.component.device.Device;
 import com.byakuya.boot.factory.component.device.DeviceRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -9,11 +10,13 @@ import org.springframework.util.StringUtils;
 import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by ganzl on 2021/1/5.
  */
+@Slf4j
 @Service
 public class TriColorLedLogService {
     private static final ConcurrentHashMap<String, Proxy> LAST_LOG_CACHE = new ConcurrentHashMap<>(1200);
@@ -65,8 +68,9 @@ public class TriColorLedLogService {
         String serialNumber1 = content[1];
         String signal = content[2];
         int voltage = Integer.parseInt(content[3]);
-
-        deviceRepository.findDeviceBySerialNumberAndSerialNumber1AndType(serialNumber, serialNumber1, Device.DeviceType.TriColorLed).ifPresent(device -> {
+        Optional<Device> opt = deviceRepository.findDeviceBySerialNumberAndSerialNumber1AndType(serialNumber, serialNumber1, Device.DeviceType.TriColorLed);
+        if (opt.isPresent()) {
+            Device device = opt.get();
             assert device.getId() != null;
             TriColorLedMsg msg = new TriColorLedMsg();
             msg.setMessage(message);
@@ -88,7 +92,9 @@ public class TriColorLedLogService {
             triColorLedLog.setStatus(status);
             Proxy proxy = getDeviceLastLog(device.getId());
             proxy.setLog(triColorLedLog, triColorLedLogRepository, interval);
-        });
+        } else {
+            log.warn("非法接入:\t{}", message);
+        }
     }
 
     public Proxy getDeviceLastLog(String deviceId) {
