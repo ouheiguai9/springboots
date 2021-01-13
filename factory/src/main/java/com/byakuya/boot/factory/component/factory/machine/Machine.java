@@ -26,7 +26,7 @@ public class Machine extends AbstractAuditableEntity<User> {
     private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;
 
     @JsonIgnore
-    Device getTriColorLED() {
+    public Device getTriColorLED() {
         return triColorLED;
     }
 

@@ -18,6 +18,17 @@ import java.time.LocalDateTime;
 @Table(name = "T_SYS_DEVICE_LED_LOG")
 public class TriColorLedLog implements Serializable {
     private static final long serialVersionUID = SystemVersion.SERIAL_VERSION_UID;
+
+    TriColorLedLog() {
+
+    }
+
+    public TriColorLedLog(Device device, Status status, long duration) {
+        this.device = device;
+        this.status = status;
+        this.duration = duration;
+    }
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "device_id")
@@ -42,6 +53,7 @@ public class TriColorLedLog implements Serializable {
         public String getName() {
             return name;
         }
+
         private String name;
     }
 }

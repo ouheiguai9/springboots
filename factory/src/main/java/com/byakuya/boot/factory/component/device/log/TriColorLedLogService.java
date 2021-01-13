@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -51,6 +52,10 @@ public class TriColorLedLogService {
         }
         builder.append(copy.getSeconds()).append("秒");
         return builder.toString();
+    }
+
+    public List<TriColorLedLog> getDeviceStatusSumDuration(Iterable<Device> devices, LocalDateTime start, LocalDateTime end) {
+        return triColorLedLogRepository.findStatusRank(devices, start, end);
     }
 
     public LocalDateTime getHeartBeat(LocalDateTime time) {
