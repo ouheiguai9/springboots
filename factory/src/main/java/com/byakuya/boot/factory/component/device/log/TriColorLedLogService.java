@@ -98,11 +98,12 @@ public class TriColorLedLogService {
     }
 
     public Proxy getDeviceLastLog(String deviceId) {
+        if (!StringUtils.hasText(deviceId)) {
+            return new Proxy();
+        }
         return LAST_LOG_CACHE.computeIfAbsent(deviceId, key -> {
             Proxy proxy = new Proxy();
-            if (StringUtils.hasText(key)) {
-                triColorLedLogRepository.findFirstByDevice_IdOrderByTimeDesc(key).ifPresent(x -> proxy.setLog(x, triColorLedLogRepository, interval));
-            }
+            triColorLedLogRepository.findFirstByDevice_IdOrderByTimeDesc(key).ifPresent(x -> proxy.setLog(x, triColorLedLogRepository, interval));
             return proxy;
         });
     }
