@@ -11,6 +11,8 @@ layui.config({
   var initTime = (new Date()).getTime();
 
   /********************************组件渲染*********************************/
+  $(document).off('ajaxStart').off('ajaxStop');
+  console.info($);
   render();
   // setInterval(render, 2 * 60 * 1000);
   setInterval(render, 10 * 1000);
