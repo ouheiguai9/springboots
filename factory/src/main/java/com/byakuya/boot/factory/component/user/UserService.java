@@ -5,8 +5,7 @@ import com.byakuya.boot.factory.component.menu.MenuRepository;
 import com.byakuya.boot.factory.component.role.Role;
 import com.byakuya.boot.factory.component.role.RoleRepository;
 import com.byakuya.boot.factory.config.property.SecurityProperties;
-import com.byakuya.boot.factory.exception.CustomizedException;
-import com.byakuya.boot.factory.exception.RecordNotExistsException;
+import com.byakuya.boot.factory.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +31,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User authorize(String id, String menuIdStr) {
+    User authorize(String id, String menuIdStr) {
         User old = get(id);
         Set<Menu> menuSet = new HashSet<>();
         if (StringUtils.hasText(menuIdStr)) {
@@ -83,6 +82,15 @@ public class UserService {
      */
     User modifyAll(User user) {
         User old = get(user.getId());
+        if (StringUtils.hasText(user.getUsername()) && !user.getUsername().equals(old.getUsername()) && userRepository.existsByUsername(user.getUsername())) {
+            throw new UsernameExistsException(user.getUsername());
+        }
+        if (StringUtils.hasText(user.getEmail()) && !user.getEmail().equals(old.getEmail()) && userRepository.existsByEmail(user.getEmail())) {
+            throw new EmailExistsException(user.getEmail());
+        }
+        if (StringUtils.hasText(user.getPhone()) && !user.getPhone().equals(old.getPhone()) && userRepository.existsByPhone(user.getPhone())) {
+            throw new PhoneExistsException(user.getPhone());
+        }
         old.setUsername(user.getUsername());
         old.setPhone(user.getPhone());
         old.setEmail(user.getEmail());
@@ -185,6 +193,15 @@ public class UserService {
      * @return 新用户
      */
     public User regist(User user) {
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new UsernameExistsException(user.getUsername());
+        }
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new EmailExistsException(user.getEmail());
+        }
+        if (userRepository.existsByPhone(user.getPhone())) {
+            throw new PhoneExistsException(user.getPhone());
+        }
         if (!StringUtils.hasText(user.getPassword())) {
             user.setPassword(securityProperties.getNewUserDefaultPassword());
         }
