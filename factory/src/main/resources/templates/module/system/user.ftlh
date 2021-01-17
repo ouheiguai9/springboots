@@ -76,8 +76,7 @@
                             <label class="layui-form-label" for="phone">手机号：</label>
                             <div class="layui-input-block">
                                 <input type="text" name="phone" id="phone" lay-verify="required|phone|number"
-                                       placeholder="手机号"
-                                       class="layui-input" lay-verType="tips">
+                                       placeholder="手机号" class="layui-input" lay-verType="tips">
                             </div>
                         </div>
                     </div>
@@ -96,8 +95,8 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="email">邮箱：</label>
                             <div class="layui-input-block">
-                                <input type="text" name="email" id="email" lay-verify="email" placeholder="邮箱(选填)"
-                                       class="layui-input" lay-verType="tips">
+                                <input type="text" name="email" id="email" placeholder="邮箱(选填)" class="layui-input"
+                                       lay-verType="tips">
                             </div>
                         </div>
                     </div>
@@ -108,8 +107,7 @@
                             <label class="layui-form-label" for="nickname">公司名称：</label>
                             <div class="layui-input-block">
                                 <input type="text" name="nickname" id="nickname" lay-verify="nickname"
-                                       placeholder="公司名称(选填)"
-                                       class="layui-input" lay-verType="tips">
+                                       placeholder="公司名称(选填)" class="layui-input" lay-verType="tips">
                             </div>
                         </div>
                     </div>

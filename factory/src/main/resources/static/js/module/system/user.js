@@ -133,6 +133,7 @@ layui.config({
   util.event('lay-event', {
     'back': function () {
       currentRow = undefined;
+      $('#btnRest').click();
       $('section').toggleClass('layui-hide');
     }
     , 'doAuthorizeSave': function () {
@@ -227,8 +228,8 @@ layui.config({
       return '长度6-16位字母和数字';
     }
     , nickname: [
-      /^[\u2E80-\u9FFF]{1,50}$/
-      , '1-50位汉字'
+      /^[\u2E80-\u9FFF]{0,50}$/
+      , '不超过50个汉字'
     ]
     , username: [
       /^[a-zA-Z]{1,16}$/

@@ -16,7 +16,8 @@
         </div>
         <div class="layui-form-item">
             <label class="layui-admin-login-icon layui-icon layui-icon-password" for="password"></label>
-            <input type="password" name="password" id="password" lay-verify="required|password" placeholder="密码(6-16位字母和数字)"
+            <input type="password" name="password" id="password" lay-verify="required|password"
+                   placeholder="密码(6-16位字母和数字)"
                    class="layui-input" lay-verType="tips">
         </div>
         <div class="layui-form-item">
@@ -36,8 +37,7 @@
         </div>
         <div class="layui-form-item">
             <label class="layui-admin-login-icon layui-icon layui-icon-email" for="email"></label>
-            <input type="text" name="email" id="email" lay-verify="email" placeholder="邮箱(选填)"
-                   class="layui-input" lay-verType="tips">
+            <input type="text" name="email" id="email" placeholder="邮箱(选填)" class="layui-input" lay-verType="tips">
         </div>
         <#if allowCaptcha>
             <div class="layui-form-item">

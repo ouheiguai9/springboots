@@ -42,8 +42,8 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">邮箱：</label>
                             <div class="layui-input-block">
-                                <input type="text" name="email" id="email" lay-verify="email" placeholder="邮箱(选填)"
-                                       value="${me.getEmail()}" class="layui-input" lay-verType="tips">
+                                <input type="text" name="email" id="email" placeholder="邮箱(选填)"
+                                       value="${me.getEmail()!}" class="layui-input" lay-verType="tips">
                             </div>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                             <label class="layui-form-label" for="nickname">公司名称：</label>
                             <div class="layui-input-block">
                                 <input type="text" name="nickname" id="nickname" lay-verify="nickname"
-                                       placeholder="公司名称(选填)" value="${me.getNickname()}" class="layui-input"
+                                       placeholder="公司名称(选填)" value="${me.getNickname()!}" class="layui-input"
                                        lay-verType="tips">
                             </div>
                         </div>
@@ -91,7 +91,7 @@
                             <label class="layui-form-label" for="avatar">图标：</label>
                             <div class="layui-input-block">
                                 <input type="text" name="avatar" id="avatar" placeholder="图标" class="layui-input"
-                                       value="${me.getAvatar()}" disabled>
+                                       value="${me.getAvatar()!}" disabled>
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                             <label class="layui-form-label" for="address">地址：</label>
                             <div class="layui-input-block">
                                 <input type="text" name="address" id="address" placeholder="地址(选填)" class="layui-input"
-                                       value="${me.getAddress()}">
+                                       value="${me.getAddress()!}">
                             </div>
                         </div>
                     </div>

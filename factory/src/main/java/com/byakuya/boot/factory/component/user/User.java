@@ -72,7 +72,6 @@ public class User extends AbstractAuditableEntity<User> {
     private String address;
     private String avatar;
     private LocalDateTime beginValidPeriod = LocalDateTime.now();
-    @Email(groups = {InsertGroup.class, UpdateGroup.class})
     private String email;
     private LocalDateTime endValidPeriod;
     @Id
