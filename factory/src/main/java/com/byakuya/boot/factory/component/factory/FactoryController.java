@@ -47,10 +47,10 @@ public class FactoryController {
             return ResponseEntity.ok(null);
         }
         long totalSecond = Duration.between(pair.getFirst(), pair.getSecond()).abs().getSeconds();
-        List<Machine> machines = machineRepository.findAllByCreatedBy_idOrderByCreatedDateAsc(user.getUserId());
+        List<Machine> machines = machineRepository.findAllBindTriColorLED(user.getUserId());
         List<Device> devices = machines.stream().map(Machine::getTriColorLED).collect(Collectors.toList());
-        triColorLedLogService.getDeviceStatusSumDuration(devices, pair.getFirst(), pair.getSecond());
-        return ResponseEntity.ok(triColorLedLogService.getDeviceStatusSumDuration(devices, pair.getFirst(), pair.getSecond()));
+        List<TriColorLedLog> logList = triColorLedLogService.getDeviceStatusSumDuration(devices, pair.getFirst(), pair.getSecond());
+        return ResponseEntity.ok(logList);
     }
 
     private Pair<LocalDateTime, LocalDateTime> compute(String userId, TimeType timeType, LocalDateTime start, LocalDateTime end) {
@@ -101,7 +101,7 @@ public class FactoryController {
 
     @GetMapping("/view")
     public ResponseEntity<FactoryView> read(@AuthenticationPrincipal AuthenticationUser user, long initTime) {
-        List<Machine> machines = machineRepository.findAllByCreatedBy_idOrderByCreatedDateAsc(user.getUserId());
+        List<Machine> machines = machineRepository.findAllBindTriColorLED(user.getUserId());
         int[] totalArr = new int[]{0, 0, 0, 0};
         LocalDateTime start = LocalDateTime.ofInstant(new Date(initTime).toInstant(), ZoneId.systemDefault()), now = LocalDateTime.now();
         List<MachineStatus> list = machines.stream().map(machine -> {
