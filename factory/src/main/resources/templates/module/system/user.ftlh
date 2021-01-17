@@ -67,22 +67,10 @@
                             <label class="layui-form-label" for="username">用户名：</label>
                             <div class="layui-input-block">
                                 <input type="text" name="username" id="username" lay-verify="required|username"
-                                       placeholder="用户名"
-                                       class="layui-input" lay-verType="tips">
+                                       placeholder="用户名" class="layui-input" lay-verType="tips">
                             </div>
                         </div>
                     </div>
-                    <div class="layui-col-md6">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label" for="email">邮箱：</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="email" id="email" lay-verify="required|email" placeholder="邮箱"
-                                       class="layui-input" lay-verType="tips">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-row">
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="phone">手机号：</label>
@@ -93,6 +81,8 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="layui-row">
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="password">密码：</label>
@@ -103,14 +93,23 @@
                             </div>
                         </div>
                     </div>
+                    <div class="layui-col-md6">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" for="email">邮箱：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="email" id="email" lay-verify="email" placeholder="邮箱(选填)"
+                                       class="layui-input" lay-verType="tips">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="layui-row">
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
-                            <label class="layui-form-label" for="nickname">昵称：</label>
+                            <label class="layui-form-label" for="nickname">公司名称：</label>
                             <div class="layui-input-block">
-                                <input type="text" name="nickname" id="nickname" lay-verify="required|nickname"
-                                       placeholder="昵称"
+                                <input type="text" name="nickname" id="nickname" lay-verify="nickname"
+                                       placeholder="公司名称(选填)"
                                        class="layui-input" lay-verType="tips">
                             </div>
                         </div>
@@ -154,7 +153,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="address">地址：</label>
                             <div class="layui-input-block">
-                                <input type="text" name="address" id="address" placeholder="地址" class="layui-input">
+                                <input type="text" name="address" id="address" placeholder="地址(选填)" class="layui-input">
                             </div>
                         </div>
                     </div>

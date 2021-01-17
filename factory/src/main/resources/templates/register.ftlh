@@ -11,7 +11,7 @@
         <div class="layui-admin-login-error-info">${error!}</div>
         <div class="layui-form-item">
             <label class="layui-admin-login-icon layui-icon layui-icon-username" for="username"></label>
-            <input type="text" name="username" id="username" lay-verify="required|username" placeholder="用户名"
+            <input type="text" name="username" id="username" lay-verify="required|username" placeholder="用户名(字母和数字)"
                    class="layui-input" lay-verType="tips">
         </div>
         <div class="layui-form-item">
@@ -30,13 +30,13 @@
                    class="layui-input" lay-verType="tips">
         </div>
         <div class="layui-form-item">
-            <label class="layui-admin-login-icon layui-icon layui-icon-email" for="email"></label>
-            <input type="text" name="email" id="email" lay-verify="required|email" placeholder="邮箱"
+            <label class="layui-admin-login-icon layui-icon layui-icon-username" for="nickname"></label>
+            <input type="text" name="nickname" id="nickname" lay-verify="nickname" placeholder="公司名称(选填)"
                    class="layui-input" lay-verType="tips">
         </div>
         <div class="layui-form-item">
-            <label class="layui-admin-login-icon layui-icon layui-icon-username" for="nickname"></label>
-            <input type="text" name="nickname" id="nickname" lay-verify="required|nickname" placeholder="昵称"
+            <label class="layui-admin-login-icon layui-icon layui-icon-email" for="email"></label>
+            <input type="text" name="email" id="email" lay-verify="email" placeholder="邮箱(选填)"
                    class="layui-input" lay-verType="tips">
         </div>
         <#if allowCaptcha>

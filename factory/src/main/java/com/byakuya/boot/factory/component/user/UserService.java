@@ -71,7 +71,7 @@ public class UserService {
      * @return 用户
      */
     public Optional<User> loadUser(String identifier) {
-        return userRepository.findUserByIdOrUsernameOrPhoneOrEmail(identifier, identifier, identifier, identifier);
+        return userRepository.findUserByIdOrUsernameOrPhone(identifier, identifier, identifier);
     }
 
     /**
@@ -84,9 +84,6 @@ public class UserService {
         User old = get(user.getId());
         if (StringUtils.hasText(user.getUsername()) && !user.getUsername().equals(old.getUsername()) && userRepository.existsByUsername(user.getUsername())) {
             throw new UsernameExistsException(user.getUsername());
-        }
-        if (StringUtils.hasText(user.getEmail()) && !user.getEmail().equals(old.getEmail()) && userRepository.existsByEmail(user.getEmail())) {
-            throw new EmailExistsException(user.getEmail());
         }
         if (StringUtils.hasText(user.getPhone()) && !user.getPhone().equals(old.getPhone()) && userRepository.existsByPhone(user.getPhone())) {
             throw new PhoneExistsException(user.getPhone());
@@ -142,6 +139,7 @@ public class UserService {
         old.setAddress(user.getAddress());
         old.setAvatar(user.getAvatar());
         old.setNickname(user.getNickname());
+        old.setEmail(user.getEmail());
         old.setSex(user.isSex());
         return userRepository.save(old);
     }
@@ -195,9 +193,6 @@ public class UserService {
     public User regist(User user) {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new UsernameExistsException(user.getUsername());
-        }
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new EmailExistsException(user.getEmail());
         }
         if (userRepository.existsByPhone(user.getPhone())) {
             throw new PhoneExistsException(user.getPhone());

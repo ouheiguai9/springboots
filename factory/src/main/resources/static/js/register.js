@@ -47,11 +47,11 @@ layui.config({
         if (/[!@#$%^&*? ]/.test(value)) {
           contain += 1;
         }
-        if (contain > 2) {
+        if (contain > 1) {
           return;
         }
       }
-      return '长度6-16位(必须包含大小写字母、数字、特殊符号中任意三种)';
+      return '长度6-16位(必须包含大小写字母、数字、特殊符号中任意两种)';
     }
     , repassword: function (value, item) {
       var equalId = $(item).data('equal');
@@ -61,12 +61,12 @@ layui.config({
       return '两次输入密码不一致';
     }
     , nickname: [
-      /^[\u2E80-\u9FFF]{2,10}$/
-      , '2-10位汉字'
+      /^[\u2E80-\u9FFF]{1,50}$/
+      , '1-50位汉字'
     ]
     , username: [
-      /^[a-zA-Z]([a-zA-Z0-9]|[_]){5,16}$/
-      , '以字母开始6-16位(字母/数字/下划线)'
+      /^[a-zA-Z]{1,16}$/
+      , '以字母开始1-16位(字母/数字)'
     ]
   });
 });

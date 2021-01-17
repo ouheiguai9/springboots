@@ -13,8 +13,6 @@ import java.util.Optional;
  */
 public interface UserRepository extends PagingAndSortingRepository<User, String> {
 
-    boolean existsByEmail(String email);
-
     boolean existsByPhone(String phone);
 
     boolean existsByUsername(String username);
@@ -33,7 +31,7 @@ public interface UserRepository extends PagingAndSortingRepository<User, String>
     Iterable<String> findUserAllMenuId(String id);
 
     @EntityGraph("User.Login")
-    Optional<User> findUserByIdOrUsernameOrPhoneOrEmail(String id, String username, String phone, String email);
+    Optional<User> findUserByIdOrUsernameOrPhone(String id, String username, String phone);
 
     @EntityGraph("User.List")
     Page<User> queryAllByUsernameLikeOrPhoneLike(Pageable pageable, String username, String phone);

@@ -22,22 +22,14 @@
                     </div>
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
-                            <label class="layui-form-label">邮箱：</label>
-                            <div class="layui-input-block">
-                                <div class="layui-fake-input layui-disabled">${me.getEmail()}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-row">
-                    <div class="layui-col-md6">
-                        <div class="layui-form-item">
                             <label class="layui-form-label">手机号：</label>
                             <div class="layui-input-block">
                                 <div class="layui-fake-input layui-disabled">${me.getPhone()}</div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="layui-row">
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
                             <label class="layui-form-label">密码：</label>
@@ -46,14 +38,23 @@
                             </div>
                         </div>
                     </div>
+                    <div class="layui-col-md6">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">邮箱：</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="email" id="email" lay-verify="email" placeholder="邮箱(选填)"
+                                       value="${me.getEmail()}" class="layui-input" lay-verType="tips">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="layui-row">
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
-                            <label class="layui-form-label" for="nickname">昵称：</label>
+                            <label class="layui-form-label" for="nickname">公司名称：</label>
                             <div class="layui-input-block">
-                                <input type="text" name="nickname" id="nickname" lay-verify="required|nickname"
-                                       placeholder="昵称" value="${me.getNickname()}" class="layui-input"
+                                <input type="text" name="nickname" id="nickname" lay-verify="nickname"
+                                       placeholder="公司名称(选填)" value="${me.getNickname()}" class="layui-input"
                                        lay-verType="tips">
                             </div>
                         </div>
@@ -103,7 +104,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="address">地址：</label>
                             <div class="layui-input-block">
-                                <input type="text" name="address" id="address" placeholder="地址" class="layui-input"
+                                <input type="text" name="address" id="address" placeholder="地址(选填)" class="layui-input"
                                        value="${me.getAddress()}">
                             </div>
                         </div>

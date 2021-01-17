@@ -11,7 +11,7 @@
         <div class="layui-admin-login-error-info">${error!}</div>
         <div class="layui-form-item">
             <label class="layui-admin-login-icon layui-icon layui-icon-username" for="username"></label>
-            <input type="text" name="username" id="username" lay-verify="required" placeholder="用户名/手机号/邮箱"
+            <input type="text" name="username" id="username" lay-verify="required" placeholder="用户名/手机号"
                    class="layui-input" lay-verType="tips">
         </div>
         <div class="layui-form-item">
