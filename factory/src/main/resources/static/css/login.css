@@ -29,6 +29,10 @@
     position: relative;
 }
 
+.layui-admin-register-form .layui-form-item {
+    margin-bottom: 10px;
+}
+
 .layui-admin-login-main .layui-form-item .layui-input {
     padding-left: 38px;
 }

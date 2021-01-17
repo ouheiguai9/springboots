@@ -7,7 +7,7 @@
 <body class="layui-layout-body layui-bg-gray">
 <div class="layui-admin-login-main" style="padding-top: 80px;">
     <h2 class="layui-admin-login-header">智慧机床</h2>
-    <form class="layui-form">
+    <form class="layui-form layui-admin-register-form">
         <div class="layui-admin-login-error-info">${error!}</div>
         <div class="layui-form-item">
             <label class="layui-admin-login-icon layui-icon layui-icon-username" for="username"></label>
@@ -16,7 +16,7 @@
         </div>
         <div class="layui-form-item">
             <label class="layui-admin-login-icon layui-icon layui-icon-password" for="password"></label>
-            <input type="password" name="password" id="password" lay-verify="required|password" placeholder="密码"
+            <input type="password" name="password" id="password" lay-verify="required|password" placeholder="密码(6-16位字母和数字)"
                    class="layui-input" lay-verType="tips">
         </div>
         <div class="layui-form-item">
@@ -55,6 +55,9 @@
         </#if>
         <div class="layui-form-item">
             <button class="layui-btn layui-btn-fluid" lay-submit>注 册</button>
+        </div>
+        <div class="layui-form-item">
+            <a class="layui-btn layui-btn-primary layui-btn-fluid" href="login">返回登陆</a>
         </div>
     </form>
 </div>

@@ -35,23 +35,17 @@ layui.config({
     password: function (value, item) {
       if (/^.{6,16}$/.test(value)) {
         var contain = 0;
-        if (/[A-Z]/.test(value)) {
-          contain += 1;
-        }
-        if (/[a-z]/.test(value)) {
+        if (/[a-zA-Z]/.test(value)) {
           contain += 1;
         }
         if (/[0-9]/.test(value)) {
-          contain += 1;
-        }
-        if (/[!@#$%^&*? ]/.test(value)) {
           contain += 1;
         }
         if (contain > 1) {
           return;
         }
       }
-      return '长度6-16位(必须包含大小写字母、数字、特殊符号中任意两种)';
+      return '长度6-16位字母和数字';
     }
     , repassword: function (value, item) {
       var equalId = $(item).data('equal');

@@ -88,8 +88,7 @@
                             <label class="layui-form-label" for="password">密码：</label>
                             <div class="layui-input-block">
                                 <input type="password" name="password" id="password" lay-verify="password"
-                                       placeholder="密码"
-                                       class="layui-input" lay-verType="tips">
+                                       placeholder="密码(6-16位字母和数字)" class="layui-input" lay-verType="tips">
                             </div>
                         </div>
                     </div>
