@@ -102,7 +102,8 @@ layui.config({
     }
     barChart.setOption({
       title: {
-        text: '状态时间'
+        text: '状态时间',
+        left: 'center'
       },
       tooltip: {
         trigger: 'item'
@@ -144,7 +145,8 @@ layui.config({
     pieChart.setOption({
       color: ['#FF5722', '#FFB800', '#5FB878', '#E2E2E2'],
       title: {
-        text: '状态比例'
+        text: '状态比例',
+        left: 'center'
       },
       tooltip: {
         trigger: 'item',
