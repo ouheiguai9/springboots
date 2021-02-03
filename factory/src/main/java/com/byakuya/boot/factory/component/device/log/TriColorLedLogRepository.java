@@ -12,8 +12,10 @@ import java.util.Optional;
  * Created by ganzl on 2021/1/5.
  */
 public interface TriColorLedLogRepository extends CrudRepository<TriColorLedLog, String> {
-    @Query("select new TriColorLedLog(log.device, log.status, sum(log.duration)) from TriColorLedLog log where log.status <> 'NONE' and log.device in ?1 and log.time between ?2 and ?3 group by log.status, log.device")
-    List<TriColorLedLog> findStatusRank(Iterable<Device> devices, LocalDateTime startTime, LocalDateTime endTime);
+    List<TriColorLedLog> findAllByDevice_IdAndTimeBetweenOrderByTimeAsc(String deviceId, LocalDateTime start, LocalDateTime end);
 
     Optional<TriColorLedLog> findFirstByDevice_IdOrderByTimeDesc(String deviceId);
+
+    @Query("select new TriColorLedLog(log.device, log.status, sum(log.duration)) from TriColorLedLog log where log.status <> 'NONE' and log.device in ?1 and log.time between ?2 and ?3 group by log.status, log.device")
+    List<TriColorLedLog> findStatusRank(Iterable<Device> devices, LocalDateTime startTime, LocalDateTime endTime);
 }

@@ -5,7 +5,7 @@
     <link href="css/crud.css" rel="stylesheet" type="text/css">
 </head>
 <body class="layui-layout-body layui-bg-gray layui-admin-crud">
-<div class="layui-card">
+<div id="listCard" class="layui-card layui-hide">
     <div class="layui-card-header">
         <h1 class="local-time-title"></h1>
     </div>
@@ -55,7 +55,71 @@
         </table>
     </div>
 </div>
+
+<div id="singleCard" class="layui-card"></div>
+<script type="text/html" id="singleTemplete">
+    <div class="layui-card-header">
+        <h1 class="local-time-title">{{d.type}} {{d.name}} 当前状态：{{d.status}}</h1>
+        <a id="btnBack" href="javascript:void(1);" title="返回列表" style="position: absolute; top: 0; right: 15px;">
+            <i class="layui-icon layui-icon-table"></i>
+        </a>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-row">
+            <div class="layui-col-md8 layui-col-md-offset2">
+                <div class="layui-row">
+                    <div class="layui-col-xs12" style="text-align: center;">
+                        <button type="button" data-type="S"
+                                class="layui-btn layui-btn-primary layui-btn-sm j-time-type">当前班次
+                        </button>
+                        <button type="button" data-type="D"
+                                class="layui-btn layui-btn-primary layui-btn-sm j-time-type">今天
+                        </button>
+                        <button type="button" data-type="D3"
+                                class="layui-btn layui-btn-primary layui-btn-sm j-time-type">近三天
+                        </button>
+                        <button type="button" data-type="W"
+                                class="layui-btn layui-btn-primary layui-btn-sm j-time-type">近七天
+                        </button>
+                        <button type="button" data-type="M"
+                                class="layui-btn layui-btn-primary layui-btn-sm j-time-type">近一月
+                        </button>
+                        <button type="button" data-type="X"
+                                class="layui-btn layui-btn-primary layui-btn-sm j-time-type">自定义
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <div class="layui-row">
+                    <div class="layui-col-xs12 layui-col-md6">
+                        <div id="barChart"></div>
+                    </div>
+                    <div class="layui-col-xs12 layui-col-md6">
+                        <div id="pieChart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <div class="layui-row">
+                    <div class="layui-col-xs12 layui-col-md6">
+                        <div id="rectChart"></div>
+                    </div>
+                    <div class="layui-col-xs12 layui-col-md6">
+                        <div id="lineChart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
 </body>
+<script src="plugin/echarts-5.0.0/echarts.min.js" type="text/javascript" charset="UTF-8"></script>
 <script src="plugin/layui/layui.js" type="text/javascript" charset="UTF-8"></script>
 <script src="js/module/factory/view.js" type="text/javascript" charset="UTF-8"></script>
 </html>

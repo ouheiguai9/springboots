@@ -174,6 +174,25 @@ public class FactoryController {
         return ResponseEntity.ok(new FactoryView(start, now, list, totalArr));
     }
 
+    @GetMapping("/singleView")
+    public ResponseEntity<SingleView> read(@AuthenticationPrincipal AuthenticationUser user
+            , String deviceId
+            , TimeType timeType
+            , @RequestParam(required = false) LocalDateTime start
+            , @RequestParam(required = false) LocalDateTime end) {
+        SingleView singleView = new SingleView();
+        Pair<LocalDateTime, LocalDateTime> pair = compute(user.getUserId(), timeType, start, end);
+        start = pair.getFirst();
+        end = pair.getSecond();
+        if (start == end) {
+            return ResponseEntity.ok(null);
+        }
+        singleView.setTotalSecond(Duration.between(start, end).abs().getSeconds());
+        List<TriColorLedLog> logList = triColorLedLogService.getAllLog(deviceId, start, end);
+        logList.forEach(singleView::visit);
+        return ResponseEntity.ok(singleView);
+    }
+
     private final MachineRepository machineRepository;
     private final ScheduleService scheduleService;
     private final TriColorLedLogService triColorLedLogService;

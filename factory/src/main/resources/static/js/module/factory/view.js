@@ -8,19 +8,26 @@ layui.config({
   var $ = layui.$;
   var restful = layui.restful;
   var laytpl = layui.laytpl;
-  var initTime = (new Date()).getTime();
+  var renderInterval;
+  var currentTime = (new Date()).getTime();
+  var barChart, pieChart, rectChart, lineChart;
 
   /********************************组件渲染*********************************/
-  $(document).off('ajaxStart').off('ajaxStop');
-  render();
-  // setInterval(render, 2 * 60 * 1000);
-  setInterval(render, 10 * 1000);
+  renderTable();
 
   /********************************事件绑定*********************************/
+  function renderTable() {
+    $('div.layui-card').toggleClass('layui-hide');
+    $('#singleCard').empty();
+    render();
+    renderInterval = setInterval(render, 10 * 1000);
+  }
+
   function render() {
-    restful.get('auth/api/factory/view', {initTime: initTime}, function (view) {
+    restful.disableLoading();
+    restful.get('auth/api/factory/view', {initTime: currentTime}, function (view) {
       // noinspection JSUnresolvedVariable
-      $('h1').html(view.timeInterval);
+      $('#listCard').find('h1').html(view.timeInterval);
       $('div.total-title-card').find('label').each(function (index) {
         // noinspection JSUnresolvedVariable
         $(this).html(view.totalArr[index]);
@@ -44,13 +51,133 @@ layui.config({
               item.color = '';
           }
           laytpl($('#trTemplete').html()).render(item, function (tr) {
-            tbody.append(tr);
+            tbody.append($(tr).find('a').bind('click', item, showSingleMachine).end());
           });
         });
         noRowTr.addClass('layui-hide');
       } else {
         noRowTr.removeClass('layui-hide');
       }
+      restful.enableLoading();
+    });
+  }
+
+  function showSingleMachine(event) {
+    var machine = event.data;
+    clearInterval(renderInterval);
+
+    $('div.layui-card').toggleClass('layui-hide');
+    laytpl($('#singleTemplete').html()).render(machine, function (content) {
+      var jq = $(content);
+      $('#singleCard').append(jq);
+    });
+    $('#btnBack').on('click', renderTable);
+
+    $('.j-time-type').on('click', function () {
+      var jq = $(this);
+      if (!jq.hasClass('layui-btn-primary')) {
+        return;
+      }
+      $('.j-time-type').not(this).addClass('layui-btn-primary');
+      jq.removeClass('layui-btn-primary');
+      var type = jq.data('type');
+      if (type !== 'X') {
+        restful.get('auth/api/factory/singleView', {timeType: type, deviceId: machine['deviceId']}, function (view) {
+          renderBarAndPie(view);
+        });
+      } else {
+
+      }
+    }).eq(0).click();
+  }
+
+  function renderBarAndPie(view) {
+    var jq;
+    if (!barChart) {
+      jq = $('#barChart');
+      jq.height(300);
+      barChart = echarts.init(jq[0]);
+    } else {
+      barChart.clear();
+    }
+    barChart.setOption({
+      title: {
+        text: '状态时间'
+      },
+      tooltip: {
+        trigger: 'item'
+      },
+      xAxis: {
+        type: 'category',
+        data: view['statusArray']
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [{
+        name: '时长(分钟)',
+        data: $.map(view['durationArray'], function (item) {
+          return parseFloat((item / 60.0).toFixed(2));
+        }),
+        type: 'bar',
+        itemStyle: {
+          color: function (param) {
+            var colorList = ['#FF5722', '#FFB800', '#5FB878', '#E2E2E2'];
+            return colorList[param.dataIndex];
+          }
+        }
+      }]
+    });
+
+
+    if (!pieChart) {
+      jq = $('#pieChart');
+      jq.height(300);
+      pieChart = echarts.init(jq[0]);
+    } else {
+      pieChart.clear();
+    }
+    var pieData = [];
+    $.each(view['statusArray'], function (i, item) {
+      pieData.push({value: parseFloat((view['durationArray'][i] / 60.0).toFixed(2)), name: item});
+    });
+    pieChart.setOption({
+      color: ['#FF5722', '#FFB800', '#5FB878', '#E2E2E2'],
+      title: {
+        text: '状态比例'
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} 分钟'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'right'
+      },
+      series: [
+        {
+          name: '状态比例',
+          type: 'pie',
+          radius: '50%',
+          data: pieData,
+          label: {
+            normal: {
+              formatter: '{b}: {d}%',
+              textStyle: {
+                fontWeight: 'normal',
+                fontSize: 15
+              }
+            }
+          },
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }
+      ]
     });
   }
 });
