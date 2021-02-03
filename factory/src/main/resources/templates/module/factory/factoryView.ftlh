@@ -84,9 +84,9 @@
                         <button type="button" data-type="M"
                                 class="layui-btn layui-btn-primary layui-btn-sm j-time-type">近一月
                         </button>
-                        <button type="button" data-type="X"
-                                class="layui-btn layui-btn-primary layui-btn-sm j-time-type">自定义
-                        </button>
+<#--                        <button type="button" data-type="X"-->
+<#--                                class="layui-btn layui-btn-primary layui-btn-sm j-time-type">自定义-->
+<#--                        </button>-->
                     </div>
                 </div>
             </div>
