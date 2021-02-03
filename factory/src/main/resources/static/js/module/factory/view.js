@@ -84,6 +84,8 @@ layui.config({
       if (type !== 'X') {
         restful.get('auth/api/factory/singleView', {timeType: type, deviceId: machine['deviceId']}, function (view) {
           renderBarAndPie(view);
+          renderRectChart(view);
+          renderLineChart(view);
         });
       } else {
 
@@ -178,6 +180,81 @@ layui.config({
               shadowColor: 'rgba(0, 0, 0, 0.5)'
             }
           }
+        }
+      ]
+    });
+  }
+
+  function renderRectChart(view) {
+    if (!rectChart) {
+      var jq = $('#rectChart');
+      jq.height(300);
+      rectChart = echarts.init(jq[0]);
+    } else {
+      rectChart.clear();
+    }
+    rectChart.setOption({});
+  }
+
+  function renderLineChart(view) {
+    if (!lineChart) {
+      var jq = $('#lineChart');
+      jq.height(300);
+      lineChart = echarts.init(jq[0]);
+    } else {
+      lineChart.clear();
+    }
+
+    lineChart.setOption({
+      color: ['#FF5722', '#FFB800', '#5FB878', '#E2E2E2'],
+      title: {
+        text: '产品效率',
+        left: 'center'
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+        data: view['statusArray']
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          name: '邮件营销',
+          type: 'line',
+          stack: '总量',
+          data: [120, 132, 101, 134, 90, 230, 210]
+        },
+        {
+          name: '联盟广告',
+          type: 'line',
+          stack: '总量',
+          data: [220, 182, 191, 234, 290, 330, 310]
+        },
+        {
+          name: '视频广告',
+          type: 'line',
+          stack: '总量',
+          data: [150, 232, 201, 154, 190, 330, 410]
+        },
+        {
+          name: '直接访问',
+          type: 'line',
+          stack: '总量',
+          data: [320, 332, 301, 334, 390, 330, 320]
         }
       ]
     });

@@ -4,7 +4,7 @@
     <#include "../../include/common_head_tpt.ftlh">
     <link href="css/crud.css" rel="stylesheet" type="text/css">
 </head>
-<body class="layui-layout-body layui-bg-gray layui-admin-crud">
+<body class="layui-layout-body layui-bg-gray layui-admin-crud" style="overflow:auto;">
 <div id="listCard" class="layui-card layui-hide">
     <div class="layui-card-header">
         <h1 class="local-time-title"></h1>
