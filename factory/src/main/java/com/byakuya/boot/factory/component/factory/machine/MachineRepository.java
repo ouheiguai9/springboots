@@ -17,7 +17,7 @@ public interface MachineRepository extends PagingAndSortingRepository<Machine, S
     Page<Machine> findAllByCreatedBy_id(Pageable pageable, String id);
 
     @EntityGraph("Machine.List")
-    @Query("select m from Machine m left join m.createdBy u on u.id=?1 inner join m.triColorLED t on t.locked='0' where m.triColorLED is not null order by m.createdDate asc")
+    @Query("select m from Machine m left join m.createdBy u left join m.triColorLED t where m.triColorLED is not null and u.id=?1 and t.locked='0' order by m.createdDate asc")
     List<Machine> findAllBindTriColorLED(String id);
 
     Optional<Machine> findByIdAndCreatedBy_id(String id, String userId);
