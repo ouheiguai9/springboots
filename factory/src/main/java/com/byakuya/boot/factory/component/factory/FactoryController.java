@@ -189,7 +189,17 @@ public class FactoryController {
         }
         singleView.setTotalSecond(Duration.between(start, end).abs().getSeconds());
         List<TriColorLedLog> logList = triColorLedLogService.getAllLog(deviceId, start, end);
-        logList.forEach(singleView::visit);
+        long[] durations = new long[3];
+        logList.forEach(log -> {
+            singleView.addLog(log);
+            if (log.getStatus() != TriColorLedLog.Status.NONE) {
+                durations[log.getStatus().ordinal()] += log.getDuration();
+                if (log.getStatus() == TriColorLedLog.Status.GREEN) {
+                    singleView.addDuration(durations[TriColorLedLog.Status.RED.ordinal()], durations[TriColorLedLog.Status.YELLOW.ordinal()], durations[TriColorLedLog.Status.GREEN.ordinal()]);
+                    Arrays.fill(durations, 0);
+                }
+            }
+        });
         return ResponseEntity.ok(singleView);
     }
 

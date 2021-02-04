@@ -193,7 +193,88 @@ layui.config({
     } else {
       rectChart.clear();
     }
-    rectChart.setOption({});
+    if (view['logs'].length === 0) return;
+    var startTime = view['logs'][0]['value'][0];
+
+    var colorList = ['#FF5722', '#FFB800', '#5FB878', '#E2E2E2'];
+    var map = {};
+    $.each(view['statusArray'], function (i, item) {
+      map[item] = i;
+    });
+    $.each(view['logs'], function (i, item) {
+      item.itemStyle = {
+        normal: {
+          color: colorList[map[item.name]]
+        }
+      };
+    });
+    rectChart.setOption({
+      tooltip: {
+        formatter: function (params) {
+          return params.marker + params.name + ': ' + params.value[1] + ' s';
+        }
+      },
+      title: {
+        text: '时间轴',
+        left: 'center'
+      },
+      dataZoom: [{
+        type: 'slider',
+        filterMode: 'weakFilter',
+        showDataShadow: false,
+        top: 245,
+        labelFormatter: ''
+      }, {
+        type: 'inside',
+        filterMode: 'weakFilter'
+      }],
+      grid: {
+        height: 140
+      },
+      xAxis: {
+        min: startTime,
+        scale: true,
+        axisLabel: {
+          formatter: function (val) {
+            return Math.max(0, val - startTime) + ' s';
+          }
+        }
+      },
+      yAxis: {show: false},
+      series: [{
+        type: 'custom',
+        renderItem: function (params, api) {
+          var start = api.coord([api.value(0), 0]);
+          var end = api.coord([api.value(0) + api.value(1), 0]);
+          var height = api.size([0, 1])[1];
+          var rectShape = echarts.graphic.clipRectByRect({
+            x: start[0],
+            y: start[1] - height,
+            width: end[0] - start[0],
+            height: height
+          }, {
+            x: params.coordSys.x,
+            y: params.coordSys.y,
+            width: params.coordSys.width,
+            height: params.coordSys.height
+          });
+          return rectShape && {
+            type: 'rect',
+            transition: ['shape'],
+            shape: rectShape,
+            style: api.style()
+          };
+        },
+        itemStyle: {
+          opacity: 0.8
+        },
+        encode: {
+          x: [0],
+          y: -1
+        },
+        data: view['logs']
+      }]
+    });
   }
 
   function renderLineChart(view) {
@@ -204,7 +285,7 @@ layui.config({
     } else {
       lineChart.clear();
     }
-
+    if (view['redDurations'].length === 0) return;
     lineChart.setOption({
       color: ['#FF5722', '#FFB800', '#5FB878', '#E2E2E2'],
       title: {
@@ -214,47 +295,48 @@ layui.config({
       tooltip: {
         trigger: 'axis'
       },
-      legend: {
-        data: view['statusArray']
-      },
+      dataZoom: [{
+        type: 'slider',
+        filterMode: 'weakFilter',
+        showDataShadow: false,
+        top: 250,
+        labelFormatter: ''
+      }, {
+        type: 'inside',
+        filterMode: 'weakFilter'
+      }],
       grid: {
         left: '3%',
         right: '4%',
-        bottom: '3%',
+        bottom: 50,
         containLabel: true
       },
       xAxis: {
         type: 'category',
+        scale: true,
         boundaryGap: false,
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        data: $.map(view['redDurations'], function (item, i) {
+          return '工件' + (i + 1);
+        })
       },
       yAxis: {
         type: 'value'
       },
       series: [
         {
-          name: '邮件营销',
+          name: '故障',
           type: 'line',
-          stack: '总量',
-          data: [120, 132, 101, 134, 90, 230, 210]
+          data: view['redDurations']
         },
         {
-          name: '联盟广告',
+          name: '警告',
           type: 'line',
-          stack: '总量',
-          data: [220, 182, 191, 234, 290, 330, 310]
+          data: view['yellowDurations']
         },
         {
-          name: '视频广告',
+          name: '运行',
           type: 'line',
-          stack: '总量',
-          data: [150, 232, 201, 154, 190, 330, 410]
-        },
-        {
-          name: '直接访问',
-          type: 'line',
-          stack: '总量',
-          data: [320, 332, 301, 334, 390, 330, 320]
+          data: view['greenDurations']
         }
       ]
     });
