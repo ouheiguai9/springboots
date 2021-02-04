@@ -1,9 +1,5 @@
 package com.byakuya.boot.factory.component.factory;
 
-import org.springframework.data.util.Pair;
-
-import java.time.LocalDateTime;
-
 /**
  * Created by ganzl on 2021/1/13.
  */
@@ -17,5 +13,6 @@ public enum TimeType {
     public String getName() {
         return name;
     }
+
     private String name;
 }
