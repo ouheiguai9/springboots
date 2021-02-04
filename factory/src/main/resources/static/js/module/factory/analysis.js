@@ -31,7 +31,7 @@ layui.config({
     } else {
 
     }
-  });
+  }).eq(0).click();
 
   function renderChart(elementId, title, list, key) {
     var barChart = barChartMap[elementId];
