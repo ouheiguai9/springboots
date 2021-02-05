@@ -3,6 +3,7 @@ package com.byakuya.boot.factory.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.byakuya.boot.factory.ConstantUtils;
 import com.byakuya.boot.factory.config.property.SecurityProperties;
@@ -31,8 +32,9 @@ public class CustomizedAuthSecurity {
             if (!StringUtils.hasText(token)) return false;
             try {
                 DecodedJWT jwt = JWT.decode(token);
+                JWT.require(createAlgorithm(request)).build().verify(jwt);
                 return check(authentication, request, jwt.getClaim(moduleKey).asString(), jwt.getClaim(componentKey).asString());
-            } catch (JWTDecodeException exception) {
+            } catch (JWTVerificationException exception) {
                 return false;
             }
         }
@@ -53,16 +55,20 @@ public class CustomizedAuthSecurity {
         if (authentication == null || !authentication.isAuthenticated()) return false;
         boolean rtnVal = check(authentication, request, module, component);
         if (rtnVal && securityProperties.isOpenApiJwt()) {
-            request.setAttribute(ConstantUtils.AUTH_PAGE_TOKEN_KEY, createToken(request.getSession().getId(), module, component));
+            request.setAttribute(ConstantUtils.AUTH_PAGE_TOKEN_KEY, createToken(request, module, component));
         }
         return rtnVal;
     }
 
-    private String createToken(String sessionId, String module, String component) {
+    private String createToken(HttpServletRequest request, String module, String component) {
         return JWT.create()
                 .withClaim(moduleKey, module)
                 .withClaim(componentKey, component)
-                .sign(Algorithm.HMAC256(sessionId));
+                .sign(createAlgorithm(request));
+    }
+
+    private Algorithm createAlgorithm(HttpServletRequest request) {
+        return Algorithm.HMAC256(request.getSession().getId());
     }
 
     private final String componentKey = "component";
