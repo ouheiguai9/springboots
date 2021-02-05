@@ -49,7 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .mvcMatchers("/auth/page/{module}/{component}/**").access("@customizedWebSecurity.checkAuthPageUrl(authentication, #module, #component)")
+                .mvcMatchers("/auth/page/{module}/{component}/**").access("@customizedAuthSecurity.checkAuthPageUrl(authentication, request, #module, #component)")
+                .mvcMatchers("/auth/api/**").access("@customizedAuthSecurity.checkAuthApiUrl(authentication, request)")
                 .anyRequest().authenticated()
                 .and()
                 .apply(new CustomizedFormLoginConfigurer<>()).setEnableCaptcha(captchaProperties != null).loginPage(loginPageUrl).loginProcessingUrl(loginProcessingUrl).failureHandler(failureHandler).permitAll()

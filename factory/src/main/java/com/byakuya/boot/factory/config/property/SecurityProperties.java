@@ -25,6 +25,7 @@ public class SecurityProperties {
     private RequestMethod loginProcessingRequestMethod = RequestMethod.POST;
     private String loginProcessingUrl = "/login";
     private String newUserDefaultPassword = "abc!123";
+    private boolean openApiJwt = false;
     private long passwordValidPeriod = 180;
 
     @Data

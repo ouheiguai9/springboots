@@ -7,6 +7,8 @@ package com.byakuya.boot.factory;
 public class ConstantUtils {
     //附加资源路径
     public static final String ADDITIONAL_RESOURCE_PATH = "/additional/";
+    //授权页面token键值
+    public static final String AUTH_PAGE_TOKEN_KEY = "_auth_page_token_";
     //默认REST请求前缀
     public static final String AUTH_REST_API_PREFIX = "/auth/api";
     //验证码在请求中的参数名

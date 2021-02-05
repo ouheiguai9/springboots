@@ -13,6 +13,7 @@ system:
     login-page-url: '/login'   #登陆页面地址(默认/login)
     login-processing-url: '/login'  #登陆验证地址(默认/login)
     login-processing-request-method: 'POST'  #登陆验证请求方法(默认POST)
+    open-api-jwt: false #是否开启API JWT验证(默认false)
   #验证码相关配置
   captcha:
     enable: true #是否启用验证码

@@ -16,6 +16,8 @@ layui.define(['feedback', 'jquery'], function (exports) {
         feedback.loading();
       }).ajaxStop(function () {
         feedback.closeLoading();
+      }).ajaxSend(function (event, jqXHR) {
+        jqXHR.setRequestHeader('_auth_page_token_', $('meta[name="_auth_page_token_"]').attr('content'))
       }).ajaxError(function (event, jqXHR) {
         if (jqXHR.responseJSON) {
           feedback.failMsg(jqXHR.responseJSON.message);

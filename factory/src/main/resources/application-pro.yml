@@ -24,3 +24,7 @@ spring:
     show-sql: false
   profiles:
     active: pro
+
+system:
+  security:
+    open-api-jwt: true
