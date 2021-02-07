@@ -49,7 +49,7 @@ layui.config({
       }
       , {field: 'serialNumber', width: 200, title: '主串号'}
       , {field: 'serialNumber1', width: 200, title: '辅助串号1'}
-      , {field: 'serialNumber2', width: 200, title: '辅助串号1'}
+      , {field: 'serialNumber2', width: 200, title: '辅助串号2'}
       , {field: 'producer', width: 150, title: '生产商'}
       , {field: 'consumerName', width: 150, title: '收货方'}
       , {field: 'createdDate', width: 200, title: '创建时间', align: 'center', sort: true}
