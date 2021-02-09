@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 public interface MachineRepository extends PagingAndSortingRepository<Machine, String> {
     @EntityGraph("Machine.List")
-    @Query("select m from Machine m left join m.createdBy u left join m.triColorLED t where m.triColorLED is not null and u.id=?1 and t.locked='0' order by m.createdDate asc")
+    @Query("select m from Machine m left join m.createdBy u left join m.triColorLED t where m.triColorLED is not null and u.id=?1 and t.locked='0' order by m.name asc")
     List<Machine> findAllBindTriColorLED(String id);
 
     @EntityGraph("Machine.List")

@@ -8,6 +8,7 @@ import com.byakuya.boot.factory.jackson.DynamicJsonView;
 import com.byakuya.boot.factory.security.AuthenticationUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -58,7 +59,7 @@ public class MachineController {
 
     @GetMapping
     public ResponseEntity<Page<Machine>> read(@AuthenticationPrincipal AuthenticationUser user
-            , @PageableDefault Pageable pageable) {
+            , @PageableDefault(sort = {"name"}, direction = Sort.Direction.ASC) Pageable pageable) {
         Page<Machine> iterable = machineRepository.findAllByCreatedBy_id(pageable, user.getUserId());
         return ResponseEntity.ok(iterable);
     }

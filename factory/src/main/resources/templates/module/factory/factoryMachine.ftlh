@@ -41,7 +41,8 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="name">本厂编号：</label>
                             <div class="layui-input-block">
-                                <input id="name" type="text" name="name" class="layui-input" placeholder="不超过8个字符"
+                                <input id="name" type="text" name="name" class="layui-input"
+                                       placeholder="不超过8个字符(如:YG-0001)"
                                        lay-verify="required" lay-verType="tips" maxlength="8">
                             </div>
                         </div>
@@ -50,7 +51,8 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="operator">操作人员：</label>
                             <div class="layui-input-block">
-                                <input id="operator" type="text" name="operator" class="layui-input" placeholder="不超过8个字符"
+                                <input id="operator" type="text" name="operator" class="layui-input"
+                                       placeholder="不超过8个字符(如:李大宝)"
                                        lay-verify="required" lay-verType="tips" maxlength="8">
                             </div>
                         </div>
@@ -61,17 +63,18 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="type">设备名称：</label>
                             <div class="layui-input-block">
-                                <input id="type" type="text" name="type" class="layui-input" placeholder="不超过10个字符"
-                                       maxlength="10">
+                                <input id="type" type="text" name="type" class="layui-input"
+                                       placeholder="不超过16个字符(如:斗山大宇卧加HP600)"
+                                       maxlength="16">
                             </div>
                         </div>
                     </div>
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
-                            <label class="layui-form-label" for="producer">生产商：</label>
+                            <label class="layui-form-label" for="description">零件名称：</label>
                             <div class="layui-input-block">
-                                <input id="producer" type="text" name="producer" class="layui-input"
-                                       placeholder="生产商">
+                                <input id="description" type="text" name="description" class="layui-input"
+                                       placeholder="不超过16个字符" maxlength="16">
                             </div>
                         </div>
                     </div>
@@ -86,17 +89,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="layui-row">
-                    <div class="layui-col-md12">
-                        <div class="layui-form-item layui-form-text">
-                            <label class="layui-form-label" for="description">详细信息：</label>
-                            <div class="layui-input-block">
-                                <textarea id="description" name="description" class="layui-textarea"
-                                          placeholder="不超过16个字符" maxlength="16"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <#--                <div class="layui-row">-->
+                <#--                    <div class="layui-col-md12">-->
+                <#--                        <div class="layui-form-item layui-form-text">-->
+                <#--                            <label class="layui-form-label" for="description">详细信息：</label>-->
+                <#--                            <div class="layui-input-block">-->
+                <#--                                <textarea id="description" name="description" class="layui-textarea"-->
+                <#--                                          placeholder="不超过16个字符" maxlength="16"></textarea>-->
+                <#--                            </div>-->
+                <#--                        </div>-->
+                <#--                    </div>-->
+                <#--                </div>-->
                 <div class="layui-row">
                     <div class="layui-form-item">
                         <div class="layui-input-block">

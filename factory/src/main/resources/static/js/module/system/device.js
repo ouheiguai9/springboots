@@ -37,7 +37,7 @@ layui.config({
     , cols: [[
       {type: 'checkbox', fixed: 'left'}
       , {
-        field: 'type', width: 150, title: '设备类型', sort: true, templet: function (d) {
+        field: 'type', width: 110, title: '设备类型', sort: true, templet: function (d) {
           switch (d.type) {
             case 'TriColorLed':
               return '三色灯';
@@ -47,14 +47,14 @@ layui.config({
           return d.type;
         }
       }
-      , {field: 'serialNumber', width: 200, title: '主串号'}
-      , {field: 'serialNumber1', width: 200, title: '辅助串号1'}
-      , {field: 'serialNumber2', width: 200, title: '辅助串号2'}
-      , {field: 'producer', width: 150, title: '生产商'}
-      , {field: 'consumerName', width: 150, title: '收货方'}
-      , {field: 'createdDate', width: 200, title: '创建时间', align: 'center', sort: true}
+      , {field: 'serialNumber', width: 150, title: '主串号'}
+      // , {field: 'serialNumber1', width: 200, title: '辅助串号1'}
+      // , {field: 'serialNumber2', width: 200, title: '辅助串号2'}
+      , {field: 'producer', title: '生产商'}
+      , {field: 'consumerName', title: '收货方'}
+      , {field: 'createdDate', width: 160, title: '创建时间', align: 'center', sort: true}
       , {
-        field: 'locked', width: 120, title: '状态', align: 'center', sort: true, templet: function (d) {
+        field: 'locked', width: 90, title: '状态', align: 'center', sort: true, templet: function (d) {
           return d.locked ? '不可用' : '可用';
         }
       }
