@@ -151,6 +151,7 @@ public class FactoryController {
             machineStatus.setOperator(machine.getOperator());
             machineStatus.setDeviceId(machine.getTriColorLEDId());
             machineStatus.setSerialNumber(machine.getTriColorLEDSerialNumber());
+            machineStatus.setDetail(machine.getDescription());
             LocalDateTime durationStart;
             TriColorLedLog.Status status;
             TriColorLedLogService.Proxy proxy = triColorLedLogService.getDeviceLastLog(machine.getTriColorLEDId());

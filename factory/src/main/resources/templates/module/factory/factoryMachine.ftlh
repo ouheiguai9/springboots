@@ -41,8 +41,8 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="name">设备名称：</label>
                             <div class="layui-input-block">
-                                <input id="name" type="text" name="name" class="layui-input" placeholder="设备名称"
-                                       lay-verify="required" lay-verType="tips">
+                                <input id="name" type="text" name="name" class="layui-input" placeholder="不超过8个字符"
+                                       lay-verify="required" lay-verType="tips" maxlength="8">
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,8 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="type">设备类型：</label>
                             <div class="layui-input-block">
-                                <input id="type" type="text" name="type" class="layui-input" placeholder="设备类型">
+                                <input id="type" type="text" name="type" class="layui-input" placeholder="不超过10个字符"
+                                       maxlength="10">
                             </div>
                         </div>
                     </div>
@@ -88,9 +89,10 @@
                 <div class="layui-row">
                     <div class="layui-col-md12">
                         <div class="layui-form-item layui-form-text">
-                            <label class="layui-form-label" for="description">描述信息：</label>
+                            <label class="layui-form-label" for="description">详细信息：</label>
                             <div class="layui-input-block">
-                                <textarea id="description" name="description" class="layui-textarea"></textarea>
+                                <textarea id="description" name="description" class="layui-textarea"
+                                          placeholder="不超过16个字符" maxlength="16"></textarea>
                             </div>
                         </div>
                     </div>
