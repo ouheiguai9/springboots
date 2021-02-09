@@ -1,5 +1,6 @@
 package com.byakuya.boot.factory.component.device;
 
+import com.byakuya.boot.factory.component.factory.machine.MachineRepository;
 import com.byakuya.boot.factory.component.user.User;
 import com.byakuya.boot.factory.component.user.UserRepository;
 import com.byakuya.boot.factory.config.AuthRestAPIController;
@@ -13,6 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.Optional;
@@ -23,8 +25,9 @@ import java.util.Optional;
 @AuthRestAPIController(path = {"devices"})
 @Validated
 public class DeviceController {
-    public DeviceController(DeviceRepository deviceRepository, UserRepository userRepository) {
+    public DeviceController(DeviceRepository deviceRepository, MachineRepository machineRepository, UserRepository userRepository) {
         this.deviceRepository = deviceRepository;
+        this.machineRepository = machineRepository;
         this.userRepository = userRepository;
     }
 
@@ -65,6 +68,7 @@ public class DeviceController {
     }
 
     @PutMapping
+    @Transactional
     public ResponseEntity<Device> update(@Valid @RequestBody Device device) {
         Device old = get(device.getId());
         old.setSerialNumber(device.getSerialNumber());
@@ -75,10 +79,18 @@ public class DeviceController {
         old.setDescription(device.getDescription());
 
         setReferenceProperties(device);
+        //如果变更收货方则需要解除原有绑定
+        if (StringUtils.hasText(old.getConsumerId()) && !old.getConsumerId().equals(device.getConsumerId())) {
+            machineRepository.findByTriColorLED(old).ifPresent(machine -> {
+                machine.setTriColorLED(null);
+                machineRepository.save(machine);
+            });
+        }
         old.setConsumer(device.getConsumer());
         return ResponseEntity.ok(deviceRepository.save(old));
     }
 
     private final DeviceRepository deviceRepository;
+    private final MachineRepository machineRepository;
     private final UserRepository userRepository;
 }

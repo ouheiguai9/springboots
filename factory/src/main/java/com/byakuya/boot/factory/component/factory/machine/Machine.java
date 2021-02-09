@@ -31,7 +31,7 @@ public class Machine extends AbstractAuditableEntity<User> {
     }
 
     @JsonProperty
-    void setTriColorLED(Device triColorLED) {
+    public void setTriColorLED(Device triColorLED) {
         this.triColorLED = triColorLED;
     }
 

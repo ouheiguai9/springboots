@@ -79,10 +79,21 @@ layui.config({
       obj.consumer = {id: obj.consumerId};
     }
     if (currentRow) {
-      restful.put('auth/api/devices', obj, function (data) {
-        currentRow.update(data);
-        feedback.successMsg('修改成功');
-      });
+      // noinspection JSUnresolvedVariable
+      if (currentRow.data.consumerId !== '' && currentRow.data.consumerId !== obj.consumerId) {
+        feedback.confirm('确定变更收货方?', function (index) {
+          restful.put('auth/api/devices', obj, function (data) {
+            currentRow.update(data);
+            feedback.successMsg('修改成功');
+          });
+          feedback.close(index);
+        });
+      } else {
+        restful.put('auth/api/devices', obj, function (data) {
+          currentRow.update(data);
+          feedback.successMsg('修改成功');
+        });
+      }
     } else {
       restful.post('auth/api/devices', obj, function () {
         feedback.successMsg('添加成功', function () {
@@ -129,7 +140,8 @@ layui.config({
       case 'edit':
         currentRow = row;
         form.val('editForm', row.data);
-        if (row.data.consumer) {
+        // noinspection JSUnresolvedVariable
+        if (row.data.consumerId) {
           // noinspection JSUnresolvedVariable
           tableSelect.resetValue('consumerId', row.data.consumerId, row.data.consumerName);
         }
