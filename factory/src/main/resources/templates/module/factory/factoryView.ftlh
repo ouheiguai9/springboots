@@ -31,8 +31,8 @@
         <table class="layui-table">
             <thead>
             <tr>
+                <th>本厂编号</th>
                 <th>设备名称</th>
-                <th>设备类型</th>
                 <th>状态</th>
                 <th>持续时间</th>
                 <th>操作员</th>

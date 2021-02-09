@@ -39,7 +39,7 @@
                 <div class="layui-row">
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
-                            <label class="layui-form-label" for="name">设备名称：</label>
+                            <label class="layui-form-label" for="name">本厂编号：</label>
                             <div class="layui-input-block">
                                 <input id="name" type="text" name="name" class="layui-input" placeholder="不超过8个字符"
                                        lay-verify="required" lay-verType="tips" maxlength="8">
@@ -59,7 +59,7 @@
                 <div class="layui-row">
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
-                            <label class="layui-form-label" for="type">设备类型：</label>
+                            <label class="layui-form-label" for="type">设备名称：</label>
                             <div class="layui-input-block">
                                 <input id="type" type="text" name="type" class="layui-input" placeholder="不超过10个字符"
                                        maxlength="10">
