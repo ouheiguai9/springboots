@@ -27,4 +27,7 @@ spring:
 
 system:
   security:
+    admin:
+      nickname: ${server.servlet.application-display-name}
+      password: 'random'
     open-api-jwt: true

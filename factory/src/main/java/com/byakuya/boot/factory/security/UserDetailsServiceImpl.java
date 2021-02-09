@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -21,9 +22,44 @@ import java.util.*;
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    public UserDetailsServiceImpl(UserService userService, SecurityProperties securityProperties) {
+    public UserDetailsServiceImpl(UserService userService, SecurityProperties securityProperties, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.securityProperties = securityProperties;
+        this.passwordEncoder = passwordEncoder;
+        this.securityProperties.getAdmin().setPassword(adjust(this.securityProperties.getAdmin().getPassword()));
+    }
+
+    /**
+     * 如果配置为随机密码则每次启动随机生成超管密码
+     *
+     * @param password 原始密码
+     * @return 新密码
+     */
+    private String adjust(String password) {
+        if (!"random".equals(password)) return password;
+        String numbers = "01234567890";
+        //noinspection SpellCheckingInspection
+        String letters = "abcdefghijklmnopqrstuvwxyz";
+        String symbols = "~!@#$^*";
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder();
+        int totalSize = random.nextInt(6) + 10;
+        for (int i = 0; i < totalSize; i++) {
+            char c = letters.charAt(random.nextInt(letters.length()));
+            if (random.nextBoolean()) {
+                c = Character.toUpperCase(c);
+            }
+            sb.append(c);
+        }
+        for (int i = 0; i < 3; i++) {
+            sb.setCharAt(random.nextInt(totalSize), numbers.charAt(random.nextInt(numbers.length())));
+        }
+        sb.setCharAt(random.nextInt(totalSize), symbols.charAt(random.nextInt(symbols.length())));
+        System.out.println("\n\n\n");
+        System.out.print("Random Password: ");
+        System.out.print(sb);
+        System.out.println("\n\n\n");
+        return this.passwordEncoder.encode(sb.toString());
     }
 
     @Override
@@ -64,6 +100,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final SecurityProperties securityProperties;
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
