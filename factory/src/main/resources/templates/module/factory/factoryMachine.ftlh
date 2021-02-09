@@ -50,8 +50,8 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="operator">操作人员：</label>
                             <div class="layui-input-block">
-                                <input id="operator" type="text" name="operator" class="layui-input" placeholder="操作人员"
-                                       lay-verify="required" lay-verType="tips">
+                                <input id="operator" type="text" name="operator" class="layui-input" placeholder="不超过8个字符"
+                                       lay-verify="required" lay-verType="tips" maxlength="8">
                             </div>
                         </div>
                     </div>
