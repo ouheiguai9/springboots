@@ -100,7 +100,7 @@ public class AuthenticationPageController {
         if (topMenuList.size() == 1) {
             topMenuList = new ArrayList<>(topMenuList.get(0).getOrderChildren());
         }
-        String nickname = securityProperties.getAdmin().getNickname(), avatar = "";
+        String nickname = securityProperties.getAdmin().getNickname(), username = user.getUsername(), avatar = "";
         if (!user.isAdmin()) {
             User me = userService.get(user.getUserId());
             nickname = me.getNickname();
@@ -108,6 +108,7 @@ public class AuthenticationPageController {
         }
         model.addAttribute("topMenuList", topMenuList);
         model.addAttribute("nickname", nickname);
+        model.addAttribute("username", username);
         if (StringUtils.hasText(avatar)) {
             model.addAttribute("avatar", avatar);
         }

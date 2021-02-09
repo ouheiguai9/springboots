@@ -55,9 +55,14 @@ header {
     height: 49px;
     padding: 0 15px;
     overflow: hidden;
-    font-weight: 300;
+    border-bottom: 1px solid #fff;
+    font-weight: 900;
     background-repeat: no-repeat;
     background-position: center center;
+    text-overflow: ellipsis;
+    color: #e2e2e2;
+    font-size: 18px;
+    white-space: nowrap;
 }
 
 .layui-admin .layui-layer-tips .layui-layer-content {

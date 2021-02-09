@@ -62,7 +62,7 @@
 </header>
 <section class="layui-side">
     <div class="layui-side-scroll">
-        <div class="layui-logo"></div>
+        <div class="layui-logo" title="${nickname!username}">${nickname!username}</div>
         <ul class="layui-nav layui-nav-tree">
             <#list topMenuList as menu>
                 <#if menu.getParentId()??>
