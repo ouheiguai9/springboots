@@ -33,8 +33,8 @@ layui.config({
     , toolbar: '#tableListToolBar'
     , cols: [[
       {type: 'checkbox', fixed: 'left'}
-      , {field: 'name', width: 200, title: '设备名称'}
-      , {field: 'type', width: 200, title: '设备类型'}
+      , {field: 'name', width: 200, title: '本厂编号'}
+      , {field: 'type', width: 200, title: '设备名称'}
       , {field: 'producer', width: 200, title: '生产商'}
       , {field: 'operator', width: 150, title: '操作员'}
       , {field: 'triColorLEDSerialNumber', width: 150, title: '三色灯串号'}
