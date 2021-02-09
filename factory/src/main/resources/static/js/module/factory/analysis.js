@@ -52,9 +52,11 @@ layui.config({
           return item['name'];
         })
       },
-      yAxis: {},
+      yAxis: {
+        name: '时长(秒)'
+      },
       series: [{
-        name: '时长(秒)',
+        name: '时长',
         type: 'bar',
         data: $.map(list, function (item) {
           return item[key];

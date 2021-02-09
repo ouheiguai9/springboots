@@ -115,6 +115,7 @@ layui.config({
         data: view['statusArray']
       },
       yAxis: {
+        name: '时长(分钟)',
         type: 'value'
       },
       series: [{
@@ -320,6 +321,7 @@ layui.config({
         })
       },
       yAxis: {
+        name: '时长(秒)',
         type: 'value'
       },
       series: [
