@@ -9,7 +9,6 @@ layui.config({
   var restful = layui.restful;
   var laytpl = layui.laytpl;
   var renderInterval;
-  var currentTime = (new Date()).getTime();
   var barChart, pieChart, rectChart, lineChart;
 
   /********************************组件渲染*********************************/
@@ -25,7 +24,7 @@ layui.config({
 
   function render() {
     restful.disableLoading();
-    restful.get('auth/api/factory/view', {initTime: currentTime}, function (view) {
+    restful.get('auth/api/factory/view', {}, function (view) {
       // noinspection JSUnresolvedVariable
       $('#listCard').find('h1').html(view.timeInterval);
       $('div.total-title-card').find('label').each(function (index) {

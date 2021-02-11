@@ -8,6 +8,7 @@ import com.byakuya.boot.factory.component.factory.machine.MachineRepository;
 import com.byakuya.boot.factory.component.factory.schedual.Schedule;
 import com.byakuya.boot.factory.component.factory.schedual.ScheduleService;
 import com.byakuya.boot.factory.config.AuthRestAPIController;
+import com.byakuya.boot.factory.exception.CustomizedException;
 import com.byakuya.boot.factory.security.AuthenticationUser;
 import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
@@ -104,6 +105,8 @@ public class FactoryController {
                     } else {
                         pairStart = LocalDateTime.of(now.toLocalDate(), schedule.get().getStartTime());
                     }
+                } else {
+                    throw new CustomizedException("ERR-91001");
                 }
                 break;
             case D:
@@ -140,10 +143,10 @@ public class FactoryController {
     }
 
     @GetMapping("/view")
-    public ResponseEntity<FactoryView> read(@AuthenticationPrincipal AuthenticationUser user, long initTime) {
+    public ResponseEntity<FactoryView> read(@AuthenticationPrincipal AuthenticationUser user) {
         List<Machine> machines = machineRepository.findAllBindTriColorLED(user.getUserId());
         int[] totalArr = new int[]{0, 0, 0, 0};
-        LocalDateTime start = LocalDateTime.ofInstant(new Date(initTime).toInstant(), ZoneId.systemDefault()), now = LocalDateTime.now();
+        LocalDateTime start = compute(user.getUserId(), TimeType.S, null, null).getFirst(), now = LocalDateTime.now();
         List<MachineStatus> list = machines.stream().map(machine -> {
             MachineStatus machineStatus = new MachineStatus();
             machineStatus.setName(machine.getName());
