@@ -66,7 +66,7 @@ public class TriColorLedLogService {
         return getHeartBeat(time, interval);
     }
 
-    private static LocalDateTime getHeartBeat(LocalDateTime time, int interval) {
+    private static LocalDateTime getHeartBeat(LocalDateTime time, long interval) {
         return time.plusMinutes(2 * interval);
     }
 
@@ -121,7 +121,7 @@ public class TriColorLedLogService {
     private final TriColorLedLogRepository triColorLedLogRepository;
     private final TriColorLedMsgRepository triColorLedMsgRepository;
     @Value("${system.tri-color-led-interval:3}")
-    private int interval;
+    private long interval;
 
     public static class Proxy {
         public LocalDateTime getLastModifyTime() {
@@ -139,7 +139,7 @@ public class TriColorLedLogService {
 
         synchronized void setLog(TriColorLedLog newLog
                 , TriColorLedLogRepository triColorLedLogRepository
-                , int interval) {
+                , long interval) {
             if (log == null) {
                 log = triColorLedLogRepository.save(newLog);
             } else {
