@@ -231,7 +231,7 @@ layui.config({
         }
       },
       title: {
-        text: '时间轴',
+        text: '时间轴(' + ((new Date(startTime * 1000)).format('yyyy-MM-dd hh:mm:ss')) + ')',
         left: 'center'
       },
       dataZoom: [{
@@ -252,11 +252,7 @@ layui.config({
         scale: true,
         axisLabel: {
           formatter: function (val) {
-            if (val > startTime) {
-              return (val - startTime) + ' s';
-            } else {
-              return (new Date(val * 1000)).format('yyyy-MM-dd hh:mm:ss');
-            }
+            return Math.max(0, val - startTime) + ' s';
           }
         }
       },
