@@ -58,6 +58,10 @@ public class TriColorLedLogService {
         return triColorLedLogRepository.findAllByDevice_IdAndTimeBetweenOrderByTimeAsc(deviceId, start, end);
     }
 
+    public List<TriColorLedLog> getDeviceGreenCount(Iterable<Device> devices, LocalDateTime start, LocalDateTime end) {
+        return triColorLedLogRepository.findGreenCount(devices, start, end);
+    }
+
     public List<TriColorLedLog> getDeviceStatusSumDuration(Iterable<Device> devices, LocalDateTime start, LocalDateTime end) {
         return triColorLedLogRepository.findStatusRank(devices, start, end);
     }

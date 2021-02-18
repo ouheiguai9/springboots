@@ -7,6 +7,7 @@ import lombok.Data;
  */
 @Data
 class MachineStatus {
+    private long count;
     private String detail;
     private String deviceId;
     private String duration;

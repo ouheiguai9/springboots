@@ -18,4 +18,7 @@ public interface TriColorLedLogRepository extends CrudRepository<TriColorLedLog,
 
     @Query("select new TriColorLedLog(log.device, log.status, sum(log.duration)) from TriColorLedLog log where log.status <> 'NONE' and log.device in ?1 and log.time between ?2 and ?3 group by log.status, log.device")
     List<TriColorLedLog> findStatusRank(Iterable<Device> devices, LocalDateTime startTime, LocalDateTime endTime);
+
+    @Query("select new TriColorLedLog(log.device, log.status, count(log.duration)) from TriColorLedLog log where log.status = 'GREEN' and log.device in ?1 and log.time between ?2 and ?3 group by log.status, log.device")
+    List<TriColorLedLog> findGreenCount(Iterable<Device> devices, LocalDateTime startTime, LocalDateTime endTime);
 }

@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -147,6 +146,9 @@ public class FactoryController {
         List<Machine> machines = machineRepository.findAllBindTriColorLED(user.getUserId());
         int[] totalArr = new int[]{0, 0, 0, 0};
         LocalDateTime start = compute(user.getUserId(), TimeType.S, null, null).getFirst(), now = LocalDateTime.now();
+
+        Map<Device, Long> deviceLongMap = triColorLedLogService.getDeviceGreenCount(machines.stream().map(Machine::getTriColorLED).collect(Collectors.toList()), start, now).stream().collect(Collectors.toMap(TriColorLedLog::getDevice, TriColorLedLog::getDuration));
+
         List<MachineStatus> list = machines.stream().map(machine -> {
             MachineStatus machineStatus = new MachineStatus();
             machineStatus.setName(machine.getName());
@@ -155,6 +157,7 @@ public class FactoryController {
             machineStatus.setDeviceId(machine.getTriColorLEDId());
             machineStatus.setSerialNumber(machine.getTriColorLEDSerialNumber());
             machineStatus.setDetail(machine.getDescription());
+            machineStatus.setCount(deviceLongMap.getOrDefault(machine.getTriColorLED(), 0L));
             LocalDateTime durationStart;
             TriColorLedLog.Status status;
             TriColorLedLogService.Proxy proxy = triColorLedLogService.getDeviceLastLog(machine.getTriColorLEDId());

@@ -35,6 +35,7 @@
                 <th>设备名称</th>
                 <th>状态</th>
                 <th>持续时间</th>
+                <th>当前数量</th>
                 <th>操作员</th>
                 <th>详细信息</th>
             </tr>
@@ -46,6 +47,7 @@
                     <td>{{d.type}}</td>
                     <td><span class="layui-badge-dot layui-badge-dot-bg {{d.color}}"></span>{{d.status}}</td>
                     <td>{{d.duration}}</td>
+                    <td>{{d.count}}</td>
                     <td>{{d.operator}}</td>
                     <td>{{d.detail}}</td>
                 </tr>
