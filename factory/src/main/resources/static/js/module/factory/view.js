@@ -231,7 +231,7 @@ layui.config({
         }
       },
       title: {
-        text: '时间轴(' + ((new Date(startTime * 1000)).format('yyyy-MM-dd hh:mm:ss')) + ')',
+        text: '时间轴(' + ((new Date(startTime * 1000)).format('yyyy-MM-dd hh:mm:ss')) + '始)',
         left: 'center'
       },
       dataZoom: [{
