@@ -9,6 +9,12 @@ layui.config({
   var restful = layui.restful;
   var laytpl = layui.laytpl;
   var barChartMap = {};
+  var colorMap = {
+    'RED': '#FF5722',
+    'YELLOW': '#FFB800',
+    'GREEN': '#5FB878',
+    'NONE': '#E2E2E2'
+  };
 
   /********************************组件渲染*********************************/
 
@@ -23,17 +29,17 @@ layui.config({
     var type = jq.data('type');
     if (type !== 'X') {
       restful.get('auth/api/factory/rank', {timeType: type}, function (rank) {
-        renderChart('statusGreen', '运行排行榜', rank['GREEN'], 'greenDuration');
-        renderChart('statusRed', '故障排行榜', rank['RED'], 'redDuration');
-        renderChart('statusYellow', '暂停排行榜', rank['YELLOW'], 'yellowDuration');
-        renderChart('statusNone', '离线排行榜', rank['NONE'], 'noneDuration');
+        renderChart('statusGreen', '运行排行榜', rank['GREEN'], 'greenDuration', colorMap['GREEN']);
+        renderChart('statusRed', '故障排行榜', rank['RED'], 'redDuration', colorMap['RED']);
+        renderChart('statusYellow', '暂停排行榜', rank['YELLOW'], 'yellowDuration', colorMap['YELLOW']);
+        renderChart('statusNone', '离线排行榜', rank['NONE'], 'noneDuration', colorMap['NONE']);
       });
     } else {
 
     }
   }).eq(0).click();
 
-  function renderChart(elementId, title, list, key) {
+  function renderChart(elementId, title, list, key, color) {
     var barChart = barChartMap[elementId];
     if (!barChart) {
       var jq = $('#' + elementId);
@@ -58,6 +64,9 @@ layui.config({
       series: [{
         name: '时长',
         type: 'bar',
+        itemStyle: {
+          color: color
+        },
         data: $.map(list, function (item) {
           return item[key];
         })
