@@ -35,7 +35,7 @@
         </li>
         <li class="layui-nav-item" lay-unselect>
             <a href="javascript:void(1);" title="${nickname}" style="min-width: 50px; text-align: center">
-                <img src="${avatar!"image/default_avatar.jpg"}" alt="${nickname}" class="avatar">
+                <img src="${avatar!"image/default_avatar.jpg"}" class="avatar">
             </a>
             <dl class="layui-nav-child">
                 <#if !security.isAdmin()>
