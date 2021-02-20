@@ -10,9 +10,15 @@ import com.byakuya.boot.factory.component.factory.schedual.ScheduleService;
 import com.byakuya.boot.factory.config.AuthRestAPIController;
 import com.byakuya.boot.factory.exception.CustomizedException;
 import com.byakuya.boot.factory.security.AuthenticationUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.util.Pair;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -229,6 +235,21 @@ public class FactoryController {
             machineStatus.setStatus(status.getName());
             return machineStatus;
         }).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/abnormal/detail")
+    public ResponseEntity<Page<TriColorLedLog>> read(@AuthenticationPrincipal AuthenticationUser user
+            , @PageableDefault(sort = {"time"}, direction = Sort.Direction.DESC) Pageable pageable
+            , String deviceId
+            , LocalDateTime start
+            , LocalDateTime end
+            , TriColorLedLog.Status status
+            , Long threshold) {
+        if (StringUtils.hasText(deviceId)) {
+            return ResponseEntity.ok(triColorLedLogService.getStatusOvertimeDetail(pageable, deviceId, start, end, status, threshold));
+        } else {
+            return ResponseEntity.ok(new PageImpl<>(new ArrayList<>()));
+        }
     }
 
     private final MachineRepository machineRepository;

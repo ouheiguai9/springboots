@@ -4,6 +4,8 @@ import com.byakuya.boot.factory.component.device.Device;
 import com.byakuya.boot.factory.component.device.DeviceRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -56,6 +58,10 @@ public class TriColorLedLogService {
 
     public List<TriColorLedLog> getAllLog(String deviceId, LocalDateTime start, LocalDateTime end) {
         return triColorLedLogRepository.findAllByDevice_IdAndTimeBetweenOrderByTimeAsc(deviceId, start, end);
+    }
+
+    public Page<TriColorLedLog> getStatusOvertimeDetail(Pageable pageable, String deviceId, LocalDateTime start, LocalDateTime end, TriColorLedLog.Status status, Long duration) {
+        return triColorLedLogRepository.findAllByDevice_IdAndTimeBetweenAndStatusAndDurationGreaterThan(pageable, deviceId, start, end, status, duration);
     }
 
     public List<TriColorLedLog> getDeviceGreenCount(Iterable<Device> devices, LocalDateTime start, LocalDateTime end) {
