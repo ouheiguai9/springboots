@@ -51,6 +51,7 @@
                 <th>状态</th>
                 <th>异常次数</th>
                 <th>操作员</th>
+                <th>详细信息</th>
             </tr>
             </thead>
             <tbody>
@@ -61,10 +62,11 @@
                     <td><span class="layui-badge-dot layui-badge-dot-bg {{d.color}}"></span>{{d.status}}</td>
                     <td>{{d.count}}</td>
                     <td>{{d.operator}}</td>
+                    <td>{{d.detail}}</td>
                 </tr>
             </script>
             <tr id="noRowTr">
-                <td colspan="5" style="text-align: center">没有异常设备</td>
+                <td colspan="6" style="text-align: center">没有异常设备</td>
             </tr>
             </tbody>
         </table>
