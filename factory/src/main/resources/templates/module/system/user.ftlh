@@ -137,7 +137,7 @@
                             <label class="layui-form-label" for="avatar">图标：</label>
                             <div class="layui-input-block">
                                 <input type="text" name="avatar" id="avatar" placeholder="图标" class="layui-input"
-                                       disabled>
+                                       readonly>
                             </div>
                         </div>
                     </div>
