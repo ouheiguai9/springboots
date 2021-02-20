@@ -41,7 +41,7 @@
                 &nbsp;
             </div>
             <div class="layui-col-xs3 layui-col-md-offset1">
-                <a href="javascript:void(1);" class="layui-admin-link" style="float: right">忘记密码？</a>
+                <a id="btnForgetPassword" href="javascript:void(1);" class="layui-admin-link" style="float: right">忘记密码？</a>
             </div>
         </div>
         <div class="layui-form-item">
