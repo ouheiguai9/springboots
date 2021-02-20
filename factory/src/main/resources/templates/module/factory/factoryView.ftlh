@@ -53,7 +53,7 @@
                 </tr>
             </script>
             <tr id="noRowTr">
-                <td colspan="6" style="text-align: center">未添加设备</td>
+                <td colspan="7" style="text-align: center">未添加设备</td>
             </tr>
             </tbody>
         </table>
