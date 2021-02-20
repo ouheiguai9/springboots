@@ -14,6 +14,6 @@ layui.use(['form', 'jquery', 'layer'], function () {
     $(this).prop('src', 'captcha?r=' + Math.random());
   });
   $('#btnForgetPassword').on('click', function () {
-    layer.alert('尊敬的企业客户：<br/>如果密码丢失，请联系人工客服。<br/>联系电话：18114758636/0512-68052881');
+    layer.alert('尊敬的企业客户：<br/>密码丢失，请使用注册电话联系人工客服。<br/>联系电话：18114758636/0512-68052881');
   });
 });
