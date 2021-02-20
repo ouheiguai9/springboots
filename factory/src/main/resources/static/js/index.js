@@ -198,7 +198,7 @@ layui.config({
     var thisUrl;
     if (pageTab.selectedIndex === 0) {
       thisUrl = localStorage.getItem(myHomePageUrlKey);
-      thisUrl = thisUrl ? thisUrl : $('.j-href-menu').eq(0).data('href');
+      thisUrl = thisUrl ? thisUrl : $('.layui-side-scroll').find('.j-href-menu').eq(0).data('href');
       thisUrl = thisUrl ? thisUrl : 'home';
     } else {
       thisUrl = pageTab.pages[pageTab.selectedIndex].url;
