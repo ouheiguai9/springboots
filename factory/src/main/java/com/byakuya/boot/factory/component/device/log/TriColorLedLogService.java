@@ -62,6 +62,10 @@ public class TriColorLedLogService {
         return triColorLedLogRepository.findGreenCount(devices, start, end);
     }
 
+    public List<TriColorLedLog> getDeviceStatusOvertimeCount(Iterable<Device> devices, TriColorLedLog.Status status, LocalDateTime start, LocalDateTime end, Long threshold) {
+        return triColorLedLogRepository.findStatusOvertimeCount(devices, status, start, end, threshold);
+    }
+
     public List<TriColorLedLog> getDeviceStatusSumDuration(Iterable<Device> devices, LocalDateTime start, LocalDateTime end) {
         return triColorLedLogRepository.findStatusRank(devices, start, end);
     }

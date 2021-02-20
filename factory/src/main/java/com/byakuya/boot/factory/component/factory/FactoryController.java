@@ -210,6 +210,27 @@ public class FactoryController {
         return ResponseEntity.ok(singleView);
     }
 
+    @GetMapping("/abnormal")
+    public ResponseEntity<List<MachineStatus>> read(@AuthenticationPrincipal AuthenticationUser user
+            , LocalDateTime start
+            , LocalDateTime end
+            , TriColorLedLog.Status status
+            , Long threshold) {
+        List<Machine> machines = machineRepository.findAllBindTriColorLED(user.getUserId());
+        Map<Device, Long> deviceLongMap = triColorLedLogService.getDeviceStatusOvertimeCount(machines.stream().map(Machine::getTriColorLED).collect(Collectors.toList()), status, start, end, threshold).stream().collect(Collectors.toMap(TriColorLedLog::getDevice, TriColorLedLog::getDuration));
+        return ResponseEntity.ok(machines.stream().map(machine -> {
+            MachineStatus machineStatus = new MachineStatus();
+            machineStatus.setName(machine.getName());
+            machineStatus.setType(machine.getType());
+            machineStatus.setDeviceId(machine.getTriColorLEDId());
+            machineStatus.setDetail(machine.getDescription());
+            machineStatus.setCount(deviceLongMap.getOrDefault(machine.getTriColorLED(), 0L));
+            machineStatus.setOperator(machine.getOperator());
+            machineStatus.setStatus(status.getName());
+            return machineStatus;
+        }).collect(Collectors.toList()));
+    }
+
     private final MachineRepository machineRepository;
     private final ScheduleService scheduleService;
     private final TriColorLedLogService triColorLedLogService;
