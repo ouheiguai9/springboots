@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -26,6 +27,18 @@ public class LocalDateTimeConfiguration {
             builder.deserializerByType(LocalDateTime.class, new LocalDateTimeDeserializer(formatter));
         };
     }
+
+    @Bean
+    public Converter<String, LocalDateTime> localDateTimeConverter() {
+        //noinspection Convert2Lambda
+        return new Converter<String, LocalDateTime>() {
+            @Override
+            public LocalDateTime convert(String s) {
+                return LocalDateTime.parse(s, DateTimeFormatter.ofPattern(pattern));
+            }
+        };
+    }
+
     @Value("${spring.jackson.date-format:yyyy-MM-dd HH:mm:ss}")
     private String pattern;
 }
