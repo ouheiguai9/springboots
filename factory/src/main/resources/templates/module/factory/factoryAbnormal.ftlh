@@ -8,7 +8,7 @@
 <section id="listCard" class="layui-card">
     <div class="layui-card-header">
         <div class="layui-row layui-form">
-            <div class="layui-col-md4">
+            <div class="layui-col-md5">
                 <div class="layui-form-item">
                     <label class="layui-form-label" for="period">时间段：</label>
                     <div class="layui-input-block">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
             </div>
-            <div class="layui-col-md2" style="text-align: right;">
+            <div class="layui-col-md1" style="text-align: right;">
                 <button id="btnQuery" type="button" class="layui-btn" style="vertical-align: top;">查询</button>
             </div>
         </div>
