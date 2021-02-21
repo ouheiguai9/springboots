@@ -57,10 +57,10 @@
             <tbody>
             <script type="text/html" id="trTemplete">
                 <tr>
-                    <td><a href="javascript:void(1)" class="layui-text-blue">{{d.name}}</a></td>
+                    <td>{{d.name}}</td>
                     <td>{{d.type}}</td>
                     <td><span class="layui-badge-dot layui-badge-dot-bg {{d.color}}"></span>{{d.status}}</td>
-                    <td>{{d.count}}</td>
+                    <td><a href="javascript:void(1)" class="layui-text-blue">{{d.count}}</a></td>
                     <td>{{d.operator}}</td>
                     <td>{{d.detail}}</td>
                 </tr>
