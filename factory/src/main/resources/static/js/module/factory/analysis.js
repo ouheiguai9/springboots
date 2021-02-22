@@ -4,17 +4,36 @@ layui.config({
 }).extend({
   restful: 'restful/index'
   , feedback: 'feedback/index'
-}).use(['restful', 'laytpl'], function () {
+}).use(['restful', 'laydate', 'laytpl'], function () {
   var $ = layui.$;
+  var feedback = layui.feedback;
   var restful = layui.restful;
+  var laydate = layui.laydate;
   var laytpl = layui.laytpl;
-  var barChartMap = {};
-  var colorMap = {
-    'RED': '#FF5722',
-    'YELLOW': '#FFB800',
-    'GREEN': '#5FB878',
-    'NONE': '#E2E2E2'
+
+  Date.prototype.format = function (fmt) {
+    var o = {
+      'M+': this.getMonth() + 1, //月份
+      'd+': this.getDate(), //日
+      'h+': this.getHours(), //小时
+      'm+': this.getMinutes(), //分
+      's+': this.getSeconds(), //秒
+      'q+': Math.floor((this.getMonth() + 3) / 3), //季度
+      'S': this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+    for (var k in o)
+      if (new RegExp('(' + k + ')').test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)));
+    return fmt;
   };
+
+  var barChartMap = {}, colorMap = {
+      'RED': '#FF5722',
+      'YELLOW': '#FFB800',
+      'GREEN': '#5FB878',
+      'NONE': '#E2E2E2'
+    }, now = new Date(), pattern = 'yyyy-MM-dd hh:mm:ss',
+    start = new Date(now.getTime() - 3600 * 24 * 1000).format(pattern), end = now.format(pattern);
 
   /********************************组件渲染*********************************/
 
@@ -24,20 +43,47 @@ layui.config({
     if (!jq.hasClass('layui-btn-primary')) {
       return;
     }
-    $('.j-time-type').not(this).addClass('layui-btn-primary');
-    jq.removeClass('layui-btn-primary');
-    var type = jq.data('type');
-    if (type !== 'X') {
-      restful.get('auth/api/factory/rank', {timeType: type}, function (rank) {
-        renderChart('statusGreen', '运行排行榜', rank['GREEN'], 'greenDuration', colorMap['GREEN']);
-        renderChart('statusRed', '故障排行榜', rank['RED'], 'redDuration', colorMap['RED']);
-        renderChart('statusYellow', '暂停排行榜', rank['YELLOW'], 'yellowDuration', colorMap['YELLOW']);
-        renderChart('statusNone', '离线排行榜', rank['NONE'], 'noneDuration', colorMap['NONE']);
-      });
-    } else {
-
-    }
+    $('#dateText').html('自定义');
+    jq.removeClass('layui-btn-primary').siblings().addClass('layui-btn-primary');
+    doQuery({timeType: jq.data('type')})
   }).eq(0).click();
+
+  $('#btnTrigger').one('click', function () {
+    laydate.render({
+      elem: '#datePicker'
+      , type: 'datetime'
+      , range: '至'
+      , value: start + ' 至 ' + end
+      , min: '2021-01-01 00:00:00'
+      , max: end
+      , done: function (value) {
+        if (!value) {
+          return;
+        }
+        var arr = value.split(' 至 ');
+        start = arr[0];
+        end = arr[1];
+        //计算两个时间间隔天数
+        if (((new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24)) > 31) {
+          feedback.layer.msg('最多选择31天');
+        } else {
+          $('#dateText').html(value);
+          $('#btnTrigger').removeClass('layui-btn-primary').siblings().addClass('layui-btn-primary');
+          doQuery({timeType: 'X', start: start, end: end})
+        }
+      }
+    });
+    $('#datePicker').click();
+  });
+
+  function doQuery(params) {
+    restful.get('auth/api/factory/rank', params, function (rank) {
+      renderChart('statusGreen', '运行排行榜', rank['GREEN'], 'greenDuration', colorMap['GREEN']);
+      renderChart('statusRed', '故障排行榜', rank['RED'], 'redDuration', colorMap['RED']);
+      renderChart('statusYellow', '暂停排行榜', rank['YELLOW'], 'yellowDuration', colorMap['YELLOW']);
+      renderChart('statusNone', '离线排行榜', rank['NONE'], 'noneDuration', colorMap['NONE']);
+    });
+  }
 
   function renderChart(elementId, title, list, key, color) {
     var barChart = barChartMap[elementId];

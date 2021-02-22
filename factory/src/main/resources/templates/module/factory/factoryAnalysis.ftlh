@@ -19,7 +19,10 @@
                         <button type="button" data-type="D3" class="layui-btn layui-btn-primary layui-btn-sm j-time-type">近三天</button>
                         <button type="button" data-type="W" class="layui-btn layui-btn-primary layui-btn-sm j-time-type">近七天</button>
                         <button type="button" data-type="M" class="layui-btn layui-btn-primary layui-btn-sm j-time-type">近一月</button>
-<#--                        <button type="button" data-type="X" class="layui-btn layui-btn-primary layui-btn-sm j-time-type">自定义</button>-->
+                        <button id="btnTrigger" type="button" class="layui-btn layui-btn-primary layui-btn-sm" style="position: relative">
+                            <div id="dateText">自定义</div>
+                            <div id="datePicker" style="position: absolute; top: 0; left: 0; width:100%; height: 100%; font-size: 0"></div>
+                        </button>
                     </div>
                 </div>
             </div>
