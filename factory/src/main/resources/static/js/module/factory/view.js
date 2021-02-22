@@ -4,12 +4,15 @@ layui.config({
 }).extend({
   restful: 'restful/index'
   , feedback: 'feedback/index'
-}).use(['restful', 'laytpl'], function () {
+}).use(['restful', 'laydate', 'laytpl'], function () {
   var $ = layui.$;
+  var feedback = layui.feedback;
   var restful = layui.restful;
+  var laydate = layui.laydate;
   var laytpl = layui.laytpl;
   var renderInterval;
   var barChart, pieChart, rectChart, lineChart;
+  var pattern = 'yyyy-MM-dd hh:mm:ss', now, start, end;
 
   /********************************组件渲染*********************************/
   renderTable();
@@ -34,6 +37,10 @@ layui.config({
   function renderTable() {
     $('div.layui-card').toggleClass('layui-hide');
     $('#singleCard').empty();
+    barChart = undefined;
+    pieChart = undefined;
+    rectChart = undefined;
+    lineChart = undefined;
     render();
     renderInterval = setInterval(render, 10 * 1000);
   }
@@ -93,19 +100,49 @@ layui.config({
       if (!jq.hasClass('layui-btn-primary')) {
         return;
       }
-      $('.j-time-type').not(this).addClass('layui-btn-primary');
-      jq.removeClass('layui-btn-primary');
-      var type = jq.data('type');
-      if (type !== 'X') {
-        restful.get('auth/api/factory/singleView', {timeType: type, deviceId: machine['deviceId']}, function (view) {
-          renderBarAndPie(view);
-          renderRectChart(view);
-          renderLineChart(view);
-        });
-      } else {
-
-      }
+      $('#dateText').html('自定义');
+      jq.removeClass('layui-btn-primary').siblings().addClass('layui-btn-primary');
+      doQuery({timeType: jq.data('type'), deviceId: machine['deviceId']});
     }).eq(0).click();
+
+    now = new Date();
+    start = new Date(now.getTime() - 3600 * 24 * 1000).format(pattern);
+    end = now.format(pattern);
+    $('#btnTrigger').one('click', function () {
+      laydate.render({
+        elem: '#datePicker'
+        , type: 'datetime'
+        , range: '至'
+        , value: start + ' 至 ' + end
+        , min: '2021-01-01 00:00:00'
+        , max: end
+        , done: function (value) {
+          if (!value) {
+            return;
+          }
+          var arr = value.split(' 至 ');
+          start = arr[0];
+          end = arr[1];
+          //计算两个时间间隔天数
+          if (((new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24)) > 31) {
+            feedback.layer.msg('最多选择31天');
+          } else {
+            $('#dateText').html(value);
+            $('#btnTrigger').removeClass('layui-btn-primary').siblings().addClass('layui-btn-primary');
+            doQuery({timeType: 'X', start: start, end: end, deviceId: machine['deviceId']})
+          }
+        }
+      });
+      $('#datePicker').click();
+    });
+  }
+
+  function doQuery(params) {
+    restful.get('auth/api/factory/singleView', params, function (view) {
+      renderBarAndPie(view);
+      renderRectChart(view);
+      renderLineChart(view);
+    });
   }
 
   function renderBarAndPie(view) {
@@ -231,7 +268,7 @@ layui.config({
         }
       },
       title: {
-        text: '时间轴(' + ((new Date(startTime * 1000)).format('yyyy-MM-dd hh:mm:ss')) + '始)',
+        text: '时间轴(' + ((new Date(startTime * 1000)).format(pattern)) + '始)',
         left: 'center'
       },
       dataZoom: [{
