@@ -85,7 +85,7 @@ layui.config({
           return new Date(new Date(d.time).getTime() + d.duration * 1000).format(pattern);
         }
       }
-      , {field: 'duration', title: '持续时间(秒)'}
+      , {field: 'duration', title: '持续时间(秒)', sort: true}
     ]]
     , autoSort: false
     , page: {
@@ -114,19 +114,19 @@ layui.config({
         var tbody = $('tbody');
         tbody.find('tr').not(noRowTr).remove();
         $.each(list, function (i, item) {
-          switch (item.status) {
-            case '暂停':
-              item.color = 'layui-bg-orange';
-              break;
-            case '运行':
-              item.color = 'layui-bg-green';
-              break;
-            case '离线':
-              item.color = 'layui-bg-gray';
-              break;
-            default:
-              item.color = '';
-          }
+          // switch (item.status) {
+          //   case '暂停':
+          //     item.color = 'layui-bg-orange';
+          //     break;
+          //   case '运行':
+          //     item.color = 'layui-bg-green';
+          //     break;
+          //   case '离线':
+          //     item.color = 'layui-bg-gray';
+          //     break;
+          //   default:
+          //     item.color = '';
+          // }
           laytpl($('#trTemplete').html()).render(item, function (tr) {
             tbody.append($(tr).find('a').bind('click', item, showSingleMachine).end());
           });
