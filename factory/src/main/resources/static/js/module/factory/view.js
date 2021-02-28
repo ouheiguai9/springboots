@@ -383,7 +383,7 @@ layui.config({
           data: view['redDurations']
         },
         {
-          name: '警告',
+          name: '暂停',
           type: 'line',
           data: view['yellowDurations']
         },
