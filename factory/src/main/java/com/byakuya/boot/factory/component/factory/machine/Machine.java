@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -59,4 +60,28 @@ public class Machine extends AbstractAuditableEntity<User> {
     @JoinColumn(name = "tri_color_led", unique = true)
     private Device triColorLED;
     private String type;
+    private String country;
+    private String brand;
+    private String category;
+    private String ordering;
+    private String unknown;
+
+    @JsonProperty
+    public String getVirtualName() {
+        StringBuilder sb = new StringBuilder();
+        if (StringUtils.hasText(getUnknown())) {
+            sb.append(getUnknown());
+        } else {
+            if (StringUtils.hasText(getBrand())) {
+                sb.append(getBrand());
+            }
+            if (StringUtils.hasText(getType())) {
+                sb.append(getType());
+            }
+        }
+        if (StringUtils.hasText(getName())) {
+            sb.append(getName());
+        }
+        return sb.toString();
+    }
 }

@@ -15,5 +15,5 @@ class MachineStatus {
     private String operator;
     private String serialNumber;
     private String status;
-    private String type;
+    private String ordering;
 }

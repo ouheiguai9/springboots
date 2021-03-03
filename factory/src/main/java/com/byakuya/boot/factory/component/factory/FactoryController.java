@@ -157,8 +157,8 @@ public class FactoryController {
 
         List<MachineStatus> list = machines.stream().map(machine -> {
             MachineStatus machineStatus = new MachineStatus();
-            machineStatus.setName(machine.getName());
-            machineStatus.setType(machine.getType());
+            machineStatus.setName(machine.getVirtualName());
+            machineStatus.setOrdering(machine.getOrdering());
             machineStatus.setOperator(machine.getOperator());
             machineStatus.setDeviceId(machine.getTriColorLEDId());
             machineStatus.setSerialNumber(machine.getTriColorLEDSerialNumber());
@@ -226,8 +226,8 @@ public class FactoryController {
         Map<Device, Long> deviceLongMap = triColorLedLogService.getDeviceStatusOvertimeCount(machines.stream().map(Machine::getTriColorLED).collect(Collectors.toList()), status, start, end, threshold).stream().collect(Collectors.toMap(TriColorLedLog::getDevice, TriColorLedLog::getDuration));
         return ResponseEntity.ok(machines.stream().map(machine -> {
             MachineStatus machineStatus = new MachineStatus();
-            machineStatus.setName(machine.getName());
-            machineStatus.setType(machine.getType());
+            machineStatus.setName(machine.getVirtualName());
+            machineStatus.setOrdering(machine.getOrdering());
             machineStatus.setDeviceId(machine.getTriColorLEDId());
             machineStatus.setDetail(machine.getDescription());
             machineStatus.setCount(deviceLongMap.getOrDefault(machine.getTriColorLED(), 0L));

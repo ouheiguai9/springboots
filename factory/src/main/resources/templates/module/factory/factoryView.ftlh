@@ -43,8 +43,8 @@
             <tbody>
             <script type="text/html" id="trTemplete">
                 <tr>
-                    <td><a href="javascript:void(1)" class="layui-text-blue">{{d.name}}</a></td>
-                    <td>{{d.type}}</td>
+                    <td><a href="javascript:void(1)" class="layui-text-blue">{{d.ordering}}</a></td>
+                    <td>{{d.name}}</td>
                     <td><span class="layui-badge-dot layui-badge-dot-bg {{d.color}}"></span>{{d.status}}</td>
                     <td>{{d.duration}}</td>
                     <td>{{d.count}}</td>
@@ -63,7 +63,7 @@
 <div id="singleCard" class="layui-card"></div>
 <script type="text/html" id="singleTemplete">
     <div class="layui-card-header">
-        <h1 class="local-time-title">{{d.type}} {{d.name}} 当前状态：{{d.status}}</h1>
+        <h1 class="local-time-title">{{d.ordering}} {{d.name}} 当前状态：{{d.status}}</h1>
         <a id="btnBack" href="javascript:void(1);" title="返回列表" style="position: absolute; top: 0; right: 15px;">
             <i class="layui-icon layui-icon-table"></i>
         </a>

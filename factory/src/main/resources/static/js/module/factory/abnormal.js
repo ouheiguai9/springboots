@@ -155,7 +155,7 @@ layui.config({
     var machine = event.data;
     if (machine.count === 0) return;
     $('section.layui-card').toggleClass('layui-hide');
-    $('h1.local-time-title').html(laytpl('{{d.start}} 至 {{d.end}} {{d.machine.type}} {{d.machine.name}} {{d.machine.status}}超过{{d.threshold}}秒明细').render({
+    $('h1.local-time-title').html(laytpl('{{d.start}} 至 {{d.end}} {{d.machine.ordering}} {{d.machine.name}} {{d.machine.status}}超过{{d.threshold}}秒明细').render({
       'start': start
       , 'end': end
       , 'threshold': threshold

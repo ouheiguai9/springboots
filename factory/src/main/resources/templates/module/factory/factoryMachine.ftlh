@@ -39,9 +39,9 @@
                 <div class="layui-row">
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
-                            <label class="layui-form-label" for="name">本厂编号：</label>
+                            <label class="layui-form-label" for="ordering">本厂编号：</label>
                             <div class="layui-input-block">
-                                <input id="name" type="text" name="name" class="layui-input"
+                                <input id="ordering" type="text" name="ordering" class="layui-input"
                                        placeholder="不超过8个字符(如:YG-0001)"
                                        lay-verify="required" lay-verType="tips" maxlength="8">
                             </div>
@@ -49,11 +49,11 @@
                     </div>
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
-                            <label class="layui-form-label" for="operator">操作人员：</label>
+                            <label class="layui-form-label" for="type">设备名称：</label>
                             <div class="layui-input-block">
-                                <input id="operator" type="text" name="operator" class="layui-input"
-                                       placeholder="不超过8个字符(如:李大宝)"
-                                       lay-verify="required" lay-verType="tips" maxlength="8">
+                                <input id="name" type="text" name="name" class="layui-input"
+                                       placeholder="不超过16个字符(如:斗山大宇卧加HP600)"
+                                       maxlength="16">
                             </div>
                         </div>
                     </div>
@@ -61,11 +61,55 @@
                 <div class="layui-row">
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
-                            <label class="layui-form-label" for="type">设备名称：</label>
+                            <label class="layui-form-label" for="category">设备类型：</label>
                             <div class="layui-input-block">
-                                <input id="type" type="text" name="type" class="layui-input"
-                                       placeholder="不超过16个字符(如:斗山大宇卧加HP600)"
+                                <select id="category" name="category" lay-filter="cascade"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md6">
+                        <div class="layui-form-item j-known-type">
+                            <label class="layui-form-label" for="type">具体类型：</label>
+                            <div class="layui-input-block">
+                                <select id="type" name="type" lay-filter="type"></select>
+                            </div>
+                        </div>
+                        <div id="unknownType" class="layui-form-item layui-hide">
+                            <label class="layui-form-label" for="unknown">具体类型：</label>
+                            <div class="layui-input-block">
+                                <input id="unknown" type="text" name="unknown" class="layui-input"
+                                       placeholder="请输入自定义类型"
                                        maxlength="16">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-row j-known-type">
+                    <div class="layui-col-md6">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" for="country">产地：</label>
+                            <div class="layui-input-block">
+                                <select id="country" name="country" lay-filter="cascade"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md6">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" for="brand">品牌：</label>
+                            <div class="layui-input-block">
+                                <select id="brand" name="brand" lay-filter="brand"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-row">
+                    <div class="layui-col-md6">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" for="operator">操作人员：</label>
+                            <div class="layui-input-block">
+                                <input id="operator" type="text" name="operator" class="layui-input"
+                                       placeholder="不超过8个字符(如:李大宝)"
+                                       lay-verify="required" lay-verType="tips" maxlength="8">
                             </div>
                         </div>
                     </div>

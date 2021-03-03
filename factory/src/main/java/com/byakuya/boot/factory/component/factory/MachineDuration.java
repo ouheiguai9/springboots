@@ -11,7 +11,7 @@ import lombok.Data;
 class MachineDuration {
     MachineDuration(Machine machine, long total) {
         this.deviceId = machine.getTriColorLEDId();
-        this.name = machine.getName();
+        this.name = machine.getOrdering();
         this.serialNumber = machine.getTriColorLEDSerialNumber();
         this.noneDuration = total;
     }

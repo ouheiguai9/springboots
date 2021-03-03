@@ -69,10 +69,15 @@ public class MachineController {
             , @Valid @RequestBody Machine machine) {
         Machine old = get(machine.getId(), user);
         old.setName(machine.getName());
-        old.setType(machine.getType());
         old.setProducer(machine.getProducer());
         old.setOperator(machine.getOperator());
         old.setDescription(machine.getDescription());
+        old.setOrdering(machine.getOrdering());
+        old.setCategory(machine.getCategory());
+        old.setType(machine.getType());
+        old.setCountry(machine.getCountry());
+        old.setBrand(machine.getBrand());
+        old.setUnknown(machine.getUnknown());
 
         setReferenceProperties(machine, user);
         old.setTriColorLED(machine.getTriColorLED());

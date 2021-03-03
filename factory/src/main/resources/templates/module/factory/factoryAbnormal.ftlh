@@ -57,8 +57,8 @@
             <tbody>
             <script type="text/html" id="trTemplete">
                 <tr>
+                    <td>{{d.ordering}}</td>
                     <td>{{d.name}}</td>
-                    <td>{{d.type}}</td>
 <#--                    <td><span class="layui-badge-dot layui-badge-dot-bg {{d.color}}"></span>{{d.status}}</td>-->
                     <td>{{d.status}}</td>
                     <td><a href="javascript:void(1)" class="layui-text-blue">{{d.count}}</a></td>
