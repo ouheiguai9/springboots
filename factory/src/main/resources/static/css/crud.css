@@ -1,5 +1,7 @@
 .layui-admin-crud section {
+    height: 100%;
     padding: 15px;
+    overflow-y: auto;
 }
 
 .layui-admin-crud .layui-form-tool {
