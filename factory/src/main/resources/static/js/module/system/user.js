@@ -85,7 +85,8 @@ layui.config({
     }
     , toolbar: '#tableListToolBar'
     , cols: [[
-      {field: 'username', width: 100, title: '用户名', sort: true}
+      {type: 'numbers'}
+      , {field: 'username', width: 100, title: '用户名', sort: true}
       , {field: 'nickname', title: '名称', sort: true}
       , {field: 'phone', width: 150, title: '手机', align: 'center', sort: true}
       , {field: 'createdDate', width: 200, title: '创建时间', align: 'center', sort: true}

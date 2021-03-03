@@ -35,7 +35,7 @@ layui.config({
     }
     , toolbar: '#tableListToolBar'
     , cols: [[
-      {type: 'checkbox', fixed: 'left'}
+      {type: 'numbers'}
       , {
         field: 'type', width: 110, title: '设备类型', sort: true, templet: function (d) {
           switch (d.type) {
