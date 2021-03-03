@@ -65,6 +65,7 @@ public class Machine extends AbstractAuditableEntity<User> {
     private String category;
     private String ordering;
     private String unknown;
+    private String software;
 
     @JsonProperty
     public String getVirtualName() {

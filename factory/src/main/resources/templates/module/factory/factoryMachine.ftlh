@@ -84,6 +84,16 @@
                         </div>
                     </div>
                 </div>
+                <div class="layui-row">
+                    <div class="layui-col-md12">
+                        <div class="layui-form-item j-known-type">
+                            <label class="layui-form-label" for="software">控制系统：</label>
+                            <div class="layui-input-block">
+                                <select id="software" name="software"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="layui-row j-known-type">
                     <div class="layui-col-md6">
                         <div class="layui-form-item">
