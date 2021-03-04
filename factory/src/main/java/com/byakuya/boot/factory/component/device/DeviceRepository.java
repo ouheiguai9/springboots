@@ -20,7 +20,7 @@ public interface DeviceRepository extends PagingAndSortingRepository<Device, Str
     List<Device> findAllByConsumer_idAndTypeAndLockedFalse(String userId, Device.DeviceType type);
 
     @EntityGraph("Device.List")
-    Page<Device> findAllByProducerLikeOrConsumer_nicknameLikeOrConsumer_phoneLike(Pageable pageable, String producer, String nickname, String phone);
+    Page<Device> findAllByProducerLikeOrConsumer_nicknameLikeOrSerialNumberLike(Pageable pageable, String producer, String nickname, String serialNumber);
 
     Optional<Device> findByIdAndConsumer_idAndType(String id, String userId, Device.DeviceType type);
 

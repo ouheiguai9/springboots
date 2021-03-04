@@ -15,7 +15,7 @@
     <script type="text/html" id="tableListToolBar">
         <div class="layui-btn-container">
             <div class="tool-bar-search-group">
-                <input type="text" id="search" placeholder="生产商/收货方">
+                <input type="text" id="search" placeholder="生产商/收货方/主串号">
                 <button class="layui-btn layui-btn-sm" lay-event="search">查询</button>
             </div>
             <button class="layui-btn layui-btn-sm" lay-event="create">添加</button>

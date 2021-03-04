@@ -57,7 +57,7 @@ public class DeviceController {
     public ResponseEntity<Page<Device>> read(@PageableDefault Pageable pageable, String search) {
         if (StringUtils.hasText(search)) {
             search = "%" + StringUtils.trimWhitespace(search) + "%";
-            return ResponseEntity.ok(deviceRepository.findAllByProducerLikeOrConsumer_nicknameLikeOrConsumer_phoneLike(pageable, search, search, search));
+            return ResponseEntity.ok(deviceRepository.findAllByProducerLikeOrConsumer_nicknameLikeOrSerialNumberLike(pageable, search, search, search));
         }
         return ResponseEntity.ok(deviceRepository.findAll(pageable));
     }
