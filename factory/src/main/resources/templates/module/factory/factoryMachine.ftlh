@@ -86,6 +86,24 @@
                         </div>
                     </div>
                 </div>
+                <div class="layui-row j-known-type">
+                    <div class="layui-col-md6">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" for="country">产地：</label>
+                            <div class="layui-input-block">
+                                <select id="country" name="country" lay-filter="cascade"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md6">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" for="brand">品牌：</label>
+                            <div class="layui-input-block">
+                                <select id="brand" name="brand" lay-filter="brand"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="layui-row">
                     <div class="layui-col-md12">
                         <div class="layui-form-item j-known-type">
@@ -110,24 +128,6 @@
                                     <option value="PLC/工控机">PLC/工控机</option>
                                     <option value="其它">其它</option>
                                 </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-row j-known-type">
-                    <div class="layui-col-md6">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label" for="country">产地：</label>
-                            <div class="layui-input-block">
-                                <select id="country" name="country" lay-filter="cascade"></select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-md6">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label" for="brand">品牌：</label>
-                            <div class="layui-input-block">
-                                <select id="brand" name="brand" lay-filter="brand"></select>
                             </div>
                         </div>
                     </div>

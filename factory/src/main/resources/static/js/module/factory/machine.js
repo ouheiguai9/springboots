@@ -36,7 +36,7 @@ layui.config({
         ['北京精雕', '宝鸡', '沈阳', '大连', '纽威', '海天', '台群', '润星', '嘉泰', '济南二机', '皖南', '秦川', '武重', '大连科德', '群志', '国盛', '北一', '新瑞']
       ]
     }
-  }
+  };
 
   /********************************组件渲染*********************************/
   table.render({
@@ -99,7 +99,7 @@ layui.config({
 
   form.on('select(cascade)', function (data) {
     var parent = $(data.elem).attr('id'), obj = cascadeSelectObj[parent], childJq = $('#' + obj.child).empty(),
-      parentIndex = obj.parent.indexOf(data.value);
+        parentIndex = obj.parent.indexOf(data.value);
     if (parentIndex > -1 && parentIndex < obj.children.length) {
       $.each(obj.children[parentIndex], function (j, jItem) {
         $('<option value="' + jItem + '">' + jItem + '</option>').appendTo(childJq);
@@ -189,9 +189,9 @@ layui.config({
 
   function renderCascadeSelect(parent, parentValue) {
     var parentJq = $('#' + parent).empty(), obj = cascadeSelectObj[parent], parentValues = obj.parent,
-      childValues = obj.children, childJq = $('#' + obj.child).empty();
+        childValues = obj.children, childJq = $('#' + obj.child).empty();
     $.each(parentValues, function (i, item) {
-      $('<option value="' + item + '">' + item + '</option>').appendTo(parentJq);
+      $('<option value="' + item + '"' + (i === 0 ? 'selected' : '') + '>' + item + '</option>').appendTo(parentJq);
       if (i < childValues.length && (parentValue === item || (parentValue === undefined && i === 0))) {
         $.each(childValues[i], function (j, jItem) {
           $('<option value="' + jItem + '">' + jItem + '</option>').appendTo(childJq);
