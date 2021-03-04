@@ -37,7 +37,7 @@
             <form class="layui-form layui-form-pane" lay-filter="editForm">
                 <input type="hidden" name="id">
                 <div class="layui-row">
-                    <div class="layui-col-md12">
+                    <div class="layui-col-md8">
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="ordering">本厂编号：</label>
                             <div class="layui-input-block">
@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <div class="layui-row">
-                    <div class="layui-col-md6">
+                    <div class="layui-col-md4">
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="category">设备类型：</label>
                             <div class="layui-input-block">
@@ -57,7 +57,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="layui-col-md6">
+                    <div class="layui-col-md4">
                         <div class="layui-form-item j-known-type">
                             <label class="layui-form-label" for="type">具体类型：</label>
                             <div class="layui-input-block">
@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <div class="layui-row">
-                    <div class="layui-col-md12">
+                    <div class="layui-col-md8">
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="type">设备型号：</label>
                             <div class="layui-input-block">
@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <div class="layui-row j-known-type">
-                    <div class="layui-col-md6">
+                    <div class="layui-col-md4">
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="country">产地：</label>
                             <div class="layui-input-block">
@@ -95,7 +95,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="layui-col-md6">
+                    <div class="layui-col-md4">
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="brand">品牌：</label>
                             <div class="layui-input-block">
@@ -105,12 +105,12 @@
                     </div>
                 </div>
                 <div class="layui-row">
-                    <div class="layui-col-md12">
+                    <div class="layui-col-md8">
                         <div class="layui-form-item j-known-type">
                             <label class="layui-form-label" for="software">控制系统：</label>
                             <div class="layui-input-block">
                                 <select id="software" name="software">
-                                    <option value="FANUC">FANUC</option>
+                                    <option value="FANUC" selected>FANUC</option>
                                     <option value="三菱">三菱</option>
                                     <option value="西门子">西门子</option>
                                     <option value="新代"> 新代</option>
@@ -133,7 +133,7 @@
                     </div>
                 </div>
                 <div class="layui-row">
-                    <div class="layui-col-md6">
+                    <div class="layui-col-md4">
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="operator">操作人员：</label>
                             <div class="layui-input-block">
@@ -143,7 +143,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="layui-col-md6">
+                    <div class="layui-col-md4">
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="description">零件名称：</label>
                             <div class="layui-input-block">
@@ -154,7 +154,7 @@
                     </div>
                 </div>
                 <div class="layui-row">
-                    <div class="layui-col-md12">
+                    <div class="layui-col-md8">
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="triColorLEDId">三色灯：</label>
                             <div class="layui-input-block">
