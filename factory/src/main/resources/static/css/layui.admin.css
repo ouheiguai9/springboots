@@ -2,6 +2,10 @@
     color: #029789 !important;
 }
 
+.layui-form-select dl {
+    max-height: 260px;
+}
+
 /**layer**/
 .layui-layer-tips .layui-layer-content {
     background-color: #ff5722 !important;
