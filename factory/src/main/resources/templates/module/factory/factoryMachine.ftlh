@@ -37,23 +37,13 @@
             <form class="layui-form layui-form-pane" lay-filter="editForm">
                 <input type="hidden" name="id">
                 <div class="layui-row">
-                    <div class="layui-col-md6">
+                    <div class="layui-col-md12">
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="ordering">本厂编号：</label>
                             <div class="layui-input-block">
                                 <input id="ordering" type="text" name="ordering" class="layui-input"
                                        placeholder="不超过8个字符(如:YG-0001)"
                                        lay-verify="required" lay-verType="tips" maxlength="8">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-col-md6">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label" for="type">设备名称：</label>
-                            <div class="layui-input-block">
-                                <input id="name" type="text" name="name" class="layui-input"
-                                       placeholder="不超过16个字符(如:斗山大宇卧加HP600)"
-                                       maxlength="16">
                             </div>
                         </div>
                     </div>
@@ -86,10 +76,40 @@
                 </div>
                 <div class="layui-row">
                     <div class="layui-col-md12">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" for="type">设备型号：</label>
+                            <div class="layui-input-block">
+                                <input id="name" type="text" name="name" class="layui-input"
+                                       placeholder="不超过8个字符(如:VMC850)"
+                                       maxlength="8">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-row">
+                    <div class="layui-col-md12">
                         <div class="layui-form-item j-known-type">
                             <label class="layui-form-label" for="software">控制系统：</label>
                             <div class="layui-input-block">
-                                <select id="software" name="software"></select>
+                                <select id="software" name="software">
+                                    <option value="FANUC">FANUC</option>
+                                    <option value="三菱">三菱</option>
+                                    <option value="西门子">西门子</option>
+                                    <option value="新代"> 新代</option>
+                                    <option value="宝元">宝元</option>
+                                    <option value="广数GSK">广数GSK</option>
+                                    <option value="华中">华中</option>
+                                    <option value="凯恩帝KND">凯恩帝KND</option>
+                                    <option value="莱纳克LYNUC">莱纳克LYNUC</option>
+                                    <option value="华兴">华兴</option>
+                                    <option value="广泰">广泰</option>
+                                    <option value="OKUMA">OKUMA</option>
+                                    <option value="海德汉">海德汉</option>
+                                    <option value="NUM">NUM</option>
+                                    <option value="HASS">HASS</option>
+                                    <option value="PLC/工控机">PLC/工控机</option>
+                                    <option value="其它">其它</option>
+                                </select>
                             </div>
                         </div>
                     </div>
