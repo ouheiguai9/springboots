@@ -60,10 +60,6 @@ public class TriColorLedLogService {
         return triColorLedLogRepository.findAllByDevice_IdAndTimeBetweenOrderByTimeAsc(deviceId, start, end);
     }
 
-    public Page<TriColorLedLog> getStatusOvertimeDetail(Pageable pageable, String deviceId, LocalDateTime start, LocalDateTime end, TriColorLedLog.Status status, Long duration) {
-        return triColorLedLogRepository.findAllByDevice_IdAndTimeBetweenAndStatusAndDurationGreaterThan(pageable, deviceId, start, end, status, duration);
-    }
-
     public List<TriColorLedLog> getDeviceGreenCount(Iterable<Device> devices, LocalDateTime start, LocalDateTime end) {
         return triColorLedLogRepository.findGreenCount(devices, start, end);
     }
@@ -82,6 +78,14 @@ public class TriColorLedLogService {
 
     private static LocalDateTime getHeartBeat(LocalDateTime time, long interval) {
         return time.plusMinutes(2 * interval);
+    }
+
+    public Optional<TriColorLedLog> getLastLogBefore(String deviceId, LocalDateTime end) {
+        return triColorLedLogRepository.findFirstByDevice_IdAndTimeIsLessThanOrderByTimeDesc(deviceId, end);
+    }
+
+    public Page<TriColorLedLog> getStatusOvertimeDetail(Pageable pageable, String deviceId, LocalDateTime start, LocalDateTime end, TriColorLedLog.Status status, Long duration) {
+        return triColorLedLogRepository.findAllByDevice_IdAndTimeBetweenAndStatusAndDurationGreaterThan(pageable, deviceId, start, end, status, duration);
     }
 
     @Transactional

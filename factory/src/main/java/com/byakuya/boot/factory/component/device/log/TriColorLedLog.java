@@ -29,6 +29,14 @@ public class TriColorLedLog implements Serializable {
         this.duration = duration;
     }
 
+    public TriColorLedLog copy() {
+        TriColorLedLog rtnVal = new TriColorLedLog(this.device, this.status, this.duration);
+        rtnVal.setId(this.id);
+        rtnVal.setTime(this.time);
+        rtnVal.setVoltage(this.voltage);
+        return rtnVal;
+    }
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "device_id")
