@@ -26,7 +26,11 @@ class SingleView {
     void addLog(TriColorLedLog log) {
         durationArray[TriColorLedLog.Status.NONE.ordinal()] -= log.getDuration();
         durationArray[log.getStatus().ordinal()] += log.getDuration();
-        logs.add(new Item(log));
+        Item next = new Item(log);
+        if (logs.size() > 0) {
+            logs.getLast().rebuildDuration(next);
+        }
+        logs.add(next);
         if (logs.size() > 1000) {
             logs.removeFirst();
         }
@@ -51,6 +55,13 @@ class SingleView {
             this.value = new long[2];
             this.value[0] = log.getTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() / 1000;
             this.value[1] = log.getDuration();
+        }
+
+        void rebuildDuration(Item next) {
+            long interval = next.value[0] - this.value[0];
+            if (interval < this.value[1] + 5) {
+                this.value[1] = interval;
+            }
         }
 
         private String name;
