@@ -20,3 +20,4 @@ INSERT INTO `t_sys_menu` VALUES ('init_data_menu_00103', '2020-12-22 16:15:11', 
 INSERT INTO `t_sys_menu` VALUES ('init_data_menu_00104', '2020-12-22 16:15:11', '2020-12-22 16:15:11', b'0', 'factoryAbnormal', '系统核心功能请勿随意修改和授权', 'layui-icon-chart', '异常分析', 103, NULL, NULL, 'init_data_menu_00101');
 INSERT INTO `t_sys_menu` VALUES ('init_data_menu_00105', '2020-12-22 16:15:11', '2020-12-22 16:15:11', b'0', 'factoryAnalysis', '系统核心功能请勿随意修改和授权', 'layui-icon-chart-screen', '效率分析', 104, NULL, NULL, 'init_data_menu_00101');
 INSERT INTO `t_sys_menu` VALUES ('init_data_menu_00106', '2020-12-22 16:15:11', '2020-12-22 16:15:11', b'0', 'factoryView', '系统核心功能请勿随意修改和授权', 'layui-icon-console', '全厂总览', 104, NULL, NULL, 'init_data_menu_00101');
+INSERT INTO `t_sys_menu` VALUES ('init_data_menu_00107', '2021-04-26 16:15:11', '2021-04-26 16:15:11', b'0', 'factoryWorkshop', '系统核心功能请勿随意修改和授权', 'layui-icon-layer', '车间管理', 102, NULL, NULL, 'init_data_menu_00101');

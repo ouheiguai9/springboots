@@ -2,6 +2,8 @@ package com.byakuya.boot.factory.component.factory.machine;
 
 import com.byakuya.boot.factory.component.device.Device;
 import com.byakuya.boot.factory.component.device.DeviceRepository;
+import com.byakuya.boot.factory.component.factory.workshop.Workshop;
+import com.byakuya.boot.factory.component.factory.workshop.WorkshopRepository;
 import com.byakuya.boot.factory.config.AuthRestAPIController;
 import com.byakuya.boot.factory.exception.RecordNotExistsException;
 import com.byakuya.boot.factory.jackson.DynamicJsonView;
@@ -25,9 +27,10 @@ import java.util.Optional;
 @AuthRestAPIController(path = {"factory/machines"})
 @Validated
 public class MachineController {
-    public MachineController(DeviceRepository deviceRepository, MachineRepository machineRepository) {
+    public MachineController(DeviceRepository deviceRepository, MachineRepository machineRepository, WorkshopRepository workshopRepository) {
         this.deviceRepository = deviceRepository;
         this.machineRepository = machineRepository;
+        this.workshopRepository = workshopRepository;
     }
 
     @PostMapping
@@ -39,6 +42,7 @@ public class MachineController {
 
     private void setReferenceProperties(Machine machine, AuthenticationUser user) {
         machine.setTriColorLED(Optional.ofNullable(machine.getTriColorLED()).map(Device::getId).flatMap(id -> deviceRepository.findByIdAndConsumer_idAndType(id, user.getUserId(), Device.DeviceType.TriColorLed)).orElse(null));
+        machine.setWorkshop(Optional.ofNullable(machine.getWorkshop()).map(Workshop::getId).flatMap(id -> workshopRepository.findByIdAndCreatedBy_id(id, user.getUserId())).orElse(null));
     }
 
     @DeleteMapping("/{id}")
@@ -81,9 +85,11 @@ public class MachineController {
 
         setReferenceProperties(machine, user);
         old.setTriColorLED(machine.getTriColorLED());
+        old.setWorkshop(machine.getWorkshop());
         return ResponseEntity.ok(machineRepository.save(old));
     }
 
     private final DeviceRepository deviceRepository;
     private final MachineRepository machineRepository;
+    private final WorkshopRepository workshopRepository;
 }

@@ -154,11 +154,19 @@
                     </div>
                 </div>
                 <div class="layui-row">
-                    <div class="layui-col-md8">
+                    <div class="layui-col-md4">
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="triColorLEDId">三色灯：</label>
                             <div class="layui-input-block">
                                 <select id="triColorLEDId" name="triColorLEDId"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md4">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" for="workshopId">归属车间：</label>
+                            <div class="layui-input-block">
+                                <select id="workshopId" name="workshopId"></select>
                             </div>
                         </div>
                     </div>

@@ -82,6 +82,9 @@ layui.config({
     if (obj.triColorLEDId) {
       obj.triColorLED = {id: obj.triColorLEDId};
     }
+    if (obj.workshopId) {
+      obj.workshop = {id: obj.workshopId};
+    }
     if (currentRow) {
       restful.put('auth/api/factory/machines', obj, function (data) {
         currentRow.update(data);
@@ -162,6 +165,14 @@ layui.config({
   }
 
   function renderSelectDom() {
+    restful.get('auth/api/factory/workshops', {}, function (data) {
+      var selectJq = $('#workshopId').empty();
+      $.each(data, function (i, item) {
+        // noinspection JSUnresolvedVariable
+        $('<option value="' + item.id + '">' + item.name + '</option>').appendTo(selectJq);
+      });
+    });
+
     restful.get('auth/api/factory/machines/triColorLED', {}, function (data) {
       var selectJq = $('#triColorLEDId').empty();
       $('<option value="">未选择</option>').appendTo(selectJq);
