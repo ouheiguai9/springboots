@@ -4,12 +4,13 @@ layui.config({
 }).extend({
   restful: 'restful/index'
   , feedback: 'feedback/index'
-}).use(['restful', 'laydate', 'laytpl'], function () {
+}).use(['restful', 'laydate', 'laytpl', 'form'], function () {
   var $ = layui.$;
   var feedback = layui.feedback;
   var restful = layui.restful;
   var laydate = layui.laydate;
   var laytpl = layui.laytpl;
+  var form = layui.form;
 
   Date.prototype.format = function (fmt) {
     var o = {
@@ -28,12 +29,12 @@ layui.config({
   };
 
   var barChartMap = {}, colorMap = {
-      'RED': '#FF5722',
-      'YELLOW': '#FFB800',
-      'GREEN': '#5FB878',
-      'NONE': '#E2E2E2'
-    }, now = new Date(), pattern = 'yyyy-MM-dd hh:mm:ss',
-    start = new Date(now.getTime() - 3600 * 24 * 1000).format(pattern), end = now.format(pattern);
+        'RED': '#FF5722',
+        'YELLOW': '#FFB800',
+        'GREEN': '#5FB878',
+        'NONE': '#E2E2E2'
+      }, now = new Date(), pattern = 'yyyy-MM-dd hh:mm:ss',
+      start = new Date(now.getTime() - 3600 * 24 * 1000).format(pattern), end = now.format(pattern);
 
   /********************************组件渲染*********************************/
 
@@ -74,6 +75,25 @@ layui.config({
       }
     });
     $('#datePicker').click();
+  });
+
+  $('#btnTriggerConf').on('click', function () {
+    restful.get('auth/api/factory/rank/conf', {}, function (list) {
+      var panel = $('#confPanel');
+      var templete = $('#confRow').html();
+      layui.each(list, function (index, group) {
+        laytpl(templete).render(group, function (row) {
+          panel.append(row);
+        });
+      })
+      $('.layui-card-body').toggleClass('layui-hide');
+      form.render();
+    });
+  });
+
+  $('#btnBackConf').on('click', function () {
+    $('.layui-card-body').toggleClass('layui-hide');
+    $('#confPanel').empty();
   });
 
   function doQuery(params) {

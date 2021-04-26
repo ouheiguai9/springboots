@@ -3,10 +3,13 @@ package com.byakuya.boot.factory.component.factory;
 import com.byakuya.boot.factory.component.device.Device;
 import com.byakuya.boot.factory.component.device.log.TriColorLedLog;
 import com.byakuya.boot.factory.component.device.log.TriColorLedLogService;
+import com.byakuya.boot.factory.component.factory.configuration.Configuration;
+import com.byakuya.boot.factory.component.factory.configuration.ConfigurationRepository;
 import com.byakuya.boot.factory.component.factory.machine.Machine;
 import com.byakuya.boot.factory.component.factory.machine.MachineRepository;
 import com.byakuya.boot.factory.component.factory.schedual.Schedule;
 import com.byakuya.boot.factory.component.factory.schedual.ScheduleService;
+import com.byakuya.boot.factory.component.factory.workshop.Workshop;
 import com.byakuya.boot.factory.config.AuthRestAPIController;
 import com.byakuya.boot.factory.exception.CustomizedException;
 import com.byakuya.boot.factory.security.AuthenticationUser;
@@ -21,6 +24,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.Duration;
@@ -35,10 +40,36 @@ import java.util.stream.Collectors;
 @AuthRestAPIController(path = {"factory"})
 @Validated
 public class FactoryController {
-    public FactoryController(MachineRepository machineRepository, ScheduleService scheduleService, TriColorLedLogService triColorLedLogService) {
+    public FactoryController(ConfigurationRepository configurationRepository, MachineRepository machineRepository, ScheduleService scheduleService, TriColorLedLogService triColorLedLogService) {
+        this.configurationRepository = configurationRepository;
         this.machineRepository = machineRepository;
         this.scheduleService = scheduleService;
         this.triColorLedLogService = triColorLedLogService;
+    }
+
+    @PostMapping("configuration")
+    public ResponseEntity<Boolean> configuration(@AuthenticationPrincipal AuthenticationUser user, @RequestBody Configuration configuration) {
+        Configuration old = configurationRepository.findByCreatedBy_idAndConfigurationType(user.getUserId(), configuration.getConfigurationType()).orElse(configuration);
+        old.setContent(configuration.getContent());
+        configurationRepository.save(old);
+        return ResponseEntity.ok(true);
+    }
+
+    @GetMapping("configuration")
+    public ResponseEntity<Configuration> configuration(@AuthenticationPrincipal AuthenticationUser user, Configuration.ConfigurationType configurationType) {
+        return ResponseEntity.ok(configurationRepository.findByCreatedBy_idAndConfigurationType(user.getUserId(), configurationType).orElse(new Configuration()));
+    }
+
+    @GetMapping("/rank/conf")
+    public ResponseEntity<List<RankConfView.GroupItem>> ranConf(@AuthenticationPrincipal AuthenticationUser user) {
+        List<Machine> machines = machineRepository.findAllBindTriColorLED(user.getUserId());
+        String conf = configurationRepository.findByCreatedBy_idAndConfigurationType(user.getUserId(), Configuration.ConfigurationType.EfficientRank).map(Configuration::getContent).orElse(null);
+        return ResponseEntity.ok(machines.stream().collect(Collectors.groupingBy(machine -> Optional.ofNullable(machine.getWorkshop()).map(Workshop::getName).orElse(""))).entrySet().stream().map(item -> {
+            RankConfView.GroupItem groupItem = new RankConfView.GroupItem();
+            groupItem.setName(item.getKey());
+            groupItem.setItems(item.getValue().stream().map(machine -> new RankConfView.ConfItem(machine, conf)).collect(Collectors.toList()));
+            return groupItem;
+        }).sorted().collect(Collectors.toList()));
     }
 
     @GetMapping("/rank")
@@ -55,6 +86,20 @@ public class FactoryController {
         }
         long totalSecond = Duration.between(start, end).abs().getSeconds();
         List<Machine> machines = machineRepository.findAllBindTriColorLED(user.getUserId());
+
+        configurationRepository.findByCreatedBy_idAndConfigurationType(user.getUserId(), Configuration.ConfigurationType.EfficientRank).ifPresent(configuration -> {
+            if (StringUtils.hasText(configuration.getContent())) {
+                List<Machine> copy = new ArrayList<>(machines);
+                machines.clear();
+                copy.forEach(item -> {
+                    assert item.getId() != null;
+                    if (configuration.getContent().contains(item.getId())) {
+                        machines.add(item);
+                    }
+                });
+            }
+        });
+
         List<Device> devices = machines.stream().map(Machine::getTriColorLED).collect(Collectors.toList());
         List<TriColorLedLog> logList = triColorLedLogService.getDeviceStatusSumDuration(devices, start, end);
         Map<String, Machine> machineMap = machines.stream().collect(Collectors.toMap(m -> m.getTriColorLED().getId(), m -> m));
@@ -269,6 +314,7 @@ public class FactoryController {
         }
     }
 
+    private final ConfigurationRepository configurationRepository;
     private final MachineRepository machineRepository;
     private final ScheduleService scheduleService;
     private final TriColorLedLogService triColorLedLogService;

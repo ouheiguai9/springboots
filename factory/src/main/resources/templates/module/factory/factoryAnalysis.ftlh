@@ -11,17 +11,31 @@
     </div>
     <div class="layui-card-body">
         <div class="layui-row">
-            <div class="layui-col-md8 layui-col-md-offset2">
+            <div class="layui-col-md10 layui-col-md-offset1">
                 <div class="layui-row">
                     <div class="layui-col-xs12" style="text-align: center;">
-                        <button type="button" data-type="S" class="layui-btn layui-btn-primary layui-btn-sm j-time-type">当前班次</button>
-                        <button type="button" data-type="D" class="layui-btn layui-btn-primary layui-btn-sm j-time-type">今天</button>
-                        <button type="button" data-type="D3" class="layui-btn layui-btn-primary layui-btn-sm j-time-type">近三天</button>
-                        <button type="button" data-type="W" class="layui-btn layui-btn-primary layui-btn-sm j-time-type">近七天</button>
-                        <button type="button" data-type="M" class="layui-btn layui-btn-primary layui-btn-sm j-time-type">近一月</button>
-                        <button id="btnTrigger" type="button" class="layui-btn layui-btn-primary layui-btn-sm" style="position: relative">
+                        <button type="button" data-type="S"
+                                class="layui-btn layui-btn-primary layui-btn-sm j-time-type">当前班次
+                        </button>
+                        <button type="button" data-type="D"
+                                class="layui-btn layui-btn-primary layui-btn-sm j-time-type">今天
+                        </button>
+                        <button type="button" data-type="D3"
+                                class="layui-btn layui-btn-primary layui-btn-sm j-time-type">近三天
+                        </button>
+                        <button type="button" data-type="W"
+                                class="layui-btn layui-btn-primary layui-btn-sm j-time-type">近七天
+                        </button>
+                        <button type="button" data-type="M"
+                                class="layui-btn layui-btn-primary layui-btn-sm j-time-type">近一月
+                        </button>
+                        <button id="btnTrigger" type="button" class="layui-btn layui-btn-primary layui-btn-sm"
+                                style="position: relative">
                             <div id="dateText">自定义</div>
-                            <div id="datePicker" style="position: absolute; top: 0; left: 0; width:100%; height: 100%; font-size: 0"></div>
+                            <div id="datePicker"
+                                 style="position: absolute; top: 0; left: 0; width:100%; height: 100%; font-size: 0"></div>
+                        </button>
+                        <button id="btnTriggerConf" type="button" class="layui-btn layui-btn-primary layui-btn-sm">配置
                         </button>
                     </div>
                 </div>
@@ -53,6 +67,30 @@
             </div>
         </div>
     </div>
+    <div class="layui-card-body layui-hide">
+        <form class="layui-form layui-form-pane" action="">
+            <div id="confPanel"></div>
+            <div class="layui-row">
+                <div class="layui-form-item">
+                    <div class="layui-input-block" style="text-align: right;">
+                        <button id="btnSaveConf" class="layui-btn layui-btn-sm">保存</button>
+                        <button id="btnBackConf" class="layui-btn layui-btn-primary layui-btn-sm">返回</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script type="text/html" id="confRow">
+        <div class="layui-form-item" pane>
+            <label class="layui-form-label">{{ d.name||'未指定' }}</label>
+            <div class="layui-input-block">
+                {{# layui.each(d.items, function(index, item){ }}
+                <input type="checkbox" name="itemConf" title="{{ item.name }}" value="{{ item.id }}" {{ item.checked ?
+                'checked' : '' }}>
+                {{# }); }}
+            </div>
+        </div>
+    </script>
 </div>
 </body>
 <script src="plugin/echarts-5.0.0/echarts.min.js" type="text/javascript" charset="UTF-8"></script>
