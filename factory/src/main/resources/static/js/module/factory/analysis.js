@@ -79,21 +79,41 @@ layui.config({
 
   $('#btnTriggerConf').on('click', function () {
     restful.get('auth/api/factory/rank/conf', {}, function (list) {
-      var panel = $('#confPanel');
+      var panel = $('#confPanel').empty();
       var templete = $('#confRow').html();
       layui.each(list, function (index, group) {
         laytpl(templete).render(group, function (row) {
           panel.append(row);
         });
       })
-      $('.layui-card-body').toggleClass('layui-hide');
+      $('.j-switch-panel').toggleClass('layui-hide');
       form.render();
     });
   });
 
+  $('#btnSaveConf').on('click', function () {
+    var idArray = [];
+    $('#confPanel').find('input[type=checkbox]:checked').each(function () {
+      idArray.push($(this).val());
+    });
+    if (idArray.length > 10) {
+      feedback.layer.msg('不能超过10个');
+      return;
+    }
+    restful.post('auth/api/factory/configuration', {
+      configurationType: 'EfficientRank',
+      content: idArray.join(',')
+    }, function () {
+      location.reload();
+    });
+  });
+
   $('#btnBackConf').on('click', function () {
-    $('.layui-card-body').toggleClass('layui-hide');
-    $('#confPanel').empty();
+    $('.j-switch-panel').toggleClass('layui-hide');
+  });
+
+  form.on('submit(formConf)', function () {
+    return false;
   });
 
   function doQuery(params) {

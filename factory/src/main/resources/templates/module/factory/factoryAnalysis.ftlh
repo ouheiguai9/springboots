@@ -9,7 +9,7 @@
     <div class="layui-card-header">
         <h1 class="local-time-title">设备效率排名</h1>
     </div>
-    <div class="layui-card-body">
+    <div class="layui-card-body j-switch-panel">
         <div class="layui-row">
             <div class="layui-col-md10 layui-col-md-offset1">
                 <div class="layui-row">
@@ -67,8 +67,8 @@
             </div>
         </div>
     </div>
-    <div class="layui-card-body layui-hide">
-        <form class="layui-form layui-form-pane" action="">
+    <div class="layui-card-body j-switch-panel layui-hide">
+        <form class="layui-form layui-form-pane" lay-filter="formConf">
             <div id="confPanel"></div>
             <div class="layui-row">
                 <div class="layui-form-item">
