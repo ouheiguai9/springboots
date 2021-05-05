@@ -32,7 +32,7 @@ layui.config({
     , toolbar: '#tableListToolBar'
     , cols: [[
       {type: 'numbers'}
-      , {field: 'name', width: 250, title: '班次'}
+      , {field: 'name', width: 250, title: '名称'}
       , {field: 'description', title: '描述'}
       , {width: 250, title: '操作', fixed: 'right', align: 'center', toolbar: '#tableListRowToolBar'}
     ]]
