@@ -10,8 +10,16 @@
         <h1 class="local-time-title"></h1>
     </div>
     <div class="layui-card-body">
-        <div class="layui-row">
-            <div class="layui-col-md8 layui-col-md-offset2">
+        <div class="layui-row layui-form">
+            <div class="layui-col-md3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label" for="workshopId">归属车间：</label>
+                    <div class="layui-input-block">
+                        <select id="workshopId" name="workshopId"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
                 <div class="layui-row">
                     <div class="layui-col-xs3 total-title-card">
                         <span class="layui-text">故障设备<label>0</label>台</span>
@@ -57,6 +65,8 @@
             </tr>
             </tbody>
         </table>
+
+        <div id="pager" style="text-align: right;"></div>
     </div>
 </div>
 
@@ -88,9 +98,11 @@
                         <button type="button" data-type="M"
                                 class="layui-btn layui-btn-primary layui-btn-sm j-time-type">近一月
                         </button>
-                        <button id="btnTrigger" type="button" class="layui-btn layui-btn-primary layui-btn-sm" style="position: relative">
+                        <button id="btnTrigger" type="button" class="layui-btn layui-btn-primary layui-btn-sm"
+                                style="position: relative">
                             <div id="dateText">自定义</div>
-                            <div id="datePicker" style="position: absolute; top: 0; left: 0; width:100%; height: 100%; font-size: 0"></div>
+                            <div id="datePicker"
+                                 style="position: absolute; top: 0; left: 0; width:100%; height: 100%; font-size: 0"></div>
                         </button>
                     </div>
                 </div>

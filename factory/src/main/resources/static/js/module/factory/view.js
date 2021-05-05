@@ -4,17 +4,34 @@ layui.config({
 }).extend({
   restful: 'restful/index'
   , feedback: 'feedback/index'
-}).use(['restful', 'laydate', 'laytpl'], function () {
+}).use(['form', 'restful', 'laydate', 'laytpl', 'laypage'], function () {
   var $ = layui.$;
+  var form = layui.form;
   var feedback = layui.feedback;
   var restful = layui.restful;
   var laydate = layui.laydate;
   var laytpl = layui.laytpl;
+  var laypage = layui.laypage;
   var renderInterval;
   var barChart, pieChart, rectChart, lineChart;
-  var pattern = 'yyyy-MM-dd hh:mm:ss', now, start, end;
+  var pattern = 'yyyy-MM-dd hh:mm:ss', now, start, end, offset = 0, limit = 10;
 
   /********************************组件渲染*********************************/
+  restful.get('auth/api/factory/workshops', {}, function (data) {
+    var selectJq = $('#workshopId').empty();
+    $('<option value="">全部</option>').appendTo(selectJq);
+    $.each(data, function (i, item) {
+      // noinspection JSUnresolvedVariable
+      $('<option value="' + item.id + '">' + item.name + '</option>').appendTo(selectJq);
+    });
+    form.render();
+
+    form.on('select()', function(){
+      clearTimeout(renderInterval);
+      renderInterval = undefined;
+      render();
+    });
+  });
   renderTable();
 
   /********************************事件绑定*********************************/
@@ -42,22 +59,28 @@ layui.config({
     rectChart = undefined;
     lineChart = undefined;
     render();
-    renderInterval = setInterval(render, 10 * 1000);
   }
 
   function render() {
     restful.disableLoading();
-    restful.get('auth/api/factory/view', {}, function (view) {
+    restful.get('auth/api/factory/view', {
+      offset: offset,
+      limit: limit,
+      workshopId: $('#workshopId').val()
+    }, function (view) {
+      var total = 0;
       // noinspection JSUnresolvedVariable
       $('#listCard').find('h1').html(view.timeInterval);
       $('div.total-title-card').find('label').each(function (index) {
         // noinspection JSUnresolvedVariable
-        $(this).html(view.totalArr[index]);
+        var tmp = view.totalArr[index];
+        $(this).html(tmp);
+        total += tmp;
       });
       var noRowTr = $('#noRowTr');
+      var tbody = $('tbody');
+      tbody.find('tr').not(noRowTr).remove();
       if (view.list && view.list.length > 0) {
-        var tbody = $('tbody');
-        tbody.find('tr').not(noRowTr).remove();
         $.each(view.list, function (i, item) {
           switch (item.status) {
             case '暂停':
@@ -81,12 +104,32 @@ layui.config({
         noRowTr.removeClass('layui-hide');
       }
       restful.enableLoading();
+
+      if (renderInterval === undefined) {
+        if (total > limit) {
+          laypage.render({
+            elem: 'pager'
+            , count: total
+            , limit: limit
+            , curr: 0
+            , layout: ['count', 'prev', 'next']
+            , jump: function (obj, first) {
+              if (!first) {
+                clearTimeout(renderInterval);
+                offset = (obj.curr - 1) * limit;
+                render();
+              }
+            }
+          });
+        }
+      }
+      renderInterval = setTimeout(render, 10 * 1000);
     });
   }
 
   function showSingleMachine(event) {
     var machine = event.data;
-    clearInterval(renderInterval);
+    clearTimeout(renderInterval);
 
     $('div.layui-card').toggleClass('layui-hide');
     laytpl($('#singleTemplete').html()).render(machine, function (content) {

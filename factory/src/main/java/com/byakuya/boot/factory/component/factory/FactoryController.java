@@ -193,12 +193,27 @@ public class FactoryController {
     }
 
     @GetMapping("/view")
-    public ResponseEntity<FactoryView> read(@AuthenticationPrincipal AuthenticationUser user) {
+    public ResponseEntity<FactoryView> read(@AuthenticationPrincipal AuthenticationUser user
+            , @RequestParam(required = false, defaultValue = "0") int offset
+            , @RequestParam(required = false, defaultValue = "10") int limit
+            , @RequestParam(required = false) String workshopId) {
         List<Machine> machines = machineRepository.findAllBindTriColorLED(user.getUserId());
+        if (StringUtils.hasText(workshopId)) {
+            machines = machines.stream().filter(machine -> workshopId.equals(machine.getWorkshopId())).collect(Collectors.toList());
+        }
         int[] totalArr = new int[]{0, 0, 0, 0};
         LocalDateTime start = compute(user.getUserId(), TimeType.S, null, null).getFirst(), now = LocalDateTime.now();
 
-        Map<Device, Long> deviceLongMap = triColorLedLogService.getDeviceGreenCount(machines.stream().map(Machine::getTriColorLED).collect(Collectors.toList()), start, now).stream().collect(Collectors.toMap(TriColorLedLog::getDevice, TriColorLedLog::getDuration));
+        Map<Device, Long> deviceLongMap = triColorLedLogService.getDeviceGreenCount(machines.stream().skip(offset).limit(limit).map(Machine::getTriColorLED).collect(Collectors.toList()), start, now).stream().collect(Collectors.toMap(TriColorLedLog::getDevice, TriColorLedLog::getDuration));
+
+//        deviceLongMap.keySet().forEach(device -> {
+//            triColorLedLogService.getLastLogBefore(device.getId(), start).ifPresent(log -> {
+//                if (log.getStatus() == TriColorLedLog.Status.GREEN) {
+//                    long duration = Duration.between(log.getTime(), start).abs().getSeconds();
+//                    deviceLongMap.replace(device, deviceLongMap.get(device) + 1);
+//                }
+//            });
+//        });
 
         List<MachineStatus> list = machines.stream().map(machine -> {
             MachineStatus machineStatus = new MachineStatus();
@@ -228,7 +243,7 @@ public class FactoryController {
             machineStatus.setStatus(status.getName());
             totalArr[status.ordinal()] += 1;
             return machineStatus;
-        }).collect(Collectors.toList());
+        }).collect(Collectors.toList()).stream().skip(offset).limit(limit).collect(Collectors.toList());
         return ResponseEntity.ok(new FactoryView(start, now, list, totalArr));
     }
 
