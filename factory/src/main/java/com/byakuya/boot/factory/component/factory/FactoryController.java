@@ -77,7 +77,7 @@ public class FactoryController {
             , TimeType timeType
             , @RequestParam(required = false) LocalDateTime start
             , @RequestParam(required = false) LocalDateTime end
-            , @RequestParam(required = false, defaultValue = "5") int top) {
+            , @RequestParam(required = false, defaultValue = "10") int top) {
         Pair<LocalDateTime, LocalDateTime> pair = compute(user.getUserId(), timeType, start, end);
         start = pair.getFirst();
         end = pair.getSecond();
