@@ -17,7 +17,7 @@
         <input type="hidden" name="username" id="username" value="${username}">
         <div class="layui-form-item">
             <label class="layui-admin-login-icon layui-icon layui-icon-password" for="oldPassword"></label>
-            <input type="password" name="oldPassword" id="oldPassword" lay-verify="required|password" placeholder="原始密码"
+            <input type="password" name="oldPassword" id="oldPassword" lay-verify="required" placeholder="原始密码"
                    class="layui-input">
         </div>
         <div class="layui-form-item">

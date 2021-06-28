@@ -46,11 +46,11 @@ layui.config({
         if (/[!@#$%^&*? ]/.test(value)) {
           contain += 1;
         }
-        if (contain > 2) {
+        if (contain > 1) {
           return;
         }
       }
-      return '长度6-16位(必须包含大小写字母、数字、特殊符号中任意三种)';
+      return '长度6-16位(必须包含大小写字母、数字、特殊符号中任意两种)';
     }
     , repassword: function (value, item) {
       var equalId = $(item).data('equal');
