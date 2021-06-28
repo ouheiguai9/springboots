@@ -5,7 +5,10 @@ import com.byakuya.boot.factory.component.menu.MenuRepository;
 import com.byakuya.boot.factory.component.role.Role;
 import com.byakuya.boot.factory.component.role.RoleRepository;
 import com.byakuya.boot.factory.config.property.SecurityProperties;
-import com.byakuya.boot.factory.exception.*;
+import com.byakuya.boot.factory.exception.CustomizedException;
+import com.byakuya.boot.factory.exception.PhoneExistsException;
+import com.byakuya.boot.factory.exception.RecordNotExistsException;
+import com.byakuya.boot.factory.exception.UsernameExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,7 +57,7 @@ public class UserService {
      * @return 是否成功
      */
     public boolean changePassword(String username, String oldPassword, String newPassword) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new RecordNotExistsException(username));
+        User user = userRepository.findUserByIdOrUsernameOrPhone(username, username, username).orElseThrow(() -> new RecordNotExistsException(username));
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
             throw new CustomizedException("ERR-90001");
         }
